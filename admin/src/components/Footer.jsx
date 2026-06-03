@@ -100,7 +100,7 @@ export default function Footer() {
             <Logo light />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-400">
               Pratonna — Le 6ème membre de votre équipe. La plateforme SaaS qui orchestre vos
-              opérations grâce à un agent intelligent, toujours actif.
+              opérations grâce à un assistant intelligent, toujours actif.
             </p>
             <ul className="mt-5 space-y-2 text-sm text-slate-400">
               <li className="flex items-center gap-2">

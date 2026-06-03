@@ -20,7 +20,7 @@ const features = [
   {
     icon: BrainCircuit,
     title: 'Assistant intelligent',
-    desc: 'Tâches automatisées et relances. L’agent comprend le contexte, rédige vos e-mails et prépare vos actions.',
+    desc: 'Tâches automatisées et relances. L’assistant comprend le contexte, rédige vos e-mails et prépare vos actions.',
     accent: 'from-violet-500 to-violet-600',
   },
   {
@@ -50,7 +50,7 @@ const features = [
   {
     icon: Workflow,
     title: 'Orchestration des workflows',
-    desc: 'L’agent enchaîne les étapes : déclaration → analyse → validation → action. Zéro tâche oubliée.',
+    desc: 'Pratonna enchaîne les étapes : déclaration → analyse → validation → action. Zéro tâche oubliée.',
     accent: 'from-brand-500 to-violet-600',
   },
   {
@@ -73,7 +73,7 @@ export default function Features() {
           </h2>
           <p className="mt-4 text-lg text-ink-soft">
             Un environnement de travail unifié où l'intelligence artificielle ne se contente
-            pas de répondre : elle agit comme un véritable membre de l'équipe.
+            pas de répondre : elle travaille comme un véritable membre de l'équipe.
           </p>
         </Reveal>
 
@@ -81,9 +81,8 @@ export default function Features() {
           {features.map((f, i) => (
             <Reveal key={f.title} delay={(i % 4) * 0.08}>
               <article className="group h-full rounded-2xl border border-slate-100 bg-white p-6 shadow-card transition-all duration-300 hover:-translate-y-1.5 hover:border-brand-200 hover:shadow-glow">
-                <span
-                  className={`grid h-12 w-12 place-items-center rounded-xl bg-gradient-to-br ${f.accent} text-white shadow-glow`}
-                >
+                <span className="grid h-12 w-12 place-items-center rounded-xl bg-brand-gradient text-white shadow-glow">
+
                   <f.icon className="h-6 w-6" />
                 </span>
                 <h3 className="mt-5 font-display text-lg font-bold text-ink">{f.title}</h3>

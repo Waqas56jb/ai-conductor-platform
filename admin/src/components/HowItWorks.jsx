@@ -12,7 +12,7 @@ const steps = [
     n: '02',
     icon: ScanText,
     title: 'L’IA analyse',
-    desc: 'L’agent comprend la situation, rédige un compte-rendu professionnel et propose un devis chiffré automatiquement.',
+    desc: 'L’assistant comprend la situation, rédige un compte-rendu professionnel et propose un devis chiffré automatiquement.',
   },
   {
     n: '03',
@@ -74,7 +74,7 @@ export default function HowItWorks() {
               {[
                 { k: '−70%', v: 'de tâches manuelles répétitives' },
                 { k: '0', v: 'oubli ou perte d’information' },
-                { k: '24/7', v: 'un agent toujours actif' },
+                { k: '24/7', v: 'un assistant toujours actif' },
               ].map((b) => (
                 <div key={b.v} className="text-center sm:text-left">
                   <p className="font-display text-4xl font-extrabold gradient-text">{b.k}</p>

@@ -1,5 +1,16 @@
 import { motion } from 'framer-motion'
-import { Sparkles, PlayCircle, ArrowRight, CheckCircle2 } from 'lucide-react'
+import {
+  Sparkles,
+  ArrowRight,
+  CheckCircle2,
+  LayoutDashboard,
+  Users,
+  FolderKanban,
+  Calendar,
+  Settings,
+  Bell,
+  TrendingUp,
+} from 'lucide-react'
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -55,7 +66,7 @@ export default function Hero() {
               animate="show"
               className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-ink-soft lg:mx-0"
             >
-              Optimisez, pilotez, déléguez avec un agent intelligent. Pratonna centralise
+              Optimisez, pilotez, déléguez avec un assistant intelligent. Pratonna centralise
               votre CRM, vos tâches, vos e-mails et vos équipes — puis{' '}
               <strong className="text-ink">organise et priorise le travail à votre place.</strong>
             </motion.p>
@@ -71,18 +82,49 @@ export default function Hero() {
                 Demander une démo
                 <ArrowRight className="h-4 w-4" />
               </a>
-              <a href="#tarifs" className="btn-ghost w-full sm:w-auto">
-                <PlayCircle className="h-5 w-5 text-brand-600" />
+              <a
+                href="#tarifs"
+                className="inline-flex items-center gap-1.5 px-2 py-2 text-[15px] font-semibold text-ink-soft transition-colors hover:text-brand-600"
+              >
                 Voir les tarifs
+                <ArrowRight className="h-4 w-4" />
               </a>
             </motion.div>
 
-            <motion.ul
+            {/* Preuve sociale */}
+            <motion.div
               variants={fadeUp}
               custom={4}
               initial="hidden"
               animate="show"
-              className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-ink-muted lg:justify-start"
+              className="mt-6 flex items-center justify-center gap-3 lg:justify-start"
+            >
+              <div className="flex -space-x-2.5">
+                {[
+                  'from-brand-500 to-violet-600',
+                  'from-violet-500 to-brand-500',
+                  'from-brand-600 to-brand-400',
+                  'from-violet-600 to-violet-400',
+                ].map((g, i) => (
+                  <span
+                    key={i}
+                    className={`grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br ${g} text-[11px] font-bold text-white ring-2 ring-white`}
+                  >
+                    {['ML', 'JD', 'SA', 'TB'][i]}
+                  </span>
+                ))}
+              </div>
+              <p className="text-sm text-ink-soft">
+                Déjà adopté par <strong className="text-ink">40+ équipes</strong> en France
+              </p>
+            </motion.div>
+
+            <motion.ul
+              variants={fadeUp}
+              custom={5}
+              initial="hidden"
+              animate="show"
+              className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-ink-muted lg:justify-start"
             >
               {['Sans engagement', 'Conforme RGPD', 'Mise en route en 5 min'].map((t) => (
                 <li key={t} className="inline-flex items-center gap-2">
@@ -111,7 +153,16 @@ export default function Hero() {
   )
 }
 
+/* Maquette produit — interface réelle de Pratonna (aucune photo, 100% UI) */
 function HeroVisual() {
+  const navIcons = [LayoutDashboard, FolderKanban, Users, Calendar, Settings]
+  const stats = [
+    { label: 'Tâches du jour', value: '24', tint: 'text-brand-600 bg-brand-50' },
+    { label: 'Clients actifs', value: '138', tint: 'text-violet-600 bg-violet-100/60' },
+    { label: 'Devis en cours', value: '12', tint: 'text-emerald-600 bg-emerald-50' },
+  ]
+  const bars = [38, 62, 48, 80, 56, 90, 70]
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.94 }}
@@ -124,23 +175,108 @@ function HeroVisual() {
       <div className="absolute -right-8 -top-8 -z-10 h-40 w-40 animate-float-slow rounded-full bg-violet-400/30 blur-2xl" />
       <div className="absolute -bottom-10 -left-6 -z-10 h-44 w-44 animate-float rounded-full bg-brand-400/30 blur-2xl" />
 
-      {/* Cadre premium en dégradé */}
-      <div className="rounded-[2rem] bg-gradient-to-br from-white/80 via-brand-100/50 to-violet-100/50 p-2 shadow-glow backdrop-blur-sm">
-        <div className="relative overflow-hidden rounded-[1.6rem] ring-1 ring-white/60">
-          <img
-            src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=80"
-            alt="Équipe pilotant l'automatisation avec Pratonna"
-            loading="eager"
-            className="h-[300px] w-full object-cover sm:h-[380px] lg:h-[440px]"
-          />
-          {/* Voile dégradé subtil pour la profondeur */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-brand-950/30 via-transparent to-violet-500/10" />
-          <div className="absolute inset-0 bg-gradient-to-t from-brand-950/25 to-transparent" />
+      {/* Fenêtre navigateur */}
+      <div className="overflow-hidden rounded-[1.6rem] border border-white/70 bg-white shadow-glow ring-1 ring-black/5">
+        {/* Barre du navigateur */}
+        <div className="flex items-center gap-2 border-b border-slate-100 bg-slate-50/80 px-4 py-3">
+          <span className="h-3 w-3 rounded-full bg-rose-400" />
+          <span className="h-3 w-3 rounded-full bg-amber-400" />
+          <span className="h-3 w-3 rounded-full bg-emerald-400" />
+          <div className="ml-3 flex-1 rounded-md bg-white py-1.5 text-center text-[11px] font-medium text-ink-muted ring-1 ring-slate-200">
+            app.pratonna.fr/tableau-de-bord
+          </div>
+        </div>
+
+        {/* Corps de l'app */}
+        <div className="flex">
+          {/* Barre latérale */}
+          <div className="flex w-14 flex-col items-center gap-1 border-r border-slate-100 bg-white py-4">
+            <span className="grid h-9 w-9 place-items-center rounded-xl bg-brand-gradient text-sm font-extrabold text-white">
+              P
+            </span>
+            <div className="mt-2 flex flex-col gap-1">
+              {navIcons.map((Icon, i) => (
+                <span
+                  key={i}
+                  className={`grid h-9 w-9 place-items-center rounded-xl ${
+                    i === 0 ? 'bg-brand-50 text-brand-600' : 'text-ink-muted'
+                  }`}
+                >
+                  <Icon className="h-4.5 w-4.5" />
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Contenu principal */}
+          <div className="flex-1 bg-cloud p-4">
+            {/* En-tête */}
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-display text-[15px] font-extrabold text-ink">Tableau de bord</p>
+                <p className="text-[11px] text-ink-muted">Bonjour Martin 👋</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-bold text-emerald-600">
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500" />
+                  Assistant actif
+                </span>
+                <span className="grid h-7 w-7 place-items-center rounded-lg bg-white text-ink-muted ring-1 ring-slate-200">
+                  <Bell className="h-3.5 w-3.5" />
+                </span>
+              </div>
+            </div>
+
+            {/* Cartes statistiques */}
+            <div className="mt-4 grid grid-cols-3 gap-2.5">
+              {stats.map((s) => (
+                <div key={s.label} className="rounded-xl bg-white p-3 shadow-card">
+                  <span className={`inline-flex rounded-md px-1.5 py-0.5 text-[9px] font-bold ${s.tint}`}>
+                    {s.label}
+                  </span>
+                  <p className="mt-1.5 font-display text-2xl font-extrabold text-ink">{s.value}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Graphique d'activité */}
+            <div className="mt-3 rounded-xl bg-white p-3.5 shadow-card">
+              <div className="flex items-center justify-between">
+                <p className="text-[12px] font-bold text-ink">Activité de l'équipe</p>
+                <span className="flex items-center gap-1 text-[10px] font-bold text-emerald-600">
+                  <TrendingUp className="h-3 w-3" /> +18%
+                </span>
+              </div>
+              <div className="mt-3 flex h-20 items-end gap-2">
+                {bars.map((h, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ height: 0 }}
+                    animate={{ height: `${h}%` }}
+                    transition={{ delay: 0.6 + i * 0.08, duration: 0.5, ease: 'easeOut' }}
+                    className={`flex-1 rounded-t-md ${
+                      i === 5 ? 'bg-brand-gradient' : 'bg-brand-200'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Suggestion de l'assistant */}
+            <div className="mt-3 flex items-start gap-2.5 rounded-xl border border-brand-100 bg-white p-3 shadow-card">
+              <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-brand-gradient text-white">
+                <Sparkles className="h-3.5 w-3.5" />
+              </span>
+              <div>
+                <p className="text-[11px] font-bold text-ink">Suggestion de l'assistant</p>
+                <p className="text-[11px] leading-snug text-ink-soft">
+                  3 clients à relancer aujourd'hui — préparer le devis #2208.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Reflet lumineux décoratif */}
-      <div className="pointer-events-none absolute inset-x-10 top-3 h-16 rounded-full bg-white/30 blur-2xl" />
     </motion.div>
   )
 }

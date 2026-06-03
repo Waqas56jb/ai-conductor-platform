@@ -4,24 +4,27 @@ import Reveal from './ui/Reveal'
 const testimonials = [
   {
     quote:
-      "Pratonna a remplacé trois outils différents. L'agent prépare nos relances et nos devis : on gagne une journée entière par semaine.",
+      "Pratonna a remplacé trois outils différents. L'assistant prépare nos relances et nos devis : on gagne une journée entière par semaine.",
     name: 'Camille Laurent',
     role: 'Directrice, Agence Immo Prestige',
-    img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=160&q=80',
+    initials: 'CL',
+    gradient: 'from-brand-500 to-violet-600',
   },
   {
     quote:
       "Sur le terrain, mes équipes prennent une photo et le rapport est prêt. La validation se fait en un clic. Un vrai 6ème collaborateur.",
     name: 'Mehdi Benali',
     role: 'Gérant, Terra BTP',
-    img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=160&q=80',
+    initials: 'MB',
+    gradient: 'from-violet-500 to-brand-500',
   },
   {
     quote:
       "L'interface est claire, rapide et magnifique. Mes collaborateurs l'ont adoptée en une journée, sans formation.",
     name: 'Sophie Marchand',
     role: 'COO, Volta Services',
-    img: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=160&q=80',
+    initials: 'SM',
+    gradient: 'from-brand-600 to-brand-400',
   },
 ]
 
@@ -51,7 +54,11 @@ export default function Testimonials() {
                   « {t.quote} »
                 </blockquote>
                 <figcaption className="mt-6 flex items-center gap-3 border-t border-slate-100 pt-5">
-                  <img src={t.img} alt={t.name} className="h-11 w-11 rounded-full object-cover" />
+                  <span
+                    className={`grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-br ${t.gradient} text-sm font-bold text-white`}
+                  >
+                    {t.initials}
+                  </span>
                   <div>
                     <p className="text-sm font-bold text-ink">{t.name}</p>
                     <p className="text-[13px] text-ink-muted">{t.role}</p>

@@ -6,7 +6,7 @@ import Reveal from './ui/Reveal'
 const faqs = [
   {
     q: "En quoi Pratonna est-il différent d'un simple assistant IA ?",
-    a: "Pratonna n'est pas un chatbot qui répond. C'est un agent qui orchestre : il organise le travail, priorise les tâches et propose des actions concrètes à valider. Il agit comme un véritable membre de l'équipe.",
+    a: "Pratonna n'est pas un chatbot qui répond. C'est un assistant qui orchestre : il organise le travail, priorise les tâches et propose des actions concrètes à valider. Il travaille comme un véritable membre de l'équipe.",
   },
   {
     q: 'Mes données sont-elles sécurisées et conformes au RGPD ?',
@@ -18,15 +18,31 @@ const faqs = [
   },
   {
     q: 'Pratonna convient-il à mon secteur ?',
-    a: "Des modèles métiers prêts à l'emploi existent pour l'immobilier, le BTP et les entreprises de services. L'agent s'adapte ensuite à vos processus spécifiques.",
+    a: "Des modèles métiers prêts à l'emploi existent pour l'immobilier, le BTP et les entreprises de services. L'assistant s'adapte ensuite à vos processus spécifiques.",
   },
   {
     q: 'Combien de temps pour démarrer ?',
-    a: "La mise en route prend quelques minutes : créez votre compte, configurez votre entreprise et invitez vos collaborateurs. L'agent est opérationnel immédiatement.",
+    a: "La mise en route prend quelques minutes : créez votre compte, configurez votre entreprise et invitez vos collaborateurs. L'assistant est opérationnel immédiatement.",
   },
   {
     q: 'Puis-je gérer plusieurs entreprises ?',
-    a: "Oui. L'architecture multi-entreprises de l'offre Entreprise permet de centraliser plusieurs sociétés tout en gardant leurs données strictement séparées.",
+    a: "Oui. L'architecture multi-entreprises de l'offre Business permet de centraliser plusieurs sociétés tout en gardant leurs données strictement séparées.",
+  },
+  {
+    q: "Combien d'utilisateurs puis-je ajouter ?",
+    a: "L'offre Starter inclut 1 utilisateur, l'offre Pro jusqu'à 5 utilisateurs, et l'offre Business un nombre illimité de collaborateurs. L'administrateur crée et gère lui-même les comptes de son équipe.",
+  },
+  {
+    q: 'Quel niveau de support proposez-vous ?',
+    a: "Le support par e-mail est inclus dès l'offre Starter. Les offres Pro et Business bénéficient d'un support prioritaire, avec un engagement de niveau de service (SLA) pour les clients Business.",
+  },
+  {
+    q: 'Puis-je essayer Pratonna gratuitement ?',
+    a: "Oui. Toutes les offres incluent un essai gratuit de 14 jours, sans carte bancaire et sans engagement. Vous explorez l'ensemble des fonctionnalités avant de décider.",
+  },
+  {
+    q: "Puis-je changer d'offre ou résilier à tout moment ?",
+    a: "Bien sûr. Vous pouvez passer à une offre supérieure ou inférieure quand vous le souhaitez, et résilier en un clic. Aucun frais caché, aucune pénalité.",
   },
 ]
 

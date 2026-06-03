@@ -6,8 +6,16 @@ import Reveal from './ui/Reveal'
 const styles = ['Directif & Pragmatique', 'Coach & Rassurant']
 const priorities = ['Gestion', 'Comptabilité', 'Ressources Humaines', 'Prospection']
 
+// Avatars illustrés (initiales) — aucune photo réelle, zéro risque juridique
+const avatars = [
+  { initials: 'PA', gradient: 'from-brand-500 to-violet-600' },
+  { initials: 'NX', gradient: 'from-violet-500 to-brand-500' },
+  { initials: 'AL', gradient: 'from-brand-600 to-brand-400' },
+]
+
 export default function AgentShowcase() {
   const [style, setStyle] = useState(0)
+  const [profile, setProfile] = useState(0)
   const [proactivity, setProactivity] = useState(70)
   const [active, setActive] = useState(['Gestion', 'Prospection'])
 
@@ -20,19 +28,19 @@ export default function AgentShowcase() {
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Texte */}
           <Reveal>
-            <p className="eyebrow">Un agent à votre image</p>
+            <p className="eyebrow">Un assistant à votre image</p>
             <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight text-ink sm:text-[2.6rem]">
               Programmez votre <span className="gradient-text">Pratonna</span>
             </h2>
             <p className="mt-4 text-lg text-ink-soft">
-              Personnalisez votre agent intelligent pour qu'il s'adapte parfaitement à vos
+              Personnalisez votre assistant intelligent pour qu'il s'adapte parfaitement à vos
               besoins et à votre style de travail. Choisissez son profil, son ton, son niveau
               de proactivité et ses priorités métier.
             </p>
 
             <ul className="mt-7 space-y-4">
               {[
-                { icon: MessagesSquare, t: 'Style de communication', d: 'Directif ou coach — l’agent parle votre langage.' },
+                { icon: MessagesSquare, t: 'Style de communication', d: 'Directif ou coach — l’assistant parle votre langage.' },
                 { icon: Gauge, t: 'Niveau de proactivité', d: 'De discret à force de proposition permanente.' },
                 { icon: Target, t: 'Priorités métier', d: 'Gestion, comptabilité, RH, prospection… vous décidez.' },
               ].map((row) => (
@@ -54,25 +62,22 @@ export default function AgentShowcase() {
             <div className="rounded-3xl border border-white/70 bg-white p-6 shadow-glow sm:p-8">
               <div className="mb-6 flex items-center gap-2">
                 <Sliders className="h-5 w-5 text-brand-600" />
-                <h3 className="font-display text-lg font-bold text-ink">Configuration de l'agent</h3>
+                <h3 className="font-display text-lg font-bold text-ink">Configuration de l'assistant</h3>
               </div>
 
-              {/* Avatars */}
+              {/* Avatars illustrés (initiales) */}
               <p className="text-sm font-semibold text-ink">Profil</p>
               <div className="mt-3 flex gap-3">
-                {[
-                  'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=160&q=80',
-                  'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=160&q=80',
-                  'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=160&q=80',
-                ].map((src, i) => (
+                {avatars.map((a, i) => (
                   <button
-                    key={src}
-                    onClick={() => setStyle(i % 2)}
-                    className={`relative h-14 w-14 overflow-hidden rounded-xl ring-2 transition ${
-                      i === 0 ? 'ring-brand-500' : 'ring-transparent hover:ring-brand-200'
+                    key={a.initials}
+                    onClick={() => setProfile(i)}
+                    aria-label={`Choisir le profil ${a.initials}`}
+                    className={`grid h-14 w-14 place-items-center rounded-xl bg-gradient-to-br ${a.gradient} font-display text-base font-bold text-white ring-2 ring-offset-2 transition ${
+                      profile === i ? 'ring-brand-500' : 'ring-transparent hover:ring-brand-200'
                     }`}
                   >
-                    <img src={src} alt="" className="h-full w-full object-cover" />
+                    {a.initials}
                   </button>
                 ))}
               </div>
@@ -110,7 +115,7 @@ export default function AgentShowcase() {
               />
 
               {/* Priorités */}
-              <p className="mt-6 text-sm font-semibold text-ink">Priorités de l'agent</p>
+              <p className="mt-6 text-sm font-semibold text-ink">Priorités de l'assistant</p>
               <div className="mt-3 flex flex-wrap gap-2">
                 {priorities.map((p) => {
                   const on = active.includes(p)
