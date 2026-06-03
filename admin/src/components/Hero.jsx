@@ -42,7 +42,7 @@ export default function Hero() {
               custom={1}
               initial="hidden"
               animate="show"
-              className="mt-5 font-display text-[2.2rem] font-extrabold leading-[1.05] tracking-tight text-ink sm:text-5xl lg:text-[3.5rem]"
+              className="mt-5 font-display text-[2.5rem] font-extrabold leading-[1.07] tracking-tight text-ink sm:text-5xl lg:text-[3.5rem]"
             >
               Votre <span className="gradient-text">6ème collaborateur</span>,
               <br className="hidden sm:block" /> 100% IA.
@@ -53,7 +53,7 @@ export default function Hero() {
               custom={2}
               initial="hidden"
               animate="show"
-              className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-ink-soft sm:text-base lg:mx-0"
+              className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-ink-soft lg:mx-0"
             >
               Optimisez, pilotez, déléguez avec un agent intelligent. Pratonna centralise
               votre CRM, vos tâches, vos e-mails et vos équipes — puis{' '}
@@ -117,7 +117,7 @@ function HeroVisual() {
       initial={{ opacity: 0, scale: 0.94 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-      className="relative mx-auto w-full max-w-[580px]"
+      className="relative mx-auto hidden w-full max-w-[580px] lg:block"
     >
       {/* Halos décoratifs */}
       <div className="absolute -inset-6 -z-10 rounded-[2.4rem] bg-brand-gradient opacity-20 blur-3xl" />
