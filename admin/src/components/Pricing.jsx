@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { Check, Minus, Sparkles } from 'lucide-react'
 import Reveal from './ui/Reveal'
 
@@ -154,8 +155,8 @@ export default function Pricing() {
                   ))}
                 </ul>
 
-                <a
-                  href="#demonstration"
+                <Link
+                  to="/inscription"
                   className={`mt-7 w-full ${
                     p.highlight
                       ? 'btn bg-white text-brand-700 hover:-translate-y-0.5 hover:shadow-glow'
@@ -163,7 +164,7 @@ export default function Pricing() {
                   }`}
                 >
                   {p.cta}
-                </a>
+                </Link>
               </div>
             </Reveal>
           ))}

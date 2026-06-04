@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X, ChevronDown, Sparkles } from 'lucide-react'
 import Logo from './Logo'
@@ -63,16 +64,16 @@ export default function Navbar() {
 
         {/* Actions desktop */}
         <div className="hidden items-center gap-3 lg:flex">
-          <a
-            href="#connexion"
+          <Link
+            to="/connexion"
             className="rounded-xl px-4 py-2.5 text-[15px] font-semibold text-ink transition-colors hover:text-brand-600"
           >
             Connexion
-          </a>
-          <a href="#tarifs" className="btn-primary !py-2.5 !px-5 text-sm">
+          </Link>
+          <Link to="/inscription" className="btn-primary !py-2.5 !px-5 text-sm">
             <Sparkles className="h-4 w-4" />
             Inscription
-          </a>
+          </Link>
         </div>
 
         {/* Bouton menu mobile */}
@@ -107,16 +108,12 @@ export default function Navbar() {
                 </a>
               ))}
               <div className="mt-2 grid grid-cols-2 gap-3 px-1">
-                <a
-                  href="#connexion"
-                  onClick={() => setOpen(false)}
-                  className="btn-ghost"
-                >
+                <Link to="/connexion" onClick={() => setOpen(false)} className="btn-ghost">
                   Connexion
-                </a>
-                <a href="#tarifs" onClick={() => setOpen(false)} className="btn-primary">
+                </Link>
+                <Link to="/inscription" onClick={() => setOpen(false)} className="btn-primary">
                   Inscription
-                </a>
+                </Link>
               </div>
             </div>
           </motion.div>
