@@ -41,9 +41,12 @@ export default function Login() {
             <label htmlFor="password" className="block text-sm font-semibold text-ink">
               Mot de passe
             </label>
-            <a href="#" className="text-sm font-semibold text-brand-600 hover:text-brand-700">
+            <Link
+              to="/mot-de-passe-oublie"
+              className="text-sm font-semibold text-brand-600 hover:text-brand-700"
+            >
               Mot de passe oublié ?
-            </a>
+            </Link>
           </div>
           <div className="relative">
             <Lock className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-ink-muted" />
