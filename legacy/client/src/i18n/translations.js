@@ -929,7 +929,7 @@ export const translations = {
         ],
       },
       stats: [
-        { value: '-70%', label: 'admin time' },
+        { value: 'Less admin time', label: '' },
         { value: '24/7', label: 'available' },
         { value: 'Human approval', label: 'before any action' },
         { value: 'Real estate · Property · Construction', label: 'built for your trade' },
@@ -1130,7 +1130,7 @@ export const translations = {
         ],
       },
       stats: [
-        { value: '-70 %', label: 'de temps administratif' },
+        { value: 'Moins de temps administratif', label: '' },
         { value: '24/7', label: 'disponible' },
         { value: 'Validation humaine', label: 'avant action' },
         { value: 'Immobilier · Syndic · BTP', label: 'pensé pour vos métiers' },

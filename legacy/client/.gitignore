@@ -25,3 +25,6 @@ dist-ssr
 
 # 4K master of the hero video (659 MB) — the site uses public/final-web.mp4
 public/final.mp4
+
+# Clean master export of the hero video (large) — the site uses the encoded final-web*.mp4 files
+public/final-clean.mp4

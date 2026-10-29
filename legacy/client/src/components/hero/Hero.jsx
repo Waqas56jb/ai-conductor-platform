@@ -3,8 +3,13 @@ import { useLanguage } from '../../context/LanguageContext'
 import Icon from '../landing/icons'
 import './hero.css'
 
+// Background: 720p on phones, 1080p elsewhere. The lightbox uses the version with sound.
 const VIDEO_SRC = '/final-web.mp4'
+const VIDEO_MOBILE_SRC = '/final-web-mobile.mp4'
+const VIDEO_AUDIO_SRC = '/final-web-audio.mp4'
 const POSTER_SRC = '/final-poster.jpg'
+// Background files encoded without an audio track.
+const SILENT_SOURCES = [VIDEO_MOBILE_SRC]
 // Typewriter timing per line: type, hold, erase = 2.4 s in total.
 const TYPE_MS = 1100
 const HOLD_MS = 900
@@ -79,6 +84,12 @@ export default function Hero() {
   function toggleSound() {
     const video = bgRef.current
     if (!video) return
+    // A silent background (the mobile file) has nothing to unmute: play the
+    // full presentation with sound instead.
+    if (video.muted && SILENT_SOURCES.some((src) => video.currentSrc.endsWith(src))) {
+      openLightbox()
+      return
+    }
     if (video.muted) {
       video.muted = false
       video.currentTime = 0
@@ -121,7 +132,6 @@ export default function Hero() {
         <video
           ref={bgRef}
           className="ai-hero__video"
-          src={VIDEO_SRC}
           poster={POSTER_SRC}
           autoPlay={motion}
           muted
@@ -132,7 +142,10 @@ export default function Hero() {
           onPlay={() => setPlaying(true)}
           onPause={() => setPlaying(false)}
           onVolumeChange={(e) => setMuted(e.currentTarget.muted)}
-        />
+        >
+          <source src={VIDEO_MOBILE_SRC} type="video/mp4" media="(max-width: 768px)" />
+          <source src={VIDEO_SRC} type="video/mp4" />
+        </video>
         <div className="ai-hero__shade" aria-hidden="true" />
         <div className="ai-hero__grain" aria-hidden="true" />
       </div>
@@ -243,7 +256,7 @@ export default function Hero() {
           {h.stats.map((stat) => (
             <li key={stat.value}>
               <strong>{stat.value}</strong>
-              <span>{stat.label}</span>
+              {stat.label ? <span>{stat.label}</span> : null}
             </li>
           ))}
         </ul>
@@ -265,7 +278,7 @@ export default function Hero() {
           >
             <Icon name="x" />
           </button>
-          <video ref={lightboxVideoRef} src={VIDEO_SRC} poster={POSTER_SRC} controls playsInline preload="none" />
+          <video ref={lightboxVideoRef} src={VIDEO_AUDIO_SRC} poster={POSTER_SRC} controls playsInline preload="none" />
         </div>
       </dialog>
     </section>
