@@ -60,14 +60,12 @@
 }
 
 .logo {
-  width: 30px;
-  height: 30px;
   flex: none;
-  border-radius: 9px;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.55), transparent 45%),
-    linear-gradient(135deg, var(--cyan), var(--blue) 50%, var(--violet));
-  box-shadow: 0 0 18px rgba(73, 216, 255, 0.4);
+  filter: drop-shadow(0 0 10px rgba(47, 140, 255, 0.35));
+}
+
+.brandText {
+  min-width: 0;
 }
 
 .nav {

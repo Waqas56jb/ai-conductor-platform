@@ -102,14 +102,8 @@
   font-weight: 700;
 }
 
-.logo {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.55), transparent 45%),
-    linear-gradient(135deg, var(--cyan), var(--blue) 50%, var(--violet));
-  box-shadow: 0 0 18px rgba(73, 216, 255, 0.45);
+.brand img:first-child {
+  filter: drop-shadow(0 0 10px rgba(47, 140, 255, 0.35));
 }
 
 .card {

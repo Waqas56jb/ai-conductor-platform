@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { LanguageSwitcher } from "@/components/shell/LanguageSwitcher";
@@ -20,9 +21,9 @@ export default async function AuthLayout({ children }: { children: React.ReactNo
 
       <main className={styles.main}>
         <div className={styles.top}>
-          <Link href="/login" className={styles.brand}>
-            <span className={styles.logo} aria-hidden="true" />
-            Pratonna
+          <Link href="/login" className={styles.brand} aria-label="Pratonna">
+            <Image src="/brand/mark.png" alt="" width={34} height={32} priority />
+            <Image src="/brand/wordmark.png" alt="" width={145} height={19} priority />
           </Link>
           <LanguageSwitcher />
         </div>

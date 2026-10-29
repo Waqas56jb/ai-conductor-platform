@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { ChevronsLeft, X } from "lucide-react";
@@ -53,8 +54,22 @@ export function Sidebar({
       >
         <div className={styles.sidebarTop}>
           <Link href="/app" className={styles.brand} aria-label="Pratonna">
-            <span className={styles.logo} aria-hidden="true" />
-            <span className={styles.brandText}>Pratonna</span>
+            <Image
+              src="/brand/mark.png"
+              alt=""
+              width={32}
+              height={30}
+              className={styles.logo}
+              priority
+            />
+            <Image
+              src="/brand/wordmark.png"
+              alt=""
+              width={130}
+              height={17}
+              className={styles.brandText}
+              priority
+            />
           </Link>
           <button
             type="button"

@@ -82,8 +82,7 @@ export default function Header() {
       <header className={`lp-header${scrolled || open ? ' is-scrolled' : ''}`}>
         <div className="lp-container lp-header__bar">
           <Link to="/" className="lp-header__brand" aria-label={n.home}>
-            <span className="lp-header__logo" aria-hidden="true" />
-            Pratonna
+            <img src="/logo.png" alt="" width="602" height="120" className="lp-header__logo" />
           </Link>
 
           <nav className="lp-header__nav" aria-label={n.menu}>

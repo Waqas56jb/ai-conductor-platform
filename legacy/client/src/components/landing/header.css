@@ -35,13 +35,16 @@
 }
 
 .lp-header__logo {
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-  background:
-    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.55), transparent 45%),
-    linear-gradient(135deg, var(--ai-cyan), var(--ai-blue) 50%, var(--ai-violet));
-  box-shadow: 0 0 18px rgba(73, 216, 255, 0.45);
+  display: block;
+  width: auto;
+  height: 30px;
+  filter: drop-shadow(0 0 12px rgba(47, 140, 255, 0.3));
+}
+
+@media (max-width: 480px) {
+  .lp-header__logo {
+    height: 26px;
+  }
 }
 
 .lp-header__nav {

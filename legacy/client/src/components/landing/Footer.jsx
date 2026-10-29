@@ -26,8 +26,7 @@ export default function Footer() {
         <div className="lp-footer__top">
           <div className="lp-footer__brand">
             <Link to="/" className="lp-header__brand" aria-label={t.landing.nav.home}>
-              <span className="lp-header__logo" aria-hidden="true" />
-              Pratonna
+              <img src="/logo.png" alt="" width="602" height="120" className="lp-header__logo" />
             </Link>
             <p>{s.tagline}</p>
             <ul className="lp-footer__social">
