@@ -1,0 +1,217 @@
+.lp-demo__grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  align-items: center;
+}
+
+.lp-demo__intro .lp-title,
+.lp-demo__intro .lp-sub {
+  text-align: left;
+  margin-left: 0;
+}
+
+.lp-demo__points {
+  margin: 1.75rem 0;
+}
+
+.lp-demo__points li {
+  font-size: 1rem;
+  color: var(--ai-text);
+}
+
+.lp-demo__direct {
+  margin: 0;
+  color: var(--ai-text-faint);
+  font-size: 0.95rem;
+}
+
+.lp-demo__direct a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--ai-cyan);
+  font-weight: 600;
+}
+
+.lp-demo__direct .lp-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.lp-demo__card {
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  background:
+    radial-gradient(420px 260px at 100% 0%, rgba(139, 92, 246, 0.18), transparent 70%),
+    var(--lp-card-bg);
+  box-shadow: 0 40px 100px -50px rgba(47, 107, 255, 0.9);
+}
+
+/* ---------- Form ---------- */
+
+.lp-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.lp-form h3 {
+  margin: 0 0 0.25rem;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.lp-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.lp-field {
+  display: grid;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.lp-field > span {
+  color: var(--ai-text-soft);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.lp-field small {
+  color: var(--ai-text-faint);
+  font-weight: 400;
+}
+
+.lp-field input,
+.lp-field select,
+.lp-field textarea {
+  width: 100%;
+  padding: 0.8rem 0.95rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(6, 11, 30, 0.6);
+  color: var(--ai-text);
+  font: inherit;
+  font-size: 1rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.lp-field textarea {
+  resize: vertical;
+  min-height: 110px;
+}
+
+.lp-field select {
+  appearance: none;
+  padding-right: 2.5rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2349d8ff' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  background-size: 18px;
+}
+
+.lp-field select:invalid {
+  color: var(--ai-text-faint);
+}
+
+.lp-field option {
+  color: #0c1b2e;
+}
+
+.lp-field input::placeholder,
+.lp-field textarea::placeholder {
+  color: rgba(214, 222, 255, 0.35);
+}
+
+.lp-field input:focus,
+.lp-field select:focus,
+.lp-field textarea:focus {
+  outline: none;
+  border-color: var(--ai-cyan);
+  box-shadow: 0 0 0 3px rgba(73, 216, 255, 0.18);
+}
+
+.lp-form__privacy {
+  margin: 0;
+  color: var(--ai-text-faint);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+/* ---------- Toast ---------- */
+
+.lp-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  z-index: 60;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  width: min(440px, calc(100% - 2rem));
+  padding: 1rem 1rem 1rem 1.1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(110, 231, 183, 0.35);
+  background: rgba(10, 18, 44, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.8);
+  transform: translate(-50%, 140%);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
+    opacity 0.3s ease;
+}
+
+.lp-toast.is-visible {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lp-toast__icon {
+  color: #6ee7b7;
+}
+
+.lp-toast strong {
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.lp-toast p {
+  margin: 0;
+  color: var(--ai-text-soft);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.lp-toast__close {
+  margin-left: auto;
+  padding: 0.25rem;
+  border: 0;
+  background: transparent;
+  color: var(--ai-text-faint);
+  cursor: pointer;
+}
+
+.lp-toast__close .lp-icon {
+  width: 18px;
+  height: 18px;
+}
+
+@media (max-width: 900px) {
+  .lp-demo__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .lp-form__row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { useLanguage } from '../../context/LanguageContext'
 import './hero.css'
 
@@ -157,12 +156,11 @@ export default function Hero() {
         </p>
 
         <div className="ai-ctas ai-reveal" style={{ '--i': 3 }}>
-          <Link to="/signup" className="ai-btn ai-btn--primary">
+          <a href="#demo" className="ai-btn ai-btn--primary">
             {h.ctaDemo}
             {Icon.arrow}
-          </Link>
-          {/* No pricing section yet — points at the features section for now. */}
-          <a href="#fonctionnalites" className="ai-btn ai-btn--ghost">
+          </a>
+          <a href="#tarifs" className="ai-btn ai-btn--ghost">
             {h.ctaPricing}
           </a>
         </div>

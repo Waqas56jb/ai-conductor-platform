@@ -1,0 +1,75 @@
+.lp-features__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lp-features__grid > li {
+  display: flex;
+}
+
+.lp-feature {
+  --mx: 50%;
+  --my: 0%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  width: 100%;
+  padding: 1.6rem 1.4rem 1.7rem;
+  overflow: hidden;
+  transition:
+    transform 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.lp-feature::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    320px circle at var(--mx) var(--my),
+    rgba(73, 216, 255, 0.12),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.lp-feature:hover {
+  transform: translateY(-4px);
+  border-color: rgba(73, 216, 255, 0.35);
+  box-shadow: 0 24px 60px -28px rgba(47, 107, 255, 0.75);
+}
+
+.lp-feature:hover::after {
+  opacity: 1;
+}
+
+.lp-feature h3 {
+  margin: 0;
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--ai-text);
+}
+
+.lp-feature .lp-checklist li {
+  font-size: 0.9rem;
+}
+
+@media (max-width: 1080px) {
+  .lp-features__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .lp-features__grid {
+    grid-template-columns: 1fr;
+  }
+}

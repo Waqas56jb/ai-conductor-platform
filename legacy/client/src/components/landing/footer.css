@@ -1,0 +1,123 @@
+.lp-footer {
+  padding: clamp(3rem, 6vw, 4.5rem) 0 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(3, 6, 18, 0.5);
+}
+
+.lp-footer__top {
+  display: grid;
+  grid-template-columns: 1.6fr repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.lp-footer__brand p {
+  max-width: 32ch;
+  margin: 1rem 0 1.25rem;
+  color: var(--ai-text-faint);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+.lp-footer__social {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lp-footer__social li {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--ai-text-faint);
+  cursor: default;
+}
+
+.lp-footer__social .lp-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.lp-footer__col h3 {
+  margin: 0.4rem 0 1rem;
+  color: var(--ai-text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lp-footer__col ul {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lp-footer__col a {
+  color: var(--ai-text-faint);
+  font-size: 0.93rem;
+  transition: color 0.2s ease;
+}
+
+.lp-footer__col a:hover {
+  color: #fff;
+}
+
+.lp-footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.lp-footer__bottom p {
+  margin: 0;
+  color: var(--ai-text-faint);
+  font-size: 0.85rem;
+}
+
+.lp-footer__bottom .lp-lang {
+  align-items: center;
+}
+
+.lp-footer__bottom .lp-lang .lp-icon {
+  width: 15px;
+  height: 15px;
+  margin-right: 0.15rem;
+}
+
+.lp-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (max-width: 960px) {
+  .lp-footer__top {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .lp-footer__brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 560px) {
+  .lp-footer__bottom {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+  }
+}

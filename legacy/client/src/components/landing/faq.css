@@ -1,0 +1,96 @@
+.lp-faq__inner {
+  max-width: 860px;
+}
+
+.lp-faq__list {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.lp-faq__item {
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  transition:
+    border-color 0.3s ease,
+    background 0.3s ease;
+}
+
+.lp-faq__item.is-open {
+  border-color: rgba(73, 216, 255, 0.35);
+  background: rgba(73, 216, 255, 0.045);
+}
+
+.lp-faq__item h3 {
+  margin: 0;
+}
+
+.lp-faq__item button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  padding: 1.2rem 1.4rem;
+  border: 0;
+  background: transparent;
+  color: var(--ai-text);
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.lp-faq__chevron {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--ai-cyan);
+  transition: transform 0.3s ease;
+}
+
+.lp-faq__chevron .lp-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.lp-faq__item.is-open .lp-faq__chevron {
+  transform: rotate(180deg);
+}
+
+/* Height animation without measuring: grid rows 0fr → 1fr. */
+.lp-faq__answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.35s ease;
+}
+
+.lp-faq__item.is-open .lp-faq__answer {
+  grid-template-rows: 1fr;
+}
+
+.lp-faq__answer > div {
+  overflow: hidden;
+}
+
+.lp-faq__answer p {
+  margin: 0;
+  padding: 0 1.4rem 1.3rem;
+  color: var(--ai-text-soft);
+  line-height: 1.7;
+}
+
+@media (max-width: 560px) {
+  .lp-faq__item button {
+    padding: 1.05rem 1.1rem;
+    font-size: 0.98rem;
+  }
+
+  .lp-faq__answer p {
+    padding: 0 1.1rem 1.1rem;
+  }
+}

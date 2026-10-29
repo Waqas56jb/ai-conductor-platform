@@ -413,13 +413,13 @@
   text-transform: uppercase;
 }
 
+/* Cyan, not red: a recorded presentation, not a live feed. */
 .ai-live i {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #ff3b4d;
-  box-shadow: 0 0 8px #ff3b4d;
-  animation: aiBlink 1.6s ease-in-out infinite;
+  background: var(--ai-cyan);
+  box-shadow: 0 0 8px var(--ai-cyan);
 }
 
 .ai-controls {
@@ -595,55 +595,6 @@
   animation-delay: calc(var(--i, 0) * 110ms + 80ms);
 }
 
-/* ---------- Navbar on the dark hero ---------- */
-
-.site-header.is-dark {
-  background: rgba(6, 11, 30, 0.35);
-  border-bottom-color: transparent;
-}
-
-.site-header.is-dark.scrolled {
-  background: rgba(6, 11, 30, 0.85);
-  border-bottom-color: rgba(255, 255, 255, 0.08);
-}
-
-.site-header.is-dark .brand {
-  color: #fff;
-}
-
-.site-header.is-dark .nav-links a {
-  color: rgba(214, 222, 255, 0.72);
-}
-
-.site-header.is-dark .nav-links a:hover {
-  color: #fff;
-}
-
-.site-header.is-dark .lang-toggle {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.14);
-  color: rgba(232, 236, 255, 0.8);
-}
-
-.site-header.is-dark .lang-toggle span.active {
-  color: #49d8ff;
-}
-
-.site-header.is-dark .btn-ghost {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.16);
-  color: #fff;
-}
-
-.site-header.is-dark .btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.12);
-}
-
-.site-header.is-dark .btn-primary {
-  background: linear-gradient(135deg, #2f6bff, #8b5cf6);
-  box-shadow: 0 10px 26px -8px rgba(47, 107, 255, 0.75);
-}
-
 /* ---------- Keyframes ---------- */
 
 @keyframes aiFadeUp {
@@ -671,12 +622,6 @@
   100% {
     transform: scale(3);
     opacity: 0;
-  }
-}
-
-@keyframes aiBlink {
-  50% {
-    opacity: 0.35;
   }
 }
 

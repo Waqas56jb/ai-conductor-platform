@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { LanguageProvider } from './context/LanguageContext'
 import { ClientDataProvider } from './context/ClientDataContext'
 import Landing from './pages/Landing'
+import LegalPage from './pages/LegalPage'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import DashboardLayout from './components/dashboard/DashboardLayout'
@@ -21,6 +22,9 @@ export default function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/mentions-legales" element={<LegalPage page="mentions" />} />
+            <Route path="/cgu" element={<LegalPage page="cgu" />} />
+            <Route path="/confidentialite" element={<LegalPage page="privacy" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/dashboard" element={<DashboardLayout />}>

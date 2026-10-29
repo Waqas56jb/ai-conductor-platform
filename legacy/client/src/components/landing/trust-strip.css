@@ -1,0 +1,50 @@
+.lp-trust {
+  padding: clamp(2.5rem, 5vw, 3.5rem) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.lp-trust__title {
+  margin: 0 0 1.5rem;
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ai-text-faint);
+}
+
+.lp-trust__list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lp-trust__list li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.65rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.035);
+  color: rgba(232, 236, 255, 0.82);
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.lp-trust__list .lp-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--ai-cyan);
+}
+
+@media (max-width: 560px) {
+  .lp-trust__list li {
+    padding: 0.55rem 0.9rem;
+    font-size: 0.85rem;
+  }
+}

@@ -1,0 +1,149 @@
+.lp-how__steps {
+  --node: 68px;
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Connector line through the step nodes; it draws left → right once visible. */
+.lp-how__steps::before,
+.lp-how__steps::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--node) / 2);
+  left: 12.5%;
+  right: 12.5%;
+  height: 2px;
+  border-radius: 2px;
+}
+
+.lp-how__steps::before {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.lp-how__steps::after {
+  background: linear-gradient(90deg, var(--ai-cyan), var(--ai-blue), var(--ai-violet));
+  box-shadow: 0 0 12px rgba(73, 216, 255, 0.5);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+}
+
+.lp-how__steps.is-drawn::after {
+  transform: scaleX(1);
+}
+
+.lp-how__step {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+}
+
+.lp-how__node {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--node);
+  height: var(--node);
+  margin: 0 auto 1.4rem;
+  border-radius: 50%;
+  color: #fff;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.2), transparent 60%),
+    linear-gradient(135deg, #16224f, #1b1946);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 0 0 6px var(--ai-navy-950),
+    0 14px 34px -12px rgba(47, 107, 255, 0.9);
+}
+
+.lp-how__node .lp-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.lp-how__num {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--lp-gradient);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.lp-how__step h3 {
+  margin: 0 0 0.6rem;
+  font-size: 1.12rem;
+  font-weight: 600;
+  color: var(--ai-text);
+}
+
+.lp-how__step p {
+  max-width: 30ch;
+  margin: 0 auto;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--ai-text-soft);
+}
+
+@media (max-width: 860px) {
+  .lp-how__steps {
+    --node: 56px;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    max-width: 520px;
+    margin-inline: auto;
+  }
+
+  /* Vertical timeline on the left. */
+  .lp-how__steps::before,
+  .lp-how__steps::after {
+    top: calc(var(--node) / 2);
+    bottom: calc(var(--node) / 2);
+    left: calc(var(--node) / 2 - 1px);
+    right: auto;
+    width: 2px;
+    height: auto;
+  }
+
+  .lp-how__steps::after {
+    background: linear-gradient(180deg, var(--ai-cyan), var(--ai-blue), var(--ai-violet));
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+
+  .lp-how__steps.is-drawn::after {
+    transform: scaleY(1);
+  }
+
+  .lp-how__step {
+    display: grid;
+    grid-template-columns: var(--node) 1fr;
+    column-gap: 1.1rem;
+    text-align: left;
+  }
+
+  .lp-how__node {
+    grid-row: span 2;
+    margin: 0;
+  }
+
+  .lp-how__step h3 {
+    align-self: end;
+    margin-top: 0.3rem;
+  }
+
+  .lp-how__step p {
+    margin: 0;
+    max-width: none;
+  }
+}

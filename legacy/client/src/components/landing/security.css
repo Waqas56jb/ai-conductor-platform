@@ -1,0 +1,64 @@
+.lp-security__grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* 3 + 2 layout on desktop, centred */
+.lp-security__grid > li {
+  display: flex;
+  flex: 0 1 calc((100% - 2.2rem) / 3);
+}
+
+.lp-security__item {
+  width: 100%;
+  padding: 1.7rem 1.5rem;
+}
+
+.lp-security__item.is-key {
+  background:
+    radial-gradient(380px 220px at 100% 0%, rgba(139, 92, 246, 0.2), transparent 70%),
+    var(--lp-card-bg);
+}
+
+.lp-security__icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 1.1rem;
+  border-radius: 50%;
+  color: var(--ai-cyan);
+  background: rgba(73, 216, 255, 0.08);
+  border: 1px solid rgba(73, 216, 255, 0.3);
+  box-shadow: 0 0 22px -6px rgba(73, 216, 255, 0.55);
+}
+
+.lp-security__item h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.lp-security__item p {
+  margin: 0;
+  color: var(--ai-text-soft);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 960px) {
+  .lp-security__grid > li {
+    flex-basis: calc((100% - 1.1rem) / 2);
+  }
+}
+
+@media (max-width: 560px) {
+  .lp-security__grid > li {
+    flex-basis: 100%;
+  }
+}

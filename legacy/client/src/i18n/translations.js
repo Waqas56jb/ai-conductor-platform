@@ -1,3 +1,900 @@
+// Marketing landing page (src/components/landing). French is the source copy.
+const landingFr = {
+  nav: {
+    features: 'Fonctionnalités',
+    solutions: 'Solutions',
+    pricing: 'Tarifs',
+    demo: 'Démonstration',
+    contact: 'Contact',
+    login: 'Connexion',
+    signup: 'Inscription',
+    home: 'Pratonna — accueil',
+    openMenu: 'Ouvrir le menu',
+    closeMenu: 'Fermer le menu',
+    menu: 'Menu',
+    switchLang: 'Changer de langue',
+  },
+  trust: {
+    title: 'Conçu pour les PME de l’immobilier, du syndic et du BTP',
+    items: [
+      'Agence immobilière',
+      'Syndic de copropriété',
+      'Promoteur',
+      'Entreprise BTP',
+      'Artisan',
+      'Gestionnaire de patrimoine',
+    ],
+  },
+  problem: {
+    eyebrow: 'Le constat',
+    title: 'Moins de dispersion, plus de pilotage.',
+    sub: 'Votre métier mérite mieux qu’une boîte mail qui déborde.',
+    beforeTitle: 'Aujourd’hui',
+    before: [
+      'E-mails en retard, clients qui attendent',
+      'Devis perdus entre deux fichiers',
+      'Relances oubliées, factures impayées',
+      'Dossiers éparpillés entre outils et classeurs',
+    ],
+    afterTitle: 'Avec Pratonna',
+    afterLead: 'Un agent IA qui lit, trie, rédige, relance et pilote.',
+    after: [
+      'Il lit et trie vos e-mails entrants',
+      'Il rédige devis, réponses et comptes rendus',
+      'Il relance au bon moment, automatiquement',
+      'Il pilote chaque dossier, du premier contact à la facture',
+    ],
+  },
+  how: {
+    eyebrow: 'Comment ça marche',
+    title: 'Quatre étapes, et votre agent est au travail.',
+    sub: 'Pas de projet informatique : Pratonna s’adapte à vous, pas l’inverse.',
+    steps: [
+      {
+        title: 'Connectez vos outils',
+        text: 'Messagerie, agenda, WhatsApp, documents : Pratonna se branche sur ce que vous utilisez déjà.',
+      },
+      {
+        title: 'Pratonna apprend votre activité',
+        text: 'Vos clients, vos chantiers, vos modèles de devis et votre façon de travailler.',
+      },
+      {
+        title: 'Déléguez par texte ou par la voix',
+        text: '« Relance M. Martin pour la facture 2041 » : vous formulez, comme à un collègue.',
+      },
+      {
+        title: 'Validez, Pratonna exécute',
+        text: 'Chaque action vous est soumise. Un clic, et c’est fait, tracé et archivé.',
+      },
+    ],
+  },
+  features: {
+    eyebrow: 'Fonctionnalités',
+    title: 'Tout votre bureau, piloté par une seule IA.',
+    sub: 'Huit modules qui partagent les mêmes données et travaillent ensemble.',
+    items: [
+      {
+        title: 'Assistant vocal IA',
+        points: [
+          'Reconnaissance vocale en français',
+          'Commandes vocales, sans clavier',
+          'Voix naturelle propulsée par ElevenLabs',
+        ],
+      },
+      {
+        title: 'Gestion des e-mails',
+        points: [
+          'Connexion Gmail & Outlook',
+          'Réponses suggérées par l’IA',
+          'Relances automatiques des messages sans réponse',
+        ],
+      },
+      {
+        title: 'Documents intelligents',
+        points: [
+          'Devis, factures et contrats générés par l’IA',
+          'PDF prêts à envoyer',
+          'Signature électronique intégrée',
+        ],
+      },
+      {
+        title: 'Automatisation intelligente',
+        points: [
+          'Tâches et rappels générés automatiquement',
+          'Comptes rendus de réunion',
+          'Recommandations proactives',
+        ],
+      },
+      {
+        title: 'Gestion de dossiers',
+        points: [
+          'Suivi complet : incident → intervention → facture',
+          'Photos, constats et échanges centralisés',
+          'Historique horodaté de chaque étape',
+        ],
+      },
+      {
+        title: 'CRM & contacts',
+        points: [
+          'Fichier clients centralisé',
+          'Historique complet des échanges',
+          'Pipeline commercial visuel',
+        ],
+      },
+      {
+        title: 'Comptabilité',
+        points: [
+          'Suivi financier en temps réel',
+          'Reporting et indicateurs clés',
+          'Ordres de service avec validation comptable',
+        ],
+      },
+      {
+        title: 'Studio multimédia',
+        points: [
+          'Génération d’images par l’IA',
+          'Retouche de photos de chantier',
+          'Création de vidéos de présentation',
+        ],
+      },
+    ],
+  },
+  usecases: {
+    eyebrow: 'Cas d’usage',
+    title: 'Un ordre de service en 4 clics.',
+    sub: 'Ce qui prenait une matinée de relances et de signatures se règle en quelques minutes.',
+    tabsLabel: 'Exemples de cas d’usage',
+    done: 'Terminé',
+    tabs: [
+      {
+        label: 'Ordre de service',
+        steps: ['Vérification des fonds', 'Validation comptable', 'Signature électronique', 'Envoi'],
+        result: 'Ordre de service envoyé',
+        text: 'Vous demandez : « Prépare l’ordre de service pour la réfection de la toiture. » Pratonna vérifie que le budget est disponible, soumet l’ordre à votre comptable, recueille la signature électronique puis l’envoie à l’entreprise, et classe le tout dans le dossier.',
+      },
+      {
+        label: 'Devis par la voix',
+        steps: ['Dictée sur le chantier', 'Chiffrage par l’IA', 'Validation du gérant', 'Envoi au client'],
+        result: 'Devis envoyé au client',
+        text: 'Sur le chantier, vous décrivez les travaux à voix haute. Pratonna transforme votre dictée en devis détaillé, ligne par ligne, vous le soumet pour validation et l’envoie au client avec un lien de signature.',
+      },
+      {
+        label: 'Relance de facture',
+        steps: ['Échéance détectée', 'Relance rédigée', 'Validation en un clic', 'Suivi du paiement'],
+        result: 'Relance envoyée, paiement suivi',
+        text: 'Une facture arrive à échéance ? Pratonna le repère, rédige une relance courtoise et personnalisée, attend votre feu vert, puis suit le paiement et vous prévient dès qu’il est reçu.',
+      },
+    ],
+  },
+  industries: {
+    eyebrow: 'Solutions',
+    title: 'Pensé pour votre métier.',
+    sub: 'Le même agent, configuré pour les réalités de votre secteur.',
+    items: [
+      {
+        title: 'Immobilier',
+        points: [
+          'Mandats, visites et relances acquéreurs suivis',
+          'Comptes rendus de visite rédigés pour vous',
+          'Documents de vente préparés en quelques minutes',
+        ],
+      },
+      {
+        title: 'Syndic',
+        points: [
+          'Signalements des copropriétaires triés et transmis',
+          'Ordres de service et suivi des interventions',
+          'Relances de charges automatisées',
+        ],
+      },
+      {
+        title: 'BTP',
+        points: [
+          'Devis chiffrés à partir de vos constats de chantier',
+          'Planning des équipes et des interventions',
+          'Situations de travaux et factures sans ressaisie',
+        ],
+      },
+      {
+        title: 'Artisans & entrepreneurs',
+        points: [
+          'Un assistant qui répond pendant que vous êtes sur le terrain',
+          'Devis et factures envoyés depuis votre téléphone',
+          'Relances clients sans y penser',
+        ],
+      },
+    ],
+  },
+  dashboard: {
+    eyebrow: 'Tableau de bord',
+    title: 'Tableau de bord dynamique.',
+    sub: 'Vos priorités du jour, vos alertes en temps réel et vos chiffres clés, au même endroit.',
+    points: [
+      'Priorités classées par l’IA chaque matin',
+      'Alertes dès qu’un dossier bouge',
+      'Indicateurs mis à jour en continu',
+    ],
+    mockLabel: 'Aperçu illustratif',
+    appTitle: 'Pratonna · Tableau de bord',
+    greeting: 'Bonjour 👋',
+    date: 'Voici votre journée',
+    kpis: [
+      { label: 'Dossiers ouverts', value: '24', trend: '+3 cette semaine' },
+      { label: 'Devis en attente', value: '7', trend: '2 à valider' },
+      { label: 'Factures impayées', value: '3', trend: '2 450 € au total' },
+      { label: 'Taux de signature', value: '86 %', trend: '+4 pts ce mois' },
+    ],
+    prioritiesTitle: 'Priorités du jour',
+    priorities: [
+      { text: 'Valider le devis — Réfection toiture', tag: 'Urgent' },
+      { text: 'Rappeler le syndic — fuite parking', tag: 'Aujourd’hui' },
+      { text: 'Signer l’ordre de service n° 118', tag: 'En attente' },
+    ],
+    alertsTitle: 'Alertes en temps réel',
+    alerts: [
+      { text: 'Nouvel e-mail classé : « Fuite salle de bain »', time: '2 min' },
+      { text: 'Facture n° 2041 : échéance dans 3 jours', time: '15 min' },
+      { text: 'Devis n° 512 signé électroniquement', time: '1 h' },
+    ],
+    chartTitle: 'Activité de la semaine',
+    days: ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven'],
+  },
+  security: {
+    eyebrow: 'Sécurité',
+    title: 'Sécurité & conformité.',
+    sub: 'Vos données et celles de vos clients sont protégées à chaque étape.',
+    items: [
+      {
+        title: 'Conçu pour le RGPD',
+        text: 'Minimisation des données, droits d’accès et d’effacement, traçabilité des traitements.',
+      },
+      {
+        title: 'Chiffrement des données',
+        text: 'Échanges chiffrés en transit, données chiffrées au repos.',
+      },
+      {
+        title: 'Sauvegardes',
+        text: 'Sauvegardes automatiques de vos données pour ne jamais rien perdre.',
+      },
+      {
+        title: 'Contrôle des accès par rôle',
+        text: 'Gérant, gestionnaire, technicien, comptable : chacun ne voit que ce qui le concerne.',
+      },
+      {
+        title: 'Validation humaine',
+        text: 'L’IA propose, vous décidez : aucune action n’est exécutée sans votre accord.',
+      },
+    ],
+  },
+  pricing: {
+    eyebrow: 'Tarifs',
+    title: 'Un tarif simple, sans surprise.',
+    sub: 'Commencez petit, évoluez à votre rythme.',
+    billingLabel: 'Période de facturation',
+    monthly: 'Mensuel',
+    annual: 'Annuel',
+    save: '-20 %',
+    perMonth: '/ mois HT',
+    billedMonthly: 'Sans engagement',
+    billedAnnually: 'Facturé {total} par an',
+    popular: 'Le plus populaire',
+    quote: 'Sur devis',
+    quoteNote: 'Adapté à votre structure',
+    cta: 'Commencer',
+    ctaEnterprise: 'Nous contacter',
+    plans: [
+      {
+        name: 'Starter',
+        price: 49,
+        desc: 'Pour démarrer seul, sans complexité.',
+        features: ['1 utilisateur', 'Gestion de dossiers', 'CRM & contacts', 'Assistant IA'],
+      },
+      {
+        name: 'Pro',
+        price: 149,
+        desc: 'Pour les équipes qui veulent tout déléguer.',
+        features: [
+          '5 utilisateurs',
+          'Tout Starter, plus :',
+          'Gestion des e-mails',
+          'Documents intelligents',
+          'Assistant vocal',
+          'Automatisations',
+        ],
+      },
+      {
+        name: 'Entreprise',
+        price: null,
+        desc: 'Pour les structures multi-agences.',
+        features: [
+          'Utilisateurs illimités',
+          'Tout Pro, plus :',
+          'Comptabilité',
+          'Intégrations sur mesure',
+          'Accompagnement dédié',
+        ],
+      },
+    ],
+    note: 'Prix hors taxes. Essai gratuit, sans carte bancaire.',
+  },
+  testimonials: {
+    eyebrow: 'Témoignages',
+    title: 'Façonnez Pratonna avec nous.',
+    badge: 'Témoignages à venir — programme pilote',
+    placeholder:
+      'Votre retour d’expérience apparaîtra ici. Rejoignez le programme pilote et participez à la construction de Pratonna.',
+    items: [
+      { initials: 'IM', sector: 'Agence immobilière' },
+      { initials: 'SY', sector: 'Syndic de copropriété' },
+      { initials: 'BT', sector: 'Entreprise BTP' },
+    ],
+    cta: 'Rejoindre le programme pilote',
+  },
+  faq: {
+    eyebrow: 'FAQ',
+    title: 'Questions fréquentes.',
+    items: [
+      {
+        q: 'Qu’est-ce que Pratonna ?',
+        a: 'Pratonna est un agent IA conçu pour les PME de l’immobilier, du syndic et du BTP. Il centralise vos dossiers, vos e-mails, vos devis et vos relances, et prend en charge les tâches répétitives pour que vous vous concentriez sur votre métier.',
+      },
+      {
+        q: 'Faut-il des compétences techniques ?',
+        a: 'Non. Vous parlez à Pratonna comme à un collègue, par écrit ou à la voix. La mise en place est accompagnée et vos outils se connectent en quelques clics.',
+      },
+      {
+        q: 'Mes données sont-elles sécurisées ?',
+        a: 'Oui. Les échanges sont chiffrés, les accès sont contrôlés par rôle et la plateforme est conçue pour respecter le RGPD. Vos données restent les vôtres : elles ne sont jamais revendues.',
+      },
+      {
+        q: 'L’IA agit-elle sans mon accord ?',
+        a: 'Non. Pratonna prépare et propose ; rien n’est envoyé, signé ou payé sans votre validation explicite. Chaque action est tracée dans un historique.',
+      },
+      {
+        q: 'Quels outils sont compatibles ?',
+        a: 'Gmail, Outlook, WhatsApp, votre agenda et vos documents PDF, avec de nouvelles intégrations ajoutées régulièrement. L’offre Entreprise inclut des intégrations sur mesure.',
+      },
+      {
+        q: 'Puis-je annuler à tout moment ?',
+        a: 'Oui. Les abonnements mensuels sont sans engagement et résiliables à tout moment. Les abonnements annuels restent actifs jusqu’à leur échéance.',
+      },
+    ],
+  },
+  demo: {
+    eyebrow: 'Démonstration',
+    title: 'Voyez Pratonna en action.',
+    sub: '30 minutes avec notre équipe pour découvrir comment Pratonna s’adapte à votre activité.',
+    points: [
+      'Une démonstration sur vos propres cas',
+      'Des réponses à toutes vos questions',
+      'Sans engagement',
+    ],
+    direct: 'Ou écrivez-nous directement :',
+    formTitle: 'Demander une démo',
+    name: 'Nom complet',
+    email: 'E-mail professionnel',
+    company: 'Entreprise',
+    sector: 'Secteur',
+    sectorPlaceholder: 'Choisissez votre secteur',
+    sectors: [
+      'Agence immobilière',
+      'Syndic de copropriété',
+      'Promoteur',
+      'Entreprise BTP',
+      'Artisan',
+      'Gestionnaire de patrimoine',
+      'Autre',
+    ],
+    message: 'Message',
+    messagePlaceholder: 'Parlez-nous de votre activité et de vos besoins…',
+    optional: 'facultatif',
+    submit: 'Envoyer ma demande',
+    privacy: 'Vos informations servent uniquement à répondre à votre demande.',
+    mailSubject: 'Demande de démo Pratonna',
+    toastTitle: 'Merci !',
+    toastText: 'Votre messagerie s’ouvre avec votre demande pré-remplie : il ne reste qu’à l’envoyer.',
+    close: 'Fermer',
+  },
+  finalCta: {
+    title: 'Votre entreprise, enfin intelligente.',
+    sub: 'Déléguez l’administratif à Pratonna et reprenez du temps pour votre métier.',
+    demo: 'Demander une démo',
+    signup: 'Créer un compte',
+  },
+  footer: {
+    tagline: 'L’agent IA des PME de l’immobilier, du syndic et du BTP.',
+    columns: [
+      {
+        title: 'Produit',
+        links: [
+          { label: 'Fonctionnalités', href: '/#fonctionnalites' },
+          { label: 'Comment ça marche', href: '/#comment-ca-marche' },
+          { label: 'Tableau de bord', href: '/#tableau-de-bord' },
+          { label: 'Tarifs', href: '/#tarifs' },
+        ],
+      },
+      {
+        title: 'Solutions',
+        links: [
+          { label: 'Immobilier', href: '/#solutions' },
+          { label: 'Syndic', href: '/#solutions' },
+          { label: 'BTP', href: '/#solutions' },
+          { label: 'Artisans', href: '/#solutions' },
+        ],
+      },
+      {
+        title: 'Entreprise',
+        links: [
+          { label: 'Démonstration', href: '/#demo' },
+          { label: 'Contact', href: '/#contact' },
+          { label: 'Connexion', href: '/login' },
+          { label: 'Inscription', href: '/signup' },
+        ],
+      },
+      {
+        title: 'Légal',
+        links: [
+          { label: 'Mentions légales', href: '/mentions-legales' },
+          { label: 'CGU', href: '/cgu' },
+          { label: 'Confidentialité', href: '/confidentialite' },
+        ],
+      },
+    ],
+    social: 'Bientôt disponible',
+    language: 'Langue',
+    rights: 'Tous droits réservés.',
+  },
+  legal: {
+    back: 'Retour à l’accueil',
+    draft: 'Cette page est en cours de rédaction et sera publiée prochainement.',
+    contact: 'Pour toute question, écrivez-nous à',
+    titles: {
+      mentions: 'Mentions légales',
+      cgu: 'Conditions générales d’utilisation',
+      privacy: 'Politique de confidentialité',
+    },
+  },
+}
+
+const landingEn = {
+  nav: {
+    features: 'Features',
+    solutions: 'Solutions',
+    pricing: 'Pricing',
+    demo: 'Demo',
+    contact: 'Contact',
+    login: 'Log in',
+    signup: 'Sign up',
+    home: 'Pratonna — home',
+    openMenu: 'Open menu',
+    closeMenu: 'Close menu',
+    menu: 'Menu',
+    switchLang: 'Switch language',
+  },
+  trust: {
+    title: 'Built for SMEs in real estate, property management and construction',
+    items: [
+      'Real estate agency',
+      'Property management',
+      'Developer',
+      'Construction company',
+      'Tradesperson',
+      'Asset manager',
+    ],
+  },
+  problem: {
+    eyebrow: 'The problem',
+    title: 'Less scattering, more steering.',
+    sub: 'Your business deserves better than an overflowing inbox.',
+    beforeTitle: 'Today',
+    before: [
+      'Late emails, clients left waiting',
+      'Quotes lost between two files',
+      'Forgotten follow-ups, unpaid invoices',
+      'Cases scattered across tools and binders',
+    ],
+    afterTitle: 'With Pratonna',
+    afterLead: 'An AI agent that reads, sorts, writes, follows up and steers.',
+    after: [
+      'It reads and sorts your incoming email',
+      'It drafts quotes, replies and meeting notes',
+      'It follows up at the right time, automatically',
+      'It steers every case, from first contact to invoice',
+    ],
+  },
+  how: {
+    eyebrow: 'How it works',
+    title: 'Four steps, and your agent is at work.',
+    sub: 'No IT project: Pratonna adapts to you, not the other way round.',
+    steps: [
+      {
+        title: 'Connect your tools',
+        text: 'Email, calendar, WhatsApp, documents: Pratonna plugs into what you already use.',
+      },
+      {
+        title: 'Pratonna learns your business',
+        text: 'Your clients, your sites, your quote templates and the way you work.',
+      },
+      {
+        title: 'Delegate by text or voice',
+        text: '“Chase Mr Martin about invoice 2041”: just say it, as you would to a colleague.',
+      },
+      {
+        title: 'Approve, Pratonna executes',
+        text: 'Every action is submitted to you. One click and it’s done, logged and archived.',
+      },
+    ],
+  },
+  features: {
+    eyebrow: 'Features',
+    title: 'Your whole back office, run by one AI.',
+    sub: 'Eight modules that share the same data and work together.',
+    items: [
+      {
+        title: 'AI voice assistant',
+        points: [
+          'Speech recognition in French and English',
+          'Voice commands, hands-free',
+          'Natural voice powered by ElevenLabs',
+        ],
+      },
+      {
+        title: 'Email management',
+        points: [
+          'Gmail & Outlook integration',
+          'AI-suggested replies',
+          'Automatic follow-ups on unanswered emails',
+        ],
+      },
+      {
+        title: 'Smart documents',
+        points: [
+          'AI-generated quotes, invoices and contracts',
+          'Ready-to-send PDFs',
+          'Built-in e-signature',
+        ],
+      },
+      {
+        title: 'Smart automation',
+        points: [
+          'Automatically generated tasks and reminders',
+          'Meeting summaries',
+          'Proactive recommendations',
+        ],
+      },
+      {
+        title: 'Case management',
+        points: [
+          'End-to-end tracking: incident → job → invoice',
+          'Photos, reports and messages in one place',
+          'Time-stamped history of every step',
+        ],
+      },
+      {
+        title: 'CRM & contacts',
+        points: ['Central client database', 'Full communication history', 'Visual sales pipeline'],
+      },
+      {
+        title: 'Accounting',
+        points: [
+          'Real-time financial tracking',
+          'Reporting and key metrics',
+          'Work orders with accountant approval',
+        ],
+      },
+      {
+        title: 'Media studio',
+        points: ['AI image generation', 'Site photo retouching', 'Presentation video creation'],
+      },
+    ],
+  },
+  usecases: {
+    eyebrow: 'Use cases',
+    title: 'A work order in 4 clicks.',
+    sub: 'What used to take a morning of chasing and signatures now takes minutes.',
+    tabsLabel: 'Use case examples',
+    done: 'Done',
+    tabs: [
+      {
+        label: 'Work order',
+        steps: ['Funds check', 'Accountant approval', 'E-signature', 'Sent'],
+        result: 'Work order sent',
+        text: 'You ask: “Prepare the work order for the roof repair.” Pratonna checks the budget is available, submits the order to your accountant, collects the e-signature, sends it to the contractor, and files everything in the case.',
+      },
+      {
+        label: 'Quote by voice',
+        steps: ['Dictated on site', 'Priced by AI', 'Manager approval', 'Sent to client'],
+        result: 'Quote sent to the client',
+        text: 'On site, you describe the work out loud. Pratonna turns your dictation into a detailed, line-by-line quote, submits it for approval and sends it to the client with a signing link.',
+      },
+      {
+        label: 'Invoice reminder',
+        steps: ['Due date detected', 'Reminder drafted', 'One-click approval', 'Payment tracked'],
+        result: 'Reminder sent, payment tracked',
+        text: 'An invoice is coming due? Pratonna spots it, drafts a polite, personalised reminder, waits for your go-ahead, then tracks the payment and tells you as soon as it arrives.',
+      },
+    ],
+  },
+  industries: {
+    eyebrow: 'Solutions',
+    title: 'Designed for your trade.',
+    sub: 'The same agent, configured for the realities of your sector.',
+    items: [
+      {
+        title: 'Real estate',
+        points: [
+          'Mandates, viewings and buyer follow-ups tracked',
+          'Viewing reports written for you',
+          'Sales documents ready in minutes',
+        ],
+      },
+      {
+        title: 'Property management',
+        points: [
+          'Residents’ reports sorted and routed',
+          'Work orders and job tracking',
+          'Automated service-charge reminders',
+        ],
+      },
+      {
+        title: 'Construction',
+        points: [
+          'Quotes priced from your site reports',
+          'Crew and job scheduling',
+          'Progress statements and invoices without re-typing',
+        ],
+      },
+      {
+        title: 'Trades & entrepreneurs',
+        points: [
+          'An assistant that answers while you’re on site',
+          'Quotes and invoices sent from your phone',
+          'Client follow-ups without thinking about it',
+        ],
+      },
+    ],
+  },
+  dashboard: {
+    eyebrow: 'Dashboard',
+    title: 'A dynamic dashboard.',
+    sub: 'Today’s priorities, real-time alerts and key figures, all in one place.',
+    points: [
+      'Priorities ranked by AI every morning',
+      'Alerts as soon as a case moves',
+      'Metrics updated continuously',
+    ],
+    mockLabel: 'Illustrative preview',
+    appTitle: 'Pratonna · Dashboard',
+    greeting: 'Hello 👋',
+    date: 'Here is your day',
+    kpis: [
+      { label: 'Open cases', value: '24', trend: '+3 this week' },
+      { label: 'Pending quotes', value: '7', trend: '2 to approve' },
+      { label: 'Unpaid invoices', value: '3', trend: '€2,450 in total' },
+      { label: 'Signature rate', value: '86%', trend: '+4 pts this month' },
+    ],
+    prioritiesTitle: 'Today’s priorities',
+    priorities: [
+      { text: 'Approve the quote — Roof repair', tag: 'Urgent' },
+      { text: 'Call the managing agent — car park leak', tag: 'Today' },
+      { text: 'Sign work order #118', tag: 'Pending' },
+    ],
+    alertsTitle: 'Real-time alerts',
+    alerts: [
+      { text: 'New email filed: “Bathroom leak”', time: '2 min' },
+      { text: 'Invoice #2041 due in 3 days', time: '15 min' },
+      { text: 'Quote #512 e-signed', time: '1 h' },
+    ],
+    chartTitle: 'This week’s activity',
+    days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+  },
+  security: {
+    eyebrow: 'Security',
+    title: 'Security & compliance.',
+    sub: 'Your data and your clients’ data are protected at every step.',
+    items: [
+      {
+        title: 'Designed for GDPR',
+        text: 'Data minimisation, access and erasure rights, traceable processing.',
+      },
+      { title: 'Data encryption', text: 'Encrypted in transit, encrypted at rest.' },
+      { title: 'Backups', text: 'Automatic backups so nothing is ever lost.' },
+      {
+        title: 'Role-based access control',
+        text: 'Owner, manager, technician, accountant: everyone sees only what concerns them.',
+      },
+      {
+        title: 'Human approval',
+        text: 'The AI proposes, you decide: no action runs without your consent.',
+      },
+    ],
+  },
+  pricing: {
+    eyebrow: 'Pricing',
+    title: 'Simple pricing, no surprises.',
+    sub: 'Start small, grow at your own pace.',
+    billingLabel: 'Billing period',
+    monthly: 'Monthly',
+    annual: 'Annual',
+    save: '-20%',
+    perMonth: '/ month excl. VAT',
+    billedMonthly: 'No commitment',
+    billedAnnually: 'Billed {total} per year',
+    popular: 'Most popular',
+    quote: 'Custom quote',
+    quoteNote: 'Tailored to your organisation',
+    cta: 'Get started',
+    ctaEnterprise: 'Contact us',
+    plans: [
+      {
+        name: 'Starter',
+        price: 49,
+        desc: 'To get started on your own, simply.',
+        features: ['1 user', 'Case management', 'CRM & contacts', 'AI assistant'],
+      },
+      {
+        name: 'Pro',
+        price: 149,
+        desc: 'For teams that want to delegate everything.',
+        features: [
+          '5 users',
+          'Everything in Starter, plus:',
+          'Email management',
+          'Smart documents',
+          'Voice assistant',
+          'Automations',
+        ],
+      },
+      {
+        name: 'Enterprise',
+        price: null,
+        desc: 'For multi-branch organisations.',
+        features: [
+          'Unlimited users',
+          'Everything in Pro, plus:',
+          'Accounting',
+          'Custom integrations',
+          'Dedicated support',
+        ],
+      },
+    ],
+    note: 'Prices exclude VAT. Free trial, no credit card required.',
+  },
+  testimonials: {
+    eyebrow: 'Testimonials',
+    title: 'Shape Pratonna with us.',
+    badge: 'Testimonials coming soon — pilot programme',
+    placeholder:
+      'Your feedback will appear here. Join the pilot programme and help build Pratonna.',
+    items: [
+      { initials: 'RE', sector: 'Real estate agency' },
+      { initials: 'PM', sector: 'Property management' },
+      { initials: 'CO', sector: 'Construction company' },
+    ],
+    cta: 'Join the pilot programme',
+  },
+  faq: {
+    eyebrow: 'FAQ',
+    title: 'Frequently asked questions.',
+    items: [
+      {
+        q: 'What is Pratonna?',
+        a: 'Pratonna is an AI agent built for SMEs in real estate, property management and construction. It centralises your cases, emails, quotes and follow-ups, and takes care of repetitive tasks so you can focus on your work.',
+      },
+      {
+        q: 'Do I need technical skills?',
+        a: 'No. You talk to Pratonna like a colleague, in writing or by voice. Setup is guided and your tools connect in a few clicks.',
+      },
+      {
+        q: 'Is my data secure?',
+        a: 'Yes. Communications are encrypted, access is role-based and the platform is designed for GDPR. Your data stays yours: it is never sold.',
+      },
+      {
+        q: 'Does the AI act without my consent?',
+        a: 'No. Pratonna prepares and proposes; nothing is sent, signed or paid without your explicit approval. Every action is logged.',
+      },
+      {
+        q: 'Which tools are compatible?',
+        a: 'Gmail, Outlook, WhatsApp, your calendar and your PDF documents, with new integrations added regularly. The Enterprise plan includes custom integrations.',
+      },
+      {
+        q: 'Can I cancel at any time?',
+        a: 'Yes. Monthly plans have no commitment and can be cancelled at any time. Annual plans stay active until the end of their term.',
+      },
+    ],
+  },
+  demo: {
+    eyebrow: 'Demo',
+    title: 'See Pratonna in action.',
+    sub: '30 minutes with our team to see how Pratonna fits your business.',
+    points: ['A demo on your own use cases', 'Answers to all your questions', 'No commitment'],
+    direct: 'Or email us directly:',
+    formTitle: 'Book a demo',
+    name: 'Full name',
+    email: 'Work email',
+    company: 'Company',
+    sector: 'Sector',
+    sectorPlaceholder: 'Choose your sector',
+    sectors: [
+      'Real estate agency',
+      'Property management',
+      'Developer',
+      'Construction company',
+      'Tradesperson',
+      'Asset manager',
+      'Other',
+    ],
+    message: 'Message',
+    messagePlaceholder: 'Tell us about your business and what you need…',
+    optional: 'optional',
+    submit: 'Send my request',
+    privacy: 'Your details are only used to answer your request.',
+    mailSubject: 'Pratonna demo request',
+    toastTitle: 'Thank you!',
+    toastText: 'Your email app is opening with your request pre-filled: just hit send.',
+    close: 'Close',
+  },
+  finalCta: {
+    title: 'Your business, finally intelligent.',
+    sub: 'Hand the admin to Pratonna and get time back for your real work.',
+    demo: 'Book a demo',
+    signup: 'Create an account',
+  },
+  footer: {
+    tagline: 'The AI agent for SMEs in real estate, property management and construction.',
+    columns: [
+      {
+        title: 'Product',
+        links: [
+          { label: 'Features', href: '/#fonctionnalites' },
+          { label: 'How it works', href: '/#comment-ca-marche' },
+          { label: 'Dashboard', href: '/#tableau-de-bord' },
+          { label: 'Pricing', href: '/#tarifs' },
+        ],
+      },
+      {
+        title: 'Solutions',
+        links: [
+          { label: 'Real estate', href: '/#solutions' },
+          { label: 'Property management', href: '/#solutions' },
+          { label: 'Construction', href: '/#solutions' },
+          { label: 'Trades', href: '/#solutions' },
+        ],
+      },
+      {
+        title: 'Company',
+        links: [
+          { label: 'Demo', href: '/#demo' },
+          { label: 'Contact', href: '/#contact' },
+          { label: 'Log in', href: '/login' },
+          { label: 'Sign up', href: '/signup' },
+        ],
+      },
+      {
+        title: 'Legal',
+        links: [
+          { label: 'Legal notice', href: '/mentions-legales' },
+          { label: 'Terms of use', href: '/cgu' },
+          { label: 'Privacy', href: '/confidentialite' },
+        ],
+      },
+    ],
+    social: 'Coming soon',
+    language: 'Language',
+    rights: 'All rights reserved.',
+  },
+  legal: {
+    back: 'Back to home',
+    draft: 'This page is being written and will be published soon.',
+    contact: 'For any question, email us at',
+    titles: {
+      mentions: 'Legal notice',
+      cgu: 'Terms of use',
+      privacy: 'Privacy policy',
+    },
+  },
+}
+
 export const translations = {
   en: {
     brand: 'Pratonna',
@@ -20,7 +917,7 @@ export const translations = {
       video: {
         label: 'Pratonna overview video',
         title: 'Pratonna · Overview (60 s)',
-        live: 'Live',
+        live: 'Presentation',
         unmute: 'Turn sound on',
         mute: 'Mute',
         fullscreen: 'Full screen',
@@ -39,47 +936,7 @@ export const translations = {
         'Quick setup',
       ],
     },
-    how: {
-      title: 'Three steps. Case closed.',
-      sub: 'From your phone to our team — no forms, no waiting on hold.',
-      steps: [
-        {
-          title: 'Photo + identity',
-          text: 'Take a clear photo of the damage and send it with your details. That is all we need to start.',
-        },
-        {
-          title: 'AI opens your case',
-          text: 'Our AI reads the issue, builds a full report, and routes it straight to our repair team.',
-        },
-        {
-          title: 'Technician arrives',
-          text: 'We schedule fast, quality repair — affordable pricing, tracked until the job is done.',
-        },
-      ],
-    },
-    why: {
-      title: 'Built for buildings that cannot wait.',
-      sub: 'We repair. AI makes sure nothing gets lost between your report and our response.',
-      points: [
-        {
-          title: 'Quality first',
-          text: 'Skilled technicians, clear reporting, work you can trust.',
-        },
-        {
-          title: 'Truly affordable',
-          text: 'Transparent quotes before work begins — no surprise invoices.',
-        },
-        {
-          title: 'Fast by design',
-          text: 'AI cuts the delay. Cases reach us in minutes, not days.',
-        },
-      ],
-    },
-    cta: {
-      title: 'Your building deserves a faster line.',
-      sub: 'Create an account and send your first photo today.',
-      button: 'Create free account',
-    },
+    landing: landingEn,
     footer: {
       rights: 'All rights reserved.',
       tagline: 'AI-powered building repair for property managers and owners.',
@@ -251,7 +1108,7 @@ export const translations = {
       video: {
         label: 'Vidéo de présentation de Pratonna',
         title: 'Pratonna · Présentation (60 s)',
-        live: 'En direct',
+        live: 'Présentation',
         unmute: 'Activer le son',
         mute: 'Couper le son',
         fullscreen: 'Plein écran',
@@ -270,47 +1127,7 @@ export const translations = {
         'Mise en place rapide',
       ],
     },
-    how: {
-      title: 'Trois étapes. Dossier traité.',
-      sub: 'Du téléphone à notre équipe — sans formulaires interminables.',
-      steps: [
-        {
-          title: 'Photo + identité',
-          text: 'Photographiez le dégât et envoyez vos coordonnées. C’est tout pour démarrer.',
-        },
-        {
-          title: 'L’IA ouvre votre dossier',
-          text: 'Notre IA lit le problème, rédige le rapport et l’envoie directement à notre équipe.',
-        },
-        {
-          title: 'Le technicien arrive',
-          text: 'Intervention rapide et soignée — tarif clair, suivi jusqu’à la fin des travaux.',
-        },
-      ],
-    },
-    why: {
-      title: 'Conçu pour les immeubles qui ne peuvent pas attendre.',
-      sub: 'Nous réparons. L’IA garantit que rien ne se perd entre votre signalement et notre réponse.',
-      points: [
-        {
-          title: 'Qualité d’abord',
-          text: 'Techniciens qualifiés, rapports clairs, un travail de confiance.',
-        },
-        {
-          title: 'Vraiment abordable',
-          text: 'Devis transparent avant les travaux — pas de facture surprise.',
-        },
-        {
-          title: 'Rapide par conception',
-          text: 'L’IA réduit les délais. Vos dossiers nous arrivent en minutes.',
-        },
-      ],
-    },
-    cta: {
-      title: 'Votre immeuble mérite une ligne plus rapide.',
-      sub: 'Créez un compte et envoyez votre première photo dès aujourd’hui.',
-      button: 'Créer un compte gratuit',
-    },
+    landing: landingFr,
     footer: {
       rights: 'Tous droits réservés.',
       tagline: 'Réparation d’immeubles assistée par l’IA pour syndics et propriétaires.',

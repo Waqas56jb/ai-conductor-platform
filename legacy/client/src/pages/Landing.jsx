@@ -1,82 +1,57 @@
-import { Link } from 'react-router-dom'
-import Navbar from '../components/Navbar'
+import { useEffect } from 'react'
+import '../components/landing/landing.css'
+import Header from '../components/landing/Header'
 import Hero from '../components/hero/Hero'
-import { useLanguage } from '../context/LanguageContext'
-
-const WHY_IMG =
-  'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1400&q=80'
+import TrustStrip from '../components/landing/TrustStrip'
+import ProblemSolution from '../components/landing/ProblemSolution'
+import HowItWorks from '../components/landing/HowItWorks'
+import Features from '../components/landing/Features'
+import UseCases from '../components/landing/UseCases'
+import Industries from '../components/landing/Industries'
+import DashboardPreview from '../components/landing/DashboardPreview'
+import Security from '../components/landing/Security'
+import Pricing from '../components/landing/Pricing'
+import Testimonials from '../components/landing/Testimonials'
+import Faq from '../components/landing/Faq'
+import DemoContact from '../components/landing/DemoContact'
+import FinalCta from '../components/landing/FinalCta'
+import Footer from '../components/landing/Footer'
 
 export default function Landing() {
-  const { t } = useLanguage()
-  const year = new Date().getFullYear()
+  useEffect(() => {
+    document.body.classList.add('lp-body')
+    // Arriving with a hash (e.g. /#tarifs): the target only exists after render,
+    // so the browser's own jump was missed. Wait for the web fonts too, or the
+    // font swap reflows the page and the jump lands in the wrong place.
+    const { hash } = window.location
+    if (hash) {
+      document.fonts.ready.then(() =>
+        requestAnimationFrame(() => document.querySelector(hash)?.scrollIntoView({ behavior: 'instant' })),
+      )
+    }
+    return () => document.body.classList.remove('lp-body')
+  }, [])
 
   return (
-    <>
-      <Navbar variant="dark" />
-
-      <Hero />
-
-      <section className="section" id="fonctionnalites">
-        <div className="container">
-          <div className="section-head">
-            <h2>{t.how.title}</h2>
-            <p>{t.how.sub}</p>
-          </div>
-          <div className="steps">
-            {t.how.steps.map((step, index) => (
-              <article className="step" key={step.title}>
-                <div className="step-num">0{index + 1}</div>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section" id="why">
-        <div className="container why-grid">
-          <div className="why-visual">
-            <img src={WHY_IMG} alt="" />
-          </div>
-          <div>
-            <div className="section-head">
-              <h2>{t.why.title}</h2>
-              <p>{t.why.sub}</p>
-            </div>
-            <div className="why-points">
-              {t.why.points.map((point) => (
-                <article className="why-point" key={point.title}>
-                  <h3>{point.title}</h3>
-                  <p>{point.text}</p>
-                </article>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="container">
-        <section className="cta-band">
-          <h2>{t.cta.title}</h2>
-          <p>{t.cta.sub}</p>
-          <Link to="/signup" className="btn btn-primary">
-            {t.cta.button}
-          </Link>
-        </section>
-      </div>
-
-      <footer className="site-footer">
-        <div className="container footer-row">
-          <div>
-            <div className="footer-brand">{t.brand}</div>
-            <p>{t.footer.tagline}</p>
-          </div>
-          <p>
-            © {year} {t.brand}. {t.footer.rights}
-          </p>
-        </div>
-      </footer>
-    </>
+    <div className="lp">
+      <Header />
+      <main>
+        <Hero />
+        <TrustStrip />
+        <ProblemSolution />
+        <HowItWorks />
+        <Features />
+        <UseCases />
+        <Industries />
+        <DashboardPreview />
+        <Security />
+        <Pricing />
+        <Testimonials />
+        <Faq />
+        <DemoContact />
+        <FinalCta />
+      </main>
+      <Footer />
+    </div>
   )
 }
