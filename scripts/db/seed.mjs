@@ -186,16 +186,14 @@ async function main() {
   const cid = company.id;
   check(
     "settings",
-    await db
-      .from("ai_conductor_settings")
-      .insert({
-        company_id: cid,
-        company_name: COMPANY,
-        approval_threshold_eur: 1000,
-        reminder_day1: 7,
-        reminder_day2: 15,
-        ai_pricing_note: "Main-d’œuvre 55 € HT/h, déplacement Paris 35 € HT.",
-      }),
+    await db.from("ai_conductor_settings").insert({
+      company_id: cid,
+      company_name: COMPANY,
+      approval_threshold_eur: 1000,
+      reminder_day1: 7,
+      reminder_day2: 15,
+      ai_pricing_note: "Main-d’œuvre 55 € HT/h, déplacement Paris 35 € HT.",
+    }),
   );
 
   const ids = {};
@@ -225,14 +223,12 @@ async function main() {
     if (p.tech)
       check(
         `tech ${email}`,
-        await db
-          .from("ai_conductor_technicians")
-          .insert({
-            user_id: profile.id,
-            company_id: cid,
-            ...p.tech,
-            geolocated_at: new Date().toISOString(),
-          }),
+        await db.from("ai_conductor_technicians").insert({
+          user_id: profile.id,
+          company_id: cid,
+          ...p.tech,
+          geolocated_at: new Date().toISOString(),
+        }),
       );
     if (p.client)
       check(
@@ -447,15 +443,13 @@ async function main() {
     if (groupId) {
       check(
         "group",
-        await db
-          .from("ai_conductor_task_groups")
-          .insert({
-            id: groupId,
-            company_id: cid,
-            incident_id: id,
-            member_ids: techIds,
-            created_by: ids.manager,
-          }),
+        await db.from("ai_conductor_task_groups").insert({
+          id: groupId,
+          company_id: cid,
+          incident_id: id,
+          member_ids: techIds,
+          created_by: ids.manager,
+        }),
       );
       check(
         "group link",
@@ -463,31 +457,27 @@ async function main() {
       );
       check(
         "group msg",
-        await db
-          .from("ai_conductor_group_messages")
-          .insert({
-            company_id: cid,
-            group_id: groupId,
-            from_id: ids.manager,
-            from_name: "Léa Bernard",
-            from_role: "manager",
-            text: "Équipe constituée. Merci d’organiser la visite et d’envoyer le constat.",
-          }),
+        await db.from("ai_conductor_group_messages").insert({
+          company_id: cid,
+          group_id: groupId,
+          from_id: ids.manager,
+          from_name: "Léa Bernard",
+          from_role: "manager",
+          text: "Équipe constituée. Merci d’organiser la visite et d’envoyer le constat.",
+        }),
       );
     }
     if (c.client) {
       check(
         "case msg",
-        await db
-          .from("ai_conductor_incident_messages")
-          .insert({
-            company_id: cid,
-            incident_id: id,
-            from_id: ids[c.client],
-            from_name: PEOPLE.find((p) => p.key === c.client).name,
-            from_role: "client",
-            text: "Bonjour, je reste disponible pour donner accès au logement.",
-          }),
+        await db.from("ai_conductor_incident_messages").insert({
+          company_id: cid,
+          incident_id: id,
+          from_id: ids[c.client],
+          from_name: PEOPLE.find((p) => p.key === c.client).name,
+          from_role: "client",
+          text: "Bonjour, je reste disponible pour donner accès au logement.",
+        }),
       );
     }
 

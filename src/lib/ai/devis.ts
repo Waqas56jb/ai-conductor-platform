@@ -77,12 +77,10 @@ export async function draftDevis(input: {
       ].join("\n"),
     },
     // A few photos are enough; low detail keeps the call fast and cheap.
-    ...input.photoUrls
-      .slice(0, 4)
-      .map((url): ChatCompletionContentPart => ({
-        type: "image_url",
-        image_url: { url, detail: "low" },
-      })),
+    ...input.photoUrls.slice(0, 4).map((url): ChatCompletionContentPart => ({
+      type: "image_url",
+      image_url: { url, detail: "low" },
+    })),
   ];
 
   const completion = await openai().chat.completions.create({
