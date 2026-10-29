@@ -16,10 +16,17 @@ type Props = {
   onCloseDrawer: () => void;
 };
 
-function isActive(href: string, pathname: string) {
+function matches(href: string, pathname: string) {
   return href === "/app"
     ? pathname === "/app"
     : pathname === href || pathname.startsWith(`${href}/`);
+}
+
+/** The most specific matching item wins (/app/cases/new over /app/cases). */
+function activeHref(nav: ShellNavItem[], pathname: string) {
+  return nav
+    .filter((item) => matches(item.href, pathname))
+    .sort((a, b) => b.href.length - a.href.length)[0]?.href;
 }
 
 export function Sidebar({
@@ -31,6 +38,7 @@ export function Sidebar({
   onCloseDrawer,
 }: Props) {
   const t = useTranslations("shell");
+  const current = activeHref(nav, pathname);
 
   return (
     <>
@@ -62,7 +70,7 @@ export function Sidebar({
           <ul>
             {nav.map((item) => {
               const Icon = NAV_ICONS[item.icon];
-              const active = isActive(item.href, pathname);
+              const active = item.href === current;
               return (
                 <li key={item.href}>
                   <Link

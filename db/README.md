@@ -25,18 +25,24 @@ Rules:
 - **Permissive** policies are added per table when a feature needs client access. Without one, the table stays closed to signed-in users (server code uses the service role after its own checks).
 - `ai_conductor_profile_id()`, `ai_conductor_company_id()` and `ai_conductor_role()` resolve the caller from `auth.uid()` → `ai_conductor_users.auth_user_id`.
 - `password_hash` is never granted to `authenticated` (column-level grants on `ai_conductor_users`): always select explicit columns.
+- **Reads** go through RLS with the user's session (per-role SELECT policies: a client sees their own cases, a technician the cases assigned to them, the office everything in the company). **Writes** go through server actions only: they check the role and the state machine, then write with the service role, guarded by `.eq("status", current)` against concurrent changes, and append to `ai_conductor_audit_log`.
+- `id` is a random global key (`INC-…`, `DEV-…`, `FAC-…`); `reference` is the per-company sequential number shown to users. Invoice numbers are allocated only after the transition succeeds, so the sequence has no gaps.
+- Photos and receipts live in the private buckets `ai-conductor-photos` and `ai-conductor-receipts`, served through short-lived signed URLs.
 - The Supabase Auth pool is shared with other apps: an Auth account without an `ai_conductor_users` row is not a Pratonna user. **Never add triggers on `auth.users`** — they would fire for the other applications too.
 
 Applied history is stored in `ai_conductor_schema_migrations`.
 
-| Migration             | What it does                                                                                                                                                                 |
-| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `0000_baseline`       | The 18 original tables as found on 2026-10-29 (no-op on the live DB, recreates them on a new one)                                                                            |
-| `0001_lockdown`       | RLS on and REST/GraphQL grants revoked: the tables were publicly readable and writable, including `password_hash`                                                            |
-| `0002_integrity`      | Allowed-value checks, missing foreign keys, indexes, `updated_at` triggers, `auth_user_id` link to Supabase Auth, `fr` default locale                                        |
-| `0003_platform`       | New tables: audit log, contacts, documents, payments, reminders, integrations, AI conversations / messages / approval-gated actions                                          |
-| `0004_tenancy`        | `ai_conductor_companies`, `company_id` on every business table (existing rows → "Pratonna Gestion"), `accountant` role, caller helpers, company isolation + Phase 1 policies |
-| `0005_company_grants` | Resets the default privileges Supabase gave the new companies table                                                                                                          |
+| Migration               | What it does                                                                                                                                                                    |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `0000_baseline`         | The 18 original tables as found on 2026-10-29 (no-op on the live DB, recreates them on a new one)                                                                               |
+| `0001_lockdown`         | RLS on and REST/GraphQL grants revoked: the tables were publicly readable and writable, including `password_hash`                                                               |
+| `0002_integrity`        | Allowed-value checks, missing foreign keys, indexes, `updated_at` triggers, `auth_user_id` link to Supabase Auth, `fr` default locale                                           |
+| `0003_platform`         | New tables: audit log, contacts, documents, payments, reminders, integrations, AI conversations / messages / approval-gated actions                                             |
+| `0004_tenancy`          | `ai_conductor_companies`, `company_id` on every business table (existing rows → "Pratonna Gestion"), `accountant` role, caller helpers, company isolation + Phase 1 policies    |
+| `0005_company_grants`   | Resets the default privileges Supabase gave the new companies table                                                                                                             |
+| `0006_workflow`         | Workflow helpers, per-company counters (`ai_conductor_next_number`), case / invoice / technician columns, per-role read policies, realtime publication, private storage buckets |
+| `0007_users_visibility` | Clients no longer see the other clients of their company                                                                                                                        |
+| `0008_case_reference`   | Per-company references (`INC-2026-0001`) separate from the random global ids; required and unique per company                                                                   |
 
 ## Connection
 

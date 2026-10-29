@@ -1,0 +1,130 @@
+.nav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.month {
+  min-width: 10ch;
+  font-family: var(--font-body), sans-serif;
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  margin-top: calc(var(--space-4) * -1);
+}
+
+.weekday {
+  padding: 0.6rem;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-faint);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.day {
+  display: grid;
+  align-content: start;
+  gap: 0.25rem;
+  min-height: 104px;
+  padding: 0.45rem;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  min-width: 0;
+}
+
+.day:nth-child(7n + 7) {
+  border-right: 0;
+}
+
+.outside {
+  opacity: 0.4;
+}
+
+.date {
+  font-size: 0.8rem;
+  color: var(--text-soft);
+}
+
+.today .date {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--gradient);
+  color: #fff;
+  font-weight: 700;
+}
+
+.event {
+  display: block;
+  padding: 0.2rem 0.4rem;
+  border-radius: 6px;
+  background: rgba(47, 107, 255, 0.25);
+  border-left: 2px solid var(--cyan);
+  color: #fff;
+  font-size: 0.72rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.list a {
+  display: grid;
+  min-width: 0;
+}
+
+.list span {
+  color: var(--text-faint);
+  font-size: 0.85rem;
+}
+
+/* Small screens: the list carries the detail; the grid shows dots only. */
+@media (max-width: 640px) {
+  .day {
+    min-height: 52px;
+    padding: 0.3rem;
+  }
+
+  .event {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--cyan);
+    font-size: 0;
+  }
+
+  .weekday {
+    padding: 0.5rem 0.2rem;
+    font-size: 0.65rem;
+    text-align: center;
+  }
+}

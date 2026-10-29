@@ -82,7 +82,8 @@ export function nextStatus(
     reason,
   });
   const to = (status: IncidentStatus): TransitionResult => ({ ok: true, status });
-  const fieldWorker = allowed(role, OFFICE) || (role === "technician" && ctx.isAssignedTechnician === true);
+  const fieldWorker =
+    allowed(role, OFFICE) || (role === "technician" && ctx.isAssignedTechnician === true);
 
   switch (action) {
     case "triage":
@@ -96,7 +97,11 @@ export function nextStatus(
     case "submit_devis": {
       if (current !== "site_visit") return fail("invalid_status");
       if (!fieldWorker) return fail("forbidden");
-      if (ctx.devisAmount === undefined || ctx.approvalThreshold === undefined || ctx.devisAmount <= 0) {
+      if (
+        ctx.devisAmount === undefined ||
+        ctx.approvalThreshold === undefined ||
+        ctx.devisAmount <= 0
+      ) {
         return fail("missing_data");
       }
       return to(
@@ -109,8 +114,10 @@ export function nextStatus(
     case "approve_devis":
     case "reject_devis": {
       const target = action === "approve_devis" ? "sent_to_client" : "site_visit";
-      if (current === "devis_pending_manager") return allowed(role, OFFICE) ? to(target) : fail("forbidden");
-      if (current === "devis_pending_director") return allowed(role, SENIOR) ? to(target) : fail("forbidden");
+      if (current === "devis_pending_manager")
+        return allowed(role, OFFICE) ? to(target) : fail("forbidden");
+      if (current === "devis_pending_director")
+        return allowed(role, SENIOR) ? to(target) : fail("forbidden");
       return fail("invalid_status");
     }
 
@@ -122,7 +129,8 @@ export function nextStatus(
       return to(action === "client_accept" ? "client_signed" : "site_visit");
 
     case "schedule":
-      if (current !== "client_signed" && current !== "intervention_planned") return fail("invalid_status");
+      if (current !== "client_signed" && current !== "intervention_planned")
+        return fail("invalid_status");
       return allowed(role, OFFICE) ? to("intervention_planned") : fail("forbidden");
 
     case "start":
@@ -145,7 +153,10 @@ export function nextStatus(
 }
 
 /** Actions a role could take on a case right now (for buttons / AI tools). */
-export function availableActions(current: IncidentStatus, ctx: TransitionContext): IncidentAction[] {
+export function availableActions(
+  current: IncidentStatus,
+  ctx: TransitionContext,
+): IncidentAction[] {
   const all: IncidentAction[] = [
     "triage",
     "assign",
@@ -162,6 +173,11 @@ export function availableActions(current: IncidentStatus, ctx: TransitionContext
   ];
   // Data-dependent actions are offered when the status and role fit; the data
   // itself is collected by the form.
-  const probe: TransitionContext = { ...ctx, devisAmount: 1, approvalThreshold: ctx.approvalThreshold ?? 1, invoicePaid: true };
+  const probe: TransitionContext = {
+    ...ctx,
+    devisAmount: 1,
+    approvalThreshold: ctx.approvalThreshold ?? 1,
+    invoicePaid: true,
+  };
   return all.filter((action) => nextStatus(current, action, probe).ok);
 }

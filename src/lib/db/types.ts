@@ -1,6 +1,7 @@
 // Hand-maintained types for the ai_conductor_* tables the app reads/writes.
 // Keep in sync with db/migrations. Each phase adds the tables it uses.
 import type { Role } from "@/lib/auth/roles";
+import type { IncidentStatus } from "@/lib/workflows/incident";
 
 type Timestamps = { created_at: string; updated_at: string };
 
@@ -61,6 +62,166 @@ export type NotificationRow = {
   created_at: string;
 };
 
+export type Urgency = "low" | "medium" | "high";
+export type Channel = "app" | "web" | "whatsapp" | "email" | "phone";
+
+/** A stored photo: path inside the private photos bucket. */
+export type PhotoRef = { path: string; kind: "report" | "site"; uploaded_by: string; at: string };
+
+export type IncidentRow = Timestamps & {
+  id: string;
+  /** Human, per-company number (INC-2026-0001); `id` is the global key. */
+  reference: string;
+  company_id: string;
+  title: string;
+  description: string;
+  channel: Channel;
+  status: IncidentStatus;
+  urgency: Urgency | null;
+  client_id: string | null;
+  complainant_name: string | null;
+  manager_id: string | null;
+  building_address: string | null;
+  unit_label: string | null;
+  city: string | null;
+  lat: number | null;
+  lng: number | null;
+  ai_match: string | null;
+  ai_summary: string | null;
+  client_notes: string | null;
+  photos: PhotoRef[];
+  hired_tech_ids: string[];
+  group_id: string | null;
+  quotation_id: string | null;
+  intervention_id: string | null;
+  invoice_id: string | null;
+  closed_at: string | null;
+};
+
+export type QuoteLine = { label: string; quantity: number; unit_price_ht: number };
+
+export type QuotationRow = Timestamps & {
+  id: string;
+  company_id: string;
+  reference: string;
+  incident_id: string | null;
+  client_id: string | null;
+  tech_ids: string[];
+  created_by: string | null;
+  created_by_role: string | null;
+  title: string;
+  summary: string | null;
+  diagnosis: string | null;
+  line_items: QuoteLine[];
+  currency: string;
+  tax_rate: number;
+  subtotal_ht: number;
+  tax_amount: number;
+  total_ttc: number;
+  validity_days: number;
+  approval_route: "manager" | "director";
+  status:
+    | "pending_manager"
+    | "pending_director"
+    | "sent_to_client"
+    | "accepted"
+    | "rejected"
+    | "cancelled";
+  threshold_used: number | null;
+  signed_at: string | null;
+};
+
+export type InterventionRow = Timestamps & {
+  id: string;
+  company_id: string;
+  incident_id: string | null;
+  quotation_id: string | null;
+  client_id: string | null;
+  manager_id: string | null;
+  tech_ids: string[];
+  scheduled_at: string | null;
+  status: "planned" | "in_progress" | "completed" | "cancelled";
+  building_address: string | null;
+  notes: string | null;
+};
+
+export type InvoiceRow = Timestamps & {
+  id: string;
+  company_id: string;
+  reference: string;
+  incident_id: string | null;
+  quotation_id: string | null;
+  client_id: string | null;
+  title: string;
+  amount: number;
+  currency: string;
+  status: "unpaid" | "under_review" | "paid" | "overdue" | "cancelled";
+  issued_at: string;
+  due_at: string | null;
+  reminders: { day: number; sent_at: string }[];
+  receipt_url: string | null;
+  receipt_uploaded_at: string | null;
+  paid_at: string | null;
+};
+
+export type MessageRow = {
+  id: string;
+  company_id: string;
+  from_id: string | null;
+  from_name: string | null;
+  from_role: string | null;
+  text: string;
+  created_at: string;
+};
+
+export type TaskGroupRow = {
+  id: string;
+  company_id: string;
+  incident_id: string | null;
+  member_ids: string[];
+  created_by: string | null;
+  created_at: string;
+};
+
+export type TechnicianRow = Timestamps & {
+  user_id: string;
+  company_id: string;
+  specialty: string | null;
+  experience_years: number | null;
+  bio: string | null;
+  address: string | null;
+  city: string | null;
+  country: string | null;
+  lat: number | null;
+  lng: number | null;
+  available: boolean;
+  visible_to_manager: boolean;
+  rating: number | null;
+  jobs_completed: number | null;
+  geolocated_at: string | null;
+};
+
+export type ClientRow = Timestamps & {
+  user_id: string;
+  company_id: string;
+  address: string | null;
+  city: string | null;
+  country: string | null;
+  lat: number | null;
+  lng: number | null;
+};
+
+export type FeedbackRow = {
+  id: string;
+  company_id: string;
+  user_id: string | null;
+  role: string | null;
+  topic: string | null;
+  rating: number | null;
+  message: string | null;
+  created_at: string;
+};
+
 type Table<Row, Insert, Update = Partial<Insert>> = {
   Row: Row;
   Insert: Insert;
@@ -88,9 +249,80 @@ export type Database = {
         NotificationRow,
         Partial<NotificationRow> & Pick<NotificationRow, "company_id" | "user_id" | "title">
       >;
+      ai_conductor_incidents: Table<
+        IncidentRow,
+        Partial<IncidentRow> & Pick<IncidentRow, "id" | "reference" | "company_id" | "title">
+      >;
+      ai_conductor_quotations: Table<
+        QuotationRow,
+        Partial<QuotationRow> & Pick<QuotationRow, "id" | "reference" | "company_id">
+      >;
+      ai_conductor_interventions: Table<
+        InterventionRow,
+        Partial<InterventionRow> & Pick<InterventionRow, "id" | "company_id">
+      >;
+      ai_conductor_invoices: Table<
+        InvoiceRow,
+        Partial<InvoiceRow> & Pick<InvoiceRow, "id" | "reference" | "company_id">
+      >;
+      ai_conductor_incident_messages: Table<
+        MessageRow & { incident_id: string },
+        Partial<MessageRow> & { incident_id: string; company_id: string; text: string }
+      >;
+      ai_conductor_task_groups: Table<
+        TaskGroupRow,
+        Partial<TaskGroupRow> & Pick<TaskGroupRow, "id" | "company_id">
+      >;
+      ai_conductor_group_messages: Table<
+        MessageRow & { group_id: string },
+        Partial<MessageRow> & { group_id: string; company_id: string; text: string }
+      >;
+      ai_conductor_technicians: Table<
+        TechnicianRow,
+        Partial<TechnicianRow> & Pick<TechnicianRow, "user_id" | "company_id">
+      >;
+      ai_conductor_clients: Table<
+        ClientRow,
+        Partial<ClientRow> & Pick<ClientRow, "user_id" | "company_id">
+      >;
+      ai_conductor_managers: Table<
+        { user_id: string; company_id: string; title: string | null } & Timestamps,
+        { user_id: string; company_id: string; title?: string | null }
+      >;
+      ai_conductor_audit_log: Table<
+        {
+          id: number;
+          company_id: string;
+          actor_id: string | null;
+          actor_role: string | null;
+          action: string;
+          entity_type: string | null;
+          entity_id: string | null;
+          data: Record<string, unknown>;
+          created_at: string;
+        },
+        {
+          company_id: string;
+          actor_id?: string | null;
+          actor_role?: string | null;
+          action: string;
+          entity_type?: string | null;
+          entity_id?: string | null;
+          data?: Record<string, unknown>;
+        }
+      >;
+      ai_conductor_feedback: Table<
+        FeedbackRow,
+        Partial<FeedbackRow> & Pick<FeedbackRow, "company_id">
+      >;
     };
     Views: Record<never, never>;
-    Functions: Record<never, never>;
+    Functions: {
+      ai_conductor_next_number: {
+        Args: { company: string; counter_kind: "devis" | "facture" | "incident" };
+        Returns: number;
+      };
+    };
     Enums: Record<never, never>;
     CompositeTypes: Record<never, never>;
   };

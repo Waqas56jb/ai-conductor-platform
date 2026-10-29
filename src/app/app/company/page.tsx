@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { CompanyForm } from "@/components/account/CompanyForm";
+import { WorkflowSettingsForm } from "@/components/account/WorkflowSettingsForm";
 import { Badge, Card, Table, type Column } from "@/components/ui";
 import { COMPANY_ADMIN_ROLES } from "@/lib/auth/roles";
 import { requireRole } from "@/lib/auth/session";
 import type { UserRow } from "@/lib/db/types";
+import { getSettings } from "@/lib/cases/queries";
 import { createClient } from "@/lib/supabase/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -15,7 +17,12 @@ type Member = Pick<UserRow, "id" | "display_name" | "email" | "role" | "active">
 
 export default async function CompanyPage() {
   const profile = await requireRole(COMPANY_ADMIN_ROLES);
-  const [t, tRoles] = await Promise.all([getTranslations("company"), getTranslations("roles")]);
+  const [t, tRoles, tw, settings] = await Promise.all([
+    getTranslations("company"),
+    getTranslations("roles"),
+    getTranslations("workflowSettings"),
+    getSettings(),
+  ]);
   const supabase = await createClient();
 
   const [{ data: company }, { data: team }] = await Promise.all([
@@ -80,6 +87,10 @@ export default async function CompanyPage() {
             email: company.email ?? "",
           }}
         />
+      </Card>
+
+      <Card title={tw("title")} description={tw("sub")}>
+        <WorkflowSettingsForm settings={settings} />
       </Card>
 
       <Card title={t("teamTitle")} description={t("teamCount", { count: members.length })} flush>

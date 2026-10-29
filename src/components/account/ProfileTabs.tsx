@@ -7,6 +7,7 @@ import { FormAlert } from "@/components/auth/FormAlert";
 import { NewPasswordForm } from "@/components/auth/NewPasswordForm";
 import { Button, Card, Input, Select, Tabs, useToast } from "@/components/ui";
 import { initialFormState } from "@/lib/forms";
+import { TechnicianProfileForm, type TechnicianProfileData } from "./TechnicianProfileForm";
 
 type ProfileData = {
   displayName: string;
@@ -74,7 +75,15 @@ function ProfileForm({ profile }: { profile: ProfileData }) {
   );
 }
 
-export function ProfileTabs({ profile }: { profile: ProfileData }) {
+export function ProfileTabs({
+  profile,
+  technician,
+}: {
+  profile: ProfileData;
+  /** Field profile, only for technicians. */
+  technician?: TechnicianProfileData;
+}) {
+  const tt = useTranslations("techProfile");
   const t = useTranslations("profile");
 
   return (
@@ -106,6 +115,19 @@ export function ProfileTabs({ profile }: { profile: ProfileData }) {
             </Card>
           ),
         },
+        ...(technician
+          ? [
+              {
+                id: "field",
+                label: tt("title"),
+                content: (
+                  <Card title={tt("title")}>
+                    <TechnicianProfileForm data={technician} />
+                  </Card>
+                ),
+              },
+            ]
+          : []),
       ]}
     />
   );

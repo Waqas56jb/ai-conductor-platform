@@ -17,6 +17,14 @@ export default async function ProfilePage() {
     .select("name")
     .eq("id", profile.company_id)
     .single();
+  const { data: tech } =
+    profile.role === "technician"
+      ? await supabase
+          .from("ai_conductor_technicians")
+          .select("specialty, experience_years, bio, available, address, city")
+          .eq("user_id", profile.id)
+          .maybeSingle()
+      : { data: null };
 
   return (
     <div className="stack">
@@ -35,6 +43,19 @@ export default async function ProfilePage() {
           roleLabel: tRoles(profile.role),
           companyName: company?.name ?? "",
         }}
+        technician={
+          tech
+            ? {
+                specialty: tech.specialty ?? "",
+                experienceYears: tech.experience_years ?? 0,
+                bio: tech.bio ?? "",
+                available: tech.available,
+                place: tech.address ?? tech.city,
+              }
+            : profile.role === "technician"
+              ? { specialty: "", experienceYears: 0, bio: "", available: true, place: null }
+              : undefined
+        }
       />
     </div>
   );

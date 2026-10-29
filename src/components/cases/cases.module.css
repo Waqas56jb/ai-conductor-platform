@@ -1,0 +1,259 @@
+.caseLink {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.caseLink strong {
+  color: var(--text);
+}
+
+.caseLink:hover strong {
+  color: var(--cyan);
+}
+
+.ref {
+  color: var(--text-faint);
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.filter {
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--text-soft);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.filter[aria-current="page"] {
+  color: #fff;
+  background: rgba(47, 107, 255, 0.28);
+  border-color: rgba(73, 216, 255, 0.35);
+}
+
+/* ---------- Case detail ---------- */
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 380px);
+  gap: var(--space-5);
+  align-items: start;
+}
+
+.column {
+  display: grid;
+  gap: var(--space-5);
+  min-width: 0;
+}
+
+.meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-4);
+  margin: 0;
+}
+
+.meta dt {
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+.meta dd {
+  margin: 0.15rem 0 0;
+  color: var(--text);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.description {
+  margin-top: var(--space-4);
+  color: var(--text-soft);
+  white-space: pre-wrap;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: var(--space-2);
+  color: var(--text-faint);
+  font-size: 0.88rem;
+}
+
+.back:hover {
+  color: var(--cyan);
+}
+
+.back svg {
+  width: 16px;
+  height: 16px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.gallery figure {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.gallery img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gallery figcaption {
+  position: absolute;
+  left: 0.4rem;
+  bottom: 0.4rem;
+}
+
+/* Timeline */
+.timeline {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.timeline li {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.35rem 0;
+  color: var(--text-faint);
+  font-size: 0.9rem;
+}
+
+.timeline li::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  flex: none;
+  border-radius: 50%;
+  border: 2px solid var(--line-strong);
+}
+
+.timeline .done {
+  color: var(--text-soft);
+}
+
+.timeline .done::before {
+  border-color: var(--cyan);
+  background: var(--cyan);
+}
+
+.timeline .current {
+  color: #fff;
+  font-weight: 600;
+}
+
+.timeline .current::before {
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 4px rgba(73, 216, 255, 0.2);
+}
+
+/* Quote */
+.lines {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.lines th,
+.lines td {
+  padding: 0.5rem 0.4rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+}
+
+.lines th {
+  color: var(--text-faint);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.num {
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.totals {
+  display: grid;
+  justify-content: end;
+  gap: 0.25rem;
+  margin-top: var(--space-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.totals div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-6);
+  color: var(--text-soft);
+}
+
+.totals .grand {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.muted {
+  color: var(--text-faint);
+  font-size: 0.88rem;
+}
+
+.stack {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+@media (max-width: 1024px) {
+  .detailGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .lines {
+    font-size: 0.82rem;
+  }
+}

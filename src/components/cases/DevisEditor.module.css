@@ -1,0 +1,150 @@
+.label {
+  display: grid;
+  gap: 0.4rem;
+  color: var(--text-soft);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid var(--line-strong);
+  background: rgba(6, 11, 30, 0.55);
+  color: var(--text);
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--cyan);
+}
+
+.lines {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.line {
+  display: grid;
+  grid-template-columns: minmax(0, 2.4fr) minmax(70px, 0.7fr) minmax(100px, 1fr) minmax(
+      90px,
+      0.9fr
+    ) auto;
+  gap: var(--space-2);
+  align-items: end;
+  padding-bottom: var(--space-3);
+  border-bottom: 1px dashed var(--line);
+}
+
+.lineTotal {
+  display: grid;
+  gap: 0.4rem;
+  padding-bottom: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.lineTotal span {
+  color: var(--text-soft);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.remove {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-faint);
+  cursor: pointer;
+}
+
+.remove:hover:not(:disabled) {
+  color: var(--red);
+  border-color: rgba(255, 122, 138, 0.4);
+}
+
+.remove:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.remove svg {
+  width: 18px;
+  height: 18px;
+}
+
+.footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--space-4);
+}
+
+.tax {
+  width: 140px;
+}
+
+.totals {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  min-width: 220px;
+  font-variant-numeric: tabular-nums;
+}
+
+.totals div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-5);
+  color: var(--text-soft);
+}
+
+.totals dd {
+  margin: 0;
+}
+
+.grand {
+  color: #fff !important;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.route {
+  color: var(--text-faint);
+  font-size: 0.88rem;
+}
+
+@media (max-width: 640px) {
+  .line {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .line > :first-child {
+    grid-column: 1 / -1;
+  }
+
+  .lineTotal {
+    text-align: left;
+    padding-bottom: 0;
+  }
+
+  .remove {
+    justify-self: end;
+  }
+
+  .totals {
+    width: 100%;
+  }
+}

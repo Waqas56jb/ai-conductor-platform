@@ -75,5 +75,42 @@ export default async function globalSetup() {
     email: recoveryEmail,
   };
 
-  saveState({ companyId: company.id as string, users, orphan, recovery });
+  const client2 = {
+    ...(await createAccount(e2eEmail("client2"), "Bruno Client", "client")),
+    email: e2eEmail("client2"),
+    name: "Bruno Client",
+  };
+  const technician2 = {
+    ...(await createAccount(e2eEmail("technician2"), "Ines Technicienne", "technician")),
+    email: e2eEmail("technician2"),
+    name: "Ines Technicienne",
+  };
+
+  // Field profiles, so the assignment map has someone to show.
+  await admin.from("ai_conductor_technicians").insert([
+    {
+      user_id: users.technician.profileId,
+      company_id: company.id,
+      specialty: "Plomberie",
+      experience_years: 8,
+      rating: 4.8,
+      lat: 48.8606,
+      lng: 2.3376,
+      city: "Paris",
+      available: true,
+    },
+    {
+      user_id: technician2.profileId,
+      company_id: company.id,
+      specialty: "Électricité",
+      experience_years: 4,
+      rating: 4.5,
+      lat: 48.8682,
+      lng: 2.3488,
+      city: "Paris",
+      available: true,
+    },
+  ]);
+
+  saveState({ companyId: company.id as string, users, orphan, recovery, client2, technician2 });
 }

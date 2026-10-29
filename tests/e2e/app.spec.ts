@@ -9,6 +9,77 @@ import {
   type Page,
 } from "./support/fixtures";
 
+/** Expected sidebar per role (order = NAV_ITEMS). */
+const MENUS = {
+  client: [
+    "Tableau de bord",
+    "Signaler un problème",
+    "Mes dossiers",
+    "Devis",
+    "Factures",
+    "Notifications",
+    "Support",
+    "Mon profil",
+  ],
+  technician: [
+    "Tableau de bord",
+    "Mes tâches",
+    "Calendrier",
+    "Discussions",
+    "Annuaire",
+    "Notifications",
+    "Mon profil",
+  ],
+  manager: [
+    "Tableau de bord",
+    "Dossiers",
+    "Validations",
+    "Factures",
+    "Calendrier",
+    "Techniciens",
+    "Discussions",
+    "Annuaire",
+    "Notifications",
+    "Mon profil",
+  ],
+  director: [
+    "Tableau de bord",
+    "Dossiers",
+    "Validations",
+    "Finance",
+    "Interventions",
+    "Techniciens",
+    "Discussions",
+    "Annuaire",
+    "Notifications",
+    "Entreprise",
+    "Mon profil",
+  ],
+  accountant: ["Tableau de bord", "Dossiers", "Finance", "Annuaire", "Notifications", "Mon profil"],
+  admin: [
+    "Tableau de bord",
+    "Dossiers",
+    "Validations",
+    "Factures",
+    "Calendrier",
+    "Techniciens",
+    "Discussions",
+    "Annuaire",
+    "Notifications",
+    "Entreprise",
+    "Mon profil",
+  ],
+} as const;
+
+const FIRST_KPI = {
+  client: "Mes dossiers en cours",
+  technician: "Missions en cours",
+  manager: "Dossiers en cours",
+  director: "Dossiers en cours",
+  accountant: "À encaisser",
+  admin: "Dossiers en cours",
+} as const;
+
 /** Opens the sidebar drawer first on narrow screens. */
 async function sidebarLinks(page: Page) {
   if (isNarrow(page)) await page.getByRole("button", { name: "Ouvrir le menu" }).click();
@@ -27,17 +98,13 @@ test.describe("role-based shell", () => {
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(
         `Bonjour ${users[role].name.split(" ")[0]}`,
       );
-      await expect(page.getByText("Membres de l’équipe")).toBeVisible();
-      await expect(page.getByText("Aucune activité pour le moment.")).toBeVisible();
+      await expect(page.getByText(FIRST_KPI[role], { exact: true })).toBeVisible();
+      await expect(page.getByRole("heading", { name: "Dossiers récents" })).toBeVisible();
       await expectNoHorizontalScroll(page);
 
       const links = await sidebarLinks(page);
       const companyAllowed = role === "director" || role === "admin";
-      expect(links).toEqual(
-        companyAllowed
-          ? ["Tableau de bord", "Entreprise", "Mon profil"]
-          : ["Tableau de bord", "Mon profil"],
-      );
+      expect(links).toEqual(MENUS[role]);
       if (role === "director" || role === "client") await shot(`dashboard-${role}`);
 
       // Server-side RBAC: the URL itself is guarded, not just the menu.
@@ -128,7 +195,7 @@ test.describe("navigation", () => {
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Hello Théo");
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await page.reload();
-    await expect(page.getByText("Team members")).toBeVisible();
+    await expect(page.getByText("Active jobs")).toBeVisible();
     if (isNarrow(page)) await page.getByRole("button", { name: "User menu" }).click();
     await page
       .getByRole("group", { name: "Language" })
@@ -136,6 +203,16 @@ test.describe("navigation", () => {
       .getByRole("button", { name: "FR" })
       .click();
     await expect(page.getByRole("heading", { level: 1 })).toHaveText("Bonjour Théo");
+  });
+
+  // The language is saved on the profile: if the test above fails midway, the
+  // technician must not stay in English for the rest of the suite.
+  test.afterEach(async () => {
+    const { users } = readState();
+    await adminClient()
+      .from("ai_conductor_users")
+      .update({ locale: "fr" })
+      .eq("id", users.technician.profileId);
   });
 });
 
@@ -221,17 +298,19 @@ test.describe("company", () => {
     await expect(page.getByRole("table", { name: "Équipe" })).toContainText(
       "Antoine Dirigeant (vous)",
     );
-    await expect(page.getByText("7 membres")).toBeVisible();
+    await expect(page.getByText("9 membres")).toBeVisible();
     await expectNoHorizontalScroll(page);
 
+    // The page also holds the workflow settings form, with its own save button.
+    const details = page.locator("section").filter({ hasText: "Informations de l’" });
     await page.getByLabel(/^SIRET/).fill("1234");
-    await page.getByRole("button", { name: "Enregistrer" }).click();
+    await details.getByRole("button", { name: "Enregistrer" }).click();
     await expect(page.getByText("Le SIRET comporte 14 chiffres.")).toBeVisible();
 
     await page.getByLabel(/^SIRET/).fill("123 456 789 00012");
     await page.getByLabel("Forme juridique").selectOption("SAS");
     await page.getByLabel("Ville").fill("Lyon");
-    await page.getByRole("button", { name: "Enregistrer" }).click();
+    await details.getByRole("button", { name: "Enregistrer" }).click();
     await expect(
       page.getByRole("status").filter({ hasText: "Modifications enregistrées." }),
     ).toBeVisible();

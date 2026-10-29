@@ -54,6 +54,9 @@ export default defineConfig({
     command: "pnpm dev",
     url: `http://localhost:${PORT}/login`,
     reuseExistingServer: true,
+    // Server-side errors show up in the test output.
+    stdout: "pipe",
+    stderr: "pipe",
     timeout: 180_000,
   },
 });

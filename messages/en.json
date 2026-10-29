@@ -35,7 +35,17 @@
     "passwordMismatch": "Passwords do not match.",
     "tooLong": "Text is too long.",
     "siret": "A SIRET number has 14 digits.",
-    "phone": "Invalid phone number."
+    "phone": "Invalid phone number.",
+    "number": "Invalid number.",
+    "positive": "Must be positive.",
+    "linesRequired": "Add at least one line.",
+    "photoRequired": "Add at least one photo.",
+    "tooManyPhotos": "Too many photos.",
+    "receiptRequired": "Add a proof of payment.",
+    "upload_too_large": "File too large (10 MB max).",
+    "upload_bad_type": "Format not accepted.",
+    "upload_failed": "Upload failed. Please try again.",
+    "reminderOrder": "The 2nd reminder must come after the 1st."
   },
   "auth": {
     "visualTitle": "Your 6th team member, 100% AI",
@@ -118,7 +128,22 @@
   "nav": {
     "dashboard": "Dashboard",
     "profile": "My profile",
-    "company": "Company"
+    "company": "Company",
+    "report": "Report a problem",
+    "cases": "Cases",
+    "myCases": "My cases",
+    "tasks": "My tasks",
+    "approvals": "Approvals",
+    "quotes": "Quotes",
+    "invoices": "Invoices",
+    "finance": "Finance",
+    "calendar": "Calendar",
+    "interventions": "Jobs",
+    "technicians": "Technicians",
+    "chats": "Conversations",
+    "support": "Support",
+    "notifications": "Notifications",
+    "directory": "Directory"
   },
   "dashboard": {
     "welcome": "Hello {name}",
@@ -618,5 +643,328 @@
       "save": "Save settings",
       "saved": "Settings saved. Manager & AI routing will use the new threshold."
     }
+  },
+  "status": {
+    "new": "New",
+    "awaiting_assignment": "To assign",
+    "site_visit": "Site visit",
+    "devis_pending_manager": "Quote to approve",
+    "devis_pending_director": "Quote — director approval",
+    "sent_to_client": "Quote sent to client",
+    "client_signed": "Quote signed",
+    "intervention_planned": "Job scheduled",
+    "in_progress": "In progress",
+    "invoiced": "Invoiced",
+    "closed": "Closed",
+    "cancelled": "Cancelled"
+  },
+  "urgency": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High"
+  },
+  "channel": {
+    "app": "App",
+    "web": "Website",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "phone": "Phone"
+  },
+  "cases": {
+    "listTitle": "Cases",
+    "listTitleClient": "My cases",
+    "listTitleTech": "My tasks",
+    "listSub": "Every case, from report to invoice.",
+    "newCase": "New case",
+    "empty": "No cases yet.",
+    "emptyClient": "You have not reported any problem yet.",
+    "emptyTech": "No job is assigned to you.",
+    "filterAll": "All",
+    "filterOpen": "Open",
+    "filterClosed": "Done",
+    "columns": {
+      "case": "Case",
+      "address": "Address",
+      "status": "Status",
+      "urgency": "Urgency",
+      "created": "Created"
+    },
+    "report": {
+      "title": "Report a problem",
+      "sub": "A photo, the address, and our team takes it from there.",
+      "titleField": "Subject",
+      "titlePlaceholder": "E.g. leak in the bathroom ceiling",
+      "description": "Description",
+      "descriptionPlaceholder": "Since when, where exactly, what you noticed…",
+      "address": "Address",
+      "unit": "Unit / floor",
+      "city": "City",
+      "useLocation": "Use my location",
+      "locating": "Locating…",
+      "locationFailed": "Location unavailable: please type the address.",
+      "urgency": "Urgency",
+      "channel": "Channel",
+      "complainant": "Requester name",
+      "photos": "Photos",
+      "photosHint": "Up to 6 photos (JPEG, PNG or WebP).",
+      "takePhoto": "Take a photo",
+      "addPhotos": "Add photos",
+      "removePhoto": "Remove photo",
+      "submit": "Send the report"
+    },
+    "detail": {
+      "back": "All cases",
+      "reportedBy": "Reported by",
+      "channel": "Channel",
+      "created": "Created",
+      "manager": "Manager",
+      "technicians": "Technicians",
+      "noTechnician": "No technician assigned",
+      "photos": "Photos",
+      "noPhotos": "No photos.",
+      "photoReport": "Report",
+      "photoSite": "Site visit",
+      "description": "Description",
+      "timeline": "Progress",
+      "actions": "Actions"
+    },
+    "actions": {
+      "triageTitle": "Qualify the case",
+      "triage": "Confirm urgency",
+      "assignTitle": "Assign technicians",
+      "assignSub": "Pick one or more available technicians.",
+      "assign": "Assign",
+      "unavailable": "Unavailable",
+      "siteTitle": "Site visit",
+      "sitePhotos": "Site photos",
+      "uploadPhotos": "Upload photos",
+      "notes": "Findings",
+      "notesPlaceholder": "What you found on site, measurements, likely cause…",
+      "aiDraft": "Draft the quote with AI",
+      "aiDrafting": "AI is drafting…",
+      "aiDone": "Draft ready: review and correct it before sending.",
+      "devisTitle": "Quote",
+      "devisLabel": "Title",
+      "summary": "Summary for the client",
+      "diagnosis": "Diagnosis (team)",
+      "lines": "Lines",
+      "lineLabel": "Item",
+      "quantity": "Qty",
+      "unitPrice": "Unit price excl. VAT",
+      "lineTotal": "Total excl. VAT",
+      "addLine": "Add a line",
+      "removeLine": "Remove line",
+      "taxRate": "VAT",
+      "subtotal": "Total excl. VAT",
+      "tax": "VAT",
+      "total": "Total incl. VAT",
+      "submitDevis": "Send for approval",
+      "routeManager": "Approved by the manager (below the {threshold} threshold)",
+      "routeDirector": "Approved by the director ({threshold} threshold reached)",
+      "approvalTitle": "Quote approval",
+      "approve": "Approve and send to client",
+      "reject": "Reject — revise",
+      "waitingDirector": "Waiting for the director’s approval.",
+      "clientTitle": "Your quote",
+      "accept": "Accept the quote",
+      "decline": "Decline",
+      "acceptConfirm": "By accepting, you agree to the work being carried out at the stated price.",
+      "scheduleTitle": "Schedule the job",
+      "scheduleAt": "Date and time",
+      "scheduleNotes": "Instructions (optional)",
+      "schedule": "Schedule",
+      "reschedule": "Reschedule",
+      "start": "Start the job",
+      "complete": "Finish and invoice",
+      "completeConfirm": "The invoice will be issued for the accepted quote amount.",
+      "cancel": "Cancel the case",
+      "cancelConfirm": "The case will be cancelled and everyone involved notified.",
+      "confirm": "Confirm",
+      "done": "Done.",
+      "noAction": "Nothing for you to do right now."
+    },
+    "quote": {
+      "title": "Quote {reference}",
+      "pending": "Being reviewed",
+      "validity": "Valid {days} days",
+      "signedOn": "Accepted on {date}"
+    },
+    "intervention": {
+      "title": "Job",
+      "planned": "Scheduled for {date}",
+      "statuses": {
+        "planned": "Scheduled",
+        "in_progress": "In progress",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+      }
+    },
+    "invoice": {
+      "title": "Invoice {reference}",
+      "due": "Due: {date}",
+      "paidOn": "Paid on {date}",
+      "receipt": "Proof of payment",
+      "viewReceipt": "View proof",
+      "uploadReceipt": "Upload proof of payment",
+      "markPaid": "Confirm payment",
+      "remind": "Send a reminder",
+      "reminders": "{count, plural, =0 {No reminder} one {# reminder sent} other {# reminders sent}}",
+      "statuses": {
+        "unpaid": "To pay",
+        "under_review": "Proof to check",
+        "paid": "Paid",
+        "overdue": "Overdue",
+        "cancelled": "Cancelled"
+      }
+    },
+    "chat": {
+      "caseTitle": "Conversation with the client",
+      "caseTitleClient": "Conversation with the team",
+      "teamTitle": "Team chat",
+      "teamSub": "Only visible to the team.",
+      "placeholder": "Write a message…",
+      "send": "Send",
+      "empty": "No messages yet."
+    },
+    "errors": {
+      "notFound": "Case not found.",
+      "forbidden": "You are not allowed to do this.",
+      "invalid_status": "This action is no longer possible at this stage.",
+      "missing_data": "Some information is missing for this action.",
+      "unpaid": "The invoice is not paid yet.",
+      "conflict": "Someone else just changed this case. Reload the page.",
+      "pickTechnician": "Pick at least one technician.",
+      "notesTooShort": "Describe your findings (at least 10 characters).",
+      "aiFailed": "AI could not draft the quote. Try again or type it manually.",
+      "badDate": "Choose a future date."
+    }
+  },
+  "approvals": {
+    "title": "Approvals",
+    "sub": "Quotes waiting for your decision.",
+    "subDirector": "Quotes above the {threshold} threshold, waiting for your decision.",
+    "empty": "No quote to approve."
+  },
+  "quotes": {
+    "title": "My quotes",
+    "sub": "Quotes approved by our team, waiting for your agreement.",
+    "empty": "No quotes yet.",
+    "open": "View the case"
+  },
+  "invoices": {
+    "title": "Invoices",
+    "titleClient": "My invoices",
+    "titleFinance": "Finance",
+    "sub": "Issued invoices, payments and reminders.",
+    "subClient": "Pay your invoices and upload your proof of payment.",
+    "empty": "No invoices.",
+    "kpi": {
+      "unpaid": "To collect",
+      "review": "Proofs to check",
+      "paid": "Collected",
+      "overdue": "Overdue"
+    },
+    "columns": {
+      "reference": "Invoice",
+      "title": "Subject",
+      "amount": "Amount incl. VAT",
+      "due": "Due",
+      "status": "Status",
+      "actions": "Actions"
+    }
+  },
+  "calendar": {
+    "title": "Calendar",
+    "titleInterventions": "Jobs",
+    "sub": "Scheduled jobs.",
+    "previous": "Previous month",
+    "next": "Next month",
+    "today": "Today",
+    "empty": "No job this month.",
+    "listTitle": "This month"
+  },
+  "technicians": {
+    "title": "Technicians",
+    "sub": "Your field team, their specialities and availability.",
+    "empty": "No technician in the company.",
+    "available": "Available",
+    "unavailable": "Unavailable",
+    "experience": "{years, plural, =0 {Beginner} one {# year of experience} other {# years of experience}}",
+    "jobs": "{count, plural, =0 {No jobs} one {# job} other {# jobs}}",
+    "noLocation": "No location set",
+    "map": "Technician map"
+  },
+  "chats": {
+    "title": "Conversations",
+    "sub": "Team chats of your cases.",
+    "empty": "No team conversation.",
+    "members": "{count, plural, one {# member} other {# members}}"
+  },
+  "support": {
+    "title": "Support",
+    "sub": "Your feedback helps us improve the service.",
+    "topic": "Topic",
+    "topics": {
+      "service": "Service",
+      "technician": "Technician",
+      "billing": "Billing",
+      "app": "App"
+    },
+    "rating": "Rating",
+    "ratingLabel": "{rating} out of 5",
+    "message": "Your message",
+    "submit": "Send",
+    "thanks": "Thank you, your feedback was sent.",
+    "history": "Your messages",
+    "empty": "No messages sent."
+  },
+  "notificationsPage": {
+    "title": "Notifications",
+    "sub": "Everything that happened on your cases.",
+    "open": "Open the case"
+  },
+  "directory": {
+    "title": "Directory",
+    "sub": "Team members and how to reach them.",
+    "call": "Call",
+    "email": "Email"
+  },
+  "techProfile": {
+    "title": "Field profile",
+    "specialty": "Speciality",
+    "experience": "Years of experience",
+    "bio": "About",
+    "available": "Available for new jobs",
+    "location": "Location",
+    "locate": "Update my location",
+    "locating": "Locating…",
+    "locationSaved": "Location saved: {place}",
+    "locationFailed": "Could not get your location.",
+    "noLocation": "No location saved."
+  },
+  "workflowSettings": {
+    "title": "Workflow settings",
+    "sub": "These settings apply immediately to new quotes and reminders.",
+    "threshold": "Director approval threshold (€ incl. VAT)",
+    "thresholdHint": "Quotes from this amount need the director’s approval.",
+    "reminder1": "1st reminder (days after issue)",
+    "reminder2": "2nd reminder (days after issue)",
+    "pricingNote": "Pricing guidance for the AI",
+    "pricingNoteHint": "E.g. hourly rate, travel, margins."
+  },
+  "dashboardRole": {
+    "openCases": "Open cases",
+    "toAssign": "To assign",
+    "toApprove": "Quotes to approve",
+    "planned": "Scheduled jobs",
+    "myOpen": "My open cases",
+    "quotesWaiting": "Quotes to accept",
+    "unpaidInvoices": "Invoices to pay",
+    "myTasks": "Active jobs",
+    "siteVisits": "Site visits to do",
+    "today": "Upcoming jobs",
+    "receivables": "To collect",
+    "recent": "Recent cases",
+    "viewAll": "View all"
   }
 }

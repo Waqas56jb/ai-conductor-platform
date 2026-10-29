@@ -139,14 +139,14 @@ test.describe("signup end to end", () => {
     await page.getByRole("button", { name: "Créer mon compte" }).click();
 
     // The confirmation email goes through the shared project's mailer, which may
-    // be rate-limited. Either way the app must behave correctly.
+    // be rate-limited, and its address check may refuse example.com. Either way
+    // the app must behave correctly.
     const sent = page.getByText(email);
-    const failed = page
-      .getByRole("main")
-      .getByRole("alert")
-      .filter({ hasText: "n’a pas pu être envoyé" });
-    await expect(sent.or(failed)).toBeVisible({ timeout: 30_000 });
-    if (await failed.isVisible()) {
+    const alert = page.getByRole("main").getByRole("alert");
+    const failed = alert.filter({ hasText: "n’a pas pu être envoyé" });
+    const refused = alert.filter({ hasText: "Adresse e-mail invalide." });
+    await expect(sent.or(failed).or(refused)).toBeVisible({ timeout: 30_000 });
+    if ((await failed.isVisible()) || (await refused.isVisible())) {
       await shot("signup-email-failed");
       // Nothing half-created: no auth account, no profile, no company.
       expect(await findAuthUserId(email)).toBeNull();
@@ -157,7 +157,8 @@ test.describe("signup end to end", () => {
       expect(count).toBe(0);
       test.info().annotations.push({
         type: "blocker",
-        description: "Supabase did not send the confirmation email (send rate limit / SMTP).",
+        description:
+          "Supabase did not send the confirmation email (send rate limit / SMTP / address check).",
       });
       return;
     }

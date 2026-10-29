@@ -1,8 +1,35 @@
-import { Building2, LayoutDashboard, UserRound, type LucideIcon } from "lucide-react";
+import {
+  Bell,
+  BookUser,
+  Building2,
+  CalendarDays,
+  CircleHelp,
+  ClipboardCheck,
+  FileText,
+  FolderKanban,
+  HardHat,
+  LayoutDashboard,
+  MessagesSquare,
+  Receipt,
+  TriangleAlert,
+  UserRound,
+  type LucideIcon,
+} from "lucide-react";
 import type { NavIcon } from "@/lib/navigation";
 
 export const NAV_ICONS: Record<NavIcon, LucideIcon> = {
   dashboard: LayoutDashboard,
-  company: Building2,
+  report: TriangleAlert,
+  cases: FolderKanban,
+  approvals: ClipboardCheck,
+  quotes: FileText,
+  invoices: Receipt,
+  calendar: CalendarDays,
+  technicians: HardHat,
+  chats: MessagesSquare,
+  support: CircleHelp,
+  notifications: Bell,
+  directory: BookUser,
   profile: UserRound,
+  company: Building2,
 };

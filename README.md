@@ -7,9 +7,10 @@ AI-assisted operations platform for French SMEs in real estate (immobilier), pro
 Rebuild in progress, phase by phase (see [PRATONNA_AUDIT.md](PRATONNA_AUDIT.md)).
 
 - **Phase 1 — done:** design system, French/English (French default), Supabase Auth (sign-up with company creation, login, password reset, email confirmation), roles, multi-company data isolation, app shell.
+- **Phase 2 — done:** the repair workflow end to end, one app for every role (client, technician, manager, director): report with photos, triage, technician map and assignment, AI-drafted devis, threshold-based approval, client signature, calendar, intervention, invoice, receipt, payment, reminders, realtime chats and notifications.
 - `src/` is the Next.js app (the product, under `/app`).
 - `db/` holds the Postgres schema as versioned SQL migrations. Read [db/README.md](db/README.md) first: the Supabase project is shared with other applications.
-- `legacy/` holds the original prototype apps. `legacy/client` is still the live marketing site; the other three are UX references until their panels are ported.
+- `legacy/client` is the original prototype, still serving the live marketing site. The manager, technician and director prototypes were removed once ported.
 
 ## Stack
 
@@ -36,6 +37,9 @@ pnpm dev                      # http://localhost:3000
 | `pnpm test:e2e`   | Browser tests (Playwright, Chrome, 390 / 768 / 1440 px) |
 | `pnpm db:status`  | List applied / pending migrations                       |
 | `pnpm db:migrate` | Apply pending migrations                                |
+| `pnpm db:seed`    | Recreate the "Pratonna Démo" company with demo data     |
+
+`pnpm db:seed` creates 10 accounts `<role>@pratonna-demo.test` (password `SEED_PASSWORD`, default `Demo-Pratonna-2026`) and cases at every stage. Only that company is touched.
 
 Environment variables are validated in [src/lib/env.ts](src/lib/env.ts). Set `SKIP_ENV_VALIDATION=1` to build without real secrets.
 
@@ -45,10 +49,13 @@ Environment variables are validated in [src/lib/env.ts](src/lib/env.ts). Set `SK
 
 ## Roles
 
-| Role                                            | Access (phase 1)                           |
-| ----------------------------------------------- | ------------------------------------------ |
-| `director`                                      | Dashboard, company details & team, profile |
-| `admin`                                         | Same as director                           |
-| `manager`, `technician`, `accountant`, `client` | Dashboard, profile                         |
+| Role         | Access (phase 2)                                                                                             |
+| ------------ | ------------------------------------------------------------------------------------------------------------ |
+| `client`     | Own cases (report, track, chat), quotes (accept / decline), invoices (receipt upload), support               |
+| `technician` | Assigned tasks (photos, AI report and devis, start / complete), calendar, team chats, directory, geolocation |
+| `manager`    | All cases, technician map and assignment, approvals below the threshold, calendar, invoices and reminders    |
+| `director`   | Everything a manager does, approvals at or above the threshold, workflow settings, company and team          |
+| `admin`      | Same as director                                                                                             |
+| `accountant` | Cases (read), invoices, payments                                                                             |
 
-Sign-up creates a company and its director account. Every page checks the role on the server; the database enforces company isolation with row-level security.
+Sign-up creates a company and its director account. Every page checks the role on the server. Every status change goes through one state machine ([src/lib/workflows/incident.ts](src/lib/workflows/incident.ts)). The database enforces company isolation with row-level security.

@@ -33,7 +33,9 @@ describe("messages", () => {
   it("uses the same placeholders in both languages", () => {
     // `{name}` or `{name, plural, …}` — not plural branch text like `{# items}`.
     const vars = (v: unknown) =>
-      typeof v === "string" ? (v.match(/\{(\w+)(?=[,}])/g) ?? []).sort() : [];
+      typeof v === "string"
+        ? (v.match(/(?<!(?:=\d+|zero|one|two|few|many|other) )\{(\w+)(?=[,}])/g) ?? []).sort()
+        : [];
     const mismatched = [...frLeaves.keys()].filter(
       (k) => JSON.stringify(vars(frLeaves.get(k))) !== JSON.stringify(vars(enLeaves.get(k))),
     );

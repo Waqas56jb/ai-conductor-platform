@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { LiveRefresh } from "@/components/cases/LiveRefresh";
 import { AppShell } from "@/components/shell/AppShell";
 import { requireProfile } from "@/lib/auth/session";
 import { navForRole } from "@/lib/navigation";
@@ -46,6 +47,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       }))}
       unreadCount={unreadCount ?? 0}
     >
+      {/* Bell and unread count update live. */}
+      <LiveRefresh
+        channel="my-notifications"
+        tables={[{ table: "ai_conductor_notifications", filter: `user_id=eq.${profile.id}` }]}
+      />
       {children}
     </AppShell>
   );

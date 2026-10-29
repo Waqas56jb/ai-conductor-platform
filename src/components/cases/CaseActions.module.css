@@ -1,0 +1,111 @@
+.stack {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.inline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-3);
+}
+
+.muted {
+  color: var(--text-faint);
+}
+
+.subTitle {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.label {
+  display: grid;
+  gap: 0.4rem;
+  color: var(--text-soft);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid var(--line-strong);
+  background: rgba(6, 11, 30, 0.55);
+  color: var(--text);
+  font-size: 0.95rem;
+  resize: vertical;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--cyan);
+}
+
+.fileLabel {
+  display: grid;
+  gap: 0.4rem;
+  min-width: 0;
+  color: var(--text-soft);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.fileLabel input {
+  max-width: 100%;
+  color: var(--text-faint);
+  font-size: 0.85rem;
+}
+
+.techs {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tech {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 0.7rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+}
+
+.tech input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--blue);
+}
+
+.tech span {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+
+.tech small {
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+.techOn {
+  border-color: rgba(73, 216, 255, 0.5);
+  background: rgba(47, 107, 255, 0.12);
+}
+
+.techOff {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.cancel {
+  display: flex;
+  justify-content: flex-end;
+}

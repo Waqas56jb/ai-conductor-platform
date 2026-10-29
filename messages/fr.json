@@ -35,7 +35,17 @@
     "passwordMismatch": "Les mots de passe ne correspondent pas.",
     "tooLong": "Texte trop long.",
     "siret": "Le SIRET comporte 14 chiffres.",
-    "phone": "Numéro de téléphone invalide."
+    "phone": "Numéro de téléphone invalide.",
+    "number": "Nombre invalide.",
+    "positive": "Doit être positif.",
+    "linesRequired": "Ajoutez au moins une ligne.",
+    "photoRequired": "Ajoutez au moins une photo.",
+    "tooManyPhotos": "Trop de photos.",
+    "receiptRequired": "Ajoutez un justificatif.",
+    "upload_too_large": "Fichier trop volumineux (10 Mo maximum).",
+    "upload_bad_type": "Format non accepté.",
+    "upload_failed": "L’envoi du fichier a échoué. Réessayez.",
+    "reminderOrder": "Le 2e rappel doit venir après le 1er."
   },
   "auth": {
     "visualTitle": "Votre 6ème collaborateur, 100 % IA",
@@ -118,7 +128,22 @@
   "nav": {
     "dashboard": "Tableau de bord",
     "profile": "Mon profil",
-    "company": "Entreprise"
+    "company": "Entreprise",
+    "report": "Signaler un problème",
+    "cases": "Dossiers",
+    "myCases": "Mes dossiers",
+    "tasks": "Mes tâches",
+    "approvals": "Validations",
+    "quotes": "Devis",
+    "invoices": "Factures",
+    "finance": "Finance",
+    "calendar": "Calendrier",
+    "interventions": "Interventions",
+    "technicians": "Techniciens",
+    "chats": "Discussions",
+    "support": "Support",
+    "notifications": "Notifications",
+    "directory": "Annuaire"
   },
   "dashboard": {
     "welcome": "Bonjour {name}",
@@ -618,5 +643,328 @@
       "save": "Enregistrer",
       "saved": "Paramètres enregistrés. Le routage manager / IA utilisera le nouveau seuil."
     }
+  },
+  "status": {
+    "new": "Nouveau",
+    "awaiting_assignment": "À assigner",
+    "site_visit": "Visite technique",
+    "devis_pending_manager": "Devis à valider",
+    "devis_pending_director": "Devis — validation dirigeant",
+    "sent_to_client": "Devis envoyé au client",
+    "client_signed": "Devis signé",
+    "intervention_planned": "Intervention planifiée",
+    "in_progress": "En cours",
+    "invoiced": "Facturé",
+    "closed": "Clôturé",
+    "cancelled": "Annulé"
+  },
+  "urgency": {
+    "low": "Faible",
+    "medium": "Moyenne",
+    "high": "Élevée"
+  },
+  "channel": {
+    "app": "Application",
+    "web": "Site web",
+    "whatsapp": "WhatsApp",
+    "email": "E-mail",
+    "phone": "Téléphone"
+  },
+  "cases": {
+    "listTitle": "Dossiers",
+    "listTitleClient": "Mes dossiers",
+    "listTitleTech": "Mes tâches",
+    "listSub": "Suivi de chaque dossier, du signalement à la facture.",
+    "newCase": "Nouveau dossier",
+    "empty": "Aucun dossier pour le moment.",
+    "emptyClient": "Vous n’avez encore signalé aucun problème.",
+    "emptyTech": "Aucune mission ne vous est assignée.",
+    "filterAll": "Tous",
+    "filterOpen": "En cours",
+    "filterClosed": "Terminés",
+    "columns": {
+      "case": "Dossier",
+      "address": "Adresse",
+      "status": "Statut",
+      "urgency": "Urgence",
+      "created": "Créé le"
+    },
+    "report": {
+      "title": "Signaler un problème",
+      "sub": "Une photo, l’adresse, et notre équipe prend le relais.",
+      "titleField": "Objet",
+      "titlePlaceholder": "Ex. : fuite au plafond de la salle de bain",
+      "description": "Description",
+      "descriptionPlaceholder": "Depuis quand, où exactement, ce que vous avez constaté…",
+      "address": "Adresse",
+      "unit": "Lot / étage",
+      "city": "Ville",
+      "useLocation": "Utiliser ma position",
+      "locating": "Localisation…",
+      "locationFailed": "Position indisponible : saisissez l’adresse.",
+      "urgency": "Urgence",
+      "channel": "Canal",
+      "complainant": "Nom du demandeur",
+      "photos": "Photos",
+      "photosHint": "Jusqu’à 6 photos (JPEG, PNG ou WebP).",
+      "takePhoto": "Prendre une photo",
+      "addPhotos": "Ajouter des photos",
+      "removePhoto": "Retirer la photo",
+      "submit": "Envoyer le signalement"
+    },
+    "detail": {
+      "back": "Tous les dossiers",
+      "reportedBy": "Signalé par",
+      "channel": "Canal",
+      "created": "Créé le",
+      "manager": "Gestionnaire",
+      "technicians": "Techniciens",
+      "noTechnician": "Aucun technicien assigné",
+      "photos": "Photos",
+      "noPhotos": "Aucune photo.",
+      "photoReport": "Signalement",
+      "photoSite": "Visite",
+      "description": "Description",
+      "timeline": "Avancement",
+      "actions": "Actions"
+    },
+    "actions": {
+      "triageTitle": "Qualifier le dossier",
+      "triage": "Valider l’urgence",
+      "assignTitle": "Assigner des techniciens",
+      "assignSub": "Choisissez un ou plusieurs techniciens disponibles.",
+      "assign": "Assigner",
+      "unavailable": "Indisponible",
+      "siteTitle": "Visite technique",
+      "sitePhotos": "Photos du site",
+      "uploadPhotos": "Envoyer les photos",
+      "notes": "Constat",
+      "notesPlaceholder": "Ce que vous avez constaté sur place, mesures, cause probable…",
+      "aiDraft": "Rédiger le devis avec l’IA",
+      "aiDrafting": "L’IA rédige…",
+      "aiDone": "Brouillon généré : relisez et corrigez avant d’envoyer.",
+      "devisTitle": "Devis",
+      "devisLabel": "Intitulé",
+      "summary": "Synthèse pour le client",
+      "diagnosis": "Diagnostic (équipe)",
+      "lines": "Lignes",
+      "lineLabel": "Désignation",
+      "quantity": "Qté",
+      "unitPrice": "PU HT",
+      "lineTotal": "Total HT",
+      "addLine": "Ajouter une ligne",
+      "removeLine": "Supprimer la ligne",
+      "taxRate": "TVA",
+      "subtotal": "Total HT",
+      "tax": "TVA",
+      "total": "Total TTC",
+      "submitDevis": "Envoyer pour validation",
+      "routeManager": "Validation par le gestionnaire (sous le seuil de {threshold})",
+      "routeDirector": "Validation par le dirigeant (seuil de {threshold} atteint)",
+      "approvalTitle": "Validation du devis",
+      "approve": "Valider et envoyer au client",
+      "reject": "Refuser — à revoir",
+      "waitingDirector": "En attente de la validation du dirigeant.",
+      "clientTitle": "Votre devis",
+      "accept": "Accepter le devis",
+      "decline": "Refuser",
+      "acceptConfirm": "En acceptant, vous donnez votre accord pour la réalisation des travaux au prix indiqué.",
+      "scheduleTitle": "Planifier l’intervention",
+      "scheduleAt": "Date et heure",
+      "scheduleNotes": "Consignes (facultatif)",
+      "schedule": "Planifier",
+      "reschedule": "Replanifier",
+      "start": "Démarrer l’intervention",
+      "complete": "Terminer et facturer",
+      "completeConfirm": "La facture sera émise au montant du devis accepté.",
+      "cancel": "Annuler le dossier",
+      "cancelConfirm": "Le dossier sera annulé et les intervenants prévenus.",
+      "confirm": "Confirmer",
+      "done": "C’est fait.",
+      "noAction": "Aucune action de votre part pour le moment."
+    },
+    "quote": {
+      "title": "Devis {reference}",
+      "pending": "En cours de validation",
+      "validity": "Valable {days} jours",
+      "signedOn": "Accepté le {date}"
+    },
+    "intervention": {
+      "title": "Intervention",
+      "planned": "Prévue le {date}",
+      "statuses": {
+        "planned": "Planifiée",
+        "in_progress": "En cours",
+        "completed": "Terminée",
+        "cancelled": "Annulée"
+      }
+    },
+    "invoice": {
+      "title": "Facture {reference}",
+      "due": "Échéance : {date}",
+      "paidOn": "Payée le {date}",
+      "receipt": "Justificatif de paiement",
+      "viewReceipt": "Voir le justificatif",
+      "uploadReceipt": "Envoyer un justificatif",
+      "markPaid": "Confirmer le paiement",
+      "remind": "Envoyer un rappel",
+      "reminders": "{count, plural, =0 {Aucun rappel} one {# rappel envoyé} other {# rappels envoyés}}",
+      "statuses": {
+        "unpaid": "À payer",
+        "under_review": "Justificatif à vérifier",
+        "paid": "Payée",
+        "overdue": "En retard",
+        "cancelled": "Annulée"
+      }
+    },
+    "chat": {
+      "caseTitle": "Échanges avec le client",
+      "caseTitleClient": "Échanges avec l’équipe",
+      "teamTitle": "Discussion d’équipe",
+      "teamSub": "Visible uniquement par l’équipe.",
+      "placeholder": "Écrire un message…",
+      "send": "Envoyer",
+      "empty": "Aucun message pour le moment."
+    },
+    "errors": {
+      "notFound": "Dossier introuvable.",
+      "forbidden": "Vous n’avez pas les droits pour cette action.",
+      "invalid_status": "Cette action n’est plus possible à ce stade du dossier.",
+      "missing_data": "Des informations manquent pour cette action.",
+      "unpaid": "La facture n’est pas encore payée.",
+      "conflict": "Le dossier vient d’être modifié par quelqu’un d’autre. Rechargez la page.",
+      "pickTechnician": "Choisissez au moins un technicien.",
+      "notesTooShort": "Décrivez votre constat (10 caractères minimum).",
+      "aiFailed": "L’IA n’a pas pu rédiger le devis. Réessayez ou saisissez-le manuellement.",
+      "badDate": "Choisissez une date à venir."
+    }
+  },
+  "approvals": {
+    "title": "Validations",
+    "sub": "Devis en attente de votre décision.",
+    "subDirector": "Devis au-delà du seuil de {threshold}, en attente de votre décision.",
+    "empty": "Aucun devis à valider."
+  },
+  "quotes": {
+    "title": "Mes devis",
+    "sub": "Les devis validés par notre équipe, en attente de votre accord.",
+    "empty": "Aucun devis pour le moment.",
+    "open": "Voir le dossier"
+  },
+  "invoices": {
+    "title": "Factures",
+    "titleClient": "Mes factures",
+    "titleFinance": "Finance",
+    "sub": "Factures émises, paiements et relances.",
+    "subClient": "Réglez vos factures et envoyez votre justificatif.",
+    "empty": "Aucune facture.",
+    "kpi": {
+      "unpaid": "À encaisser",
+      "review": "Justificatifs à vérifier",
+      "paid": "Encaissé",
+      "overdue": "En retard"
+    },
+    "columns": {
+      "reference": "Facture",
+      "title": "Objet",
+      "amount": "Montant TTC",
+      "due": "Échéance",
+      "status": "Statut",
+      "actions": "Actions"
+    }
+  },
+  "calendar": {
+    "title": "Calendrier",
+    "titleInterventions": "Interventions",
+    "sub": "Interventions planifiées.",
+    "previous": "Mois précédent",
+    "next": "Mois suivant",
+    "today": "Aujourd’hui",
+    "empty": "Aucune intervention ce mois-ci.",
+    "listTitle": "Ce mois-ci"
+  },
+  "technicians": {
+    "title": "Techniciens",
+    "sub": "Votre équipe terrain, ses spécialités et sa disponibilité.",
+    "empty": "Aucun technicien dans l’entreprise.",
+    "available": "Disponible",
+    "unavailable": "Indisponible",
+    "experience": "{years, plural, =0 {Débutant} one {# an d’expérience} other {# ans d’expérience}}",
+    "jobs": "{count, plural, =0 {Aucune intervention} one {# intervention} other {# interventions}}",
+    "noLocation": "Position non renseignée",
+    "map": "Carte des techniciens"
+  },
+  "chats": {
+    "title": "Discussions",
+    "sub": "Les discussions d’équipe de vos dossiers.",
+    "empty": "Aucune discussion d’équipe.",
+    "members": "{count, plural, one {# membre} other {# membres}}"
+  },
+  "support": {
+    "title": "Support",
+    "sub": "Votre avis nous aide à améliorer le service.",
+    "topic": "Sujet",
+    "topics": {
+      "service": "Service",
+      "technician": "Technicien",
+      "billing": "Facturation",
+      "app": "Application"
+    },
+    "rating": "Note",
+    "ratingLabel": "{rating} sur 5",
+    "message": "Votre message",
+    "submit": "Envoyer",
+    "thanks": "Merci, votre avis a bien été envoyé.",
+    "history": "Vos messages",
+    "empty": "Aucun message envoyé."
+  },
+  "notificationsPage": {
+    "title": "Notifications",
+    "sub": "Tout ce qui s’est passé sur vos dossiers.",
+    "open": "Ouvrir le dossier"
+  },
+  "directory": {
+    "title": "Annuaire",
+    "sub": "Les membres de l’équipe et leurs coordonnées.",
+    "call": "Appeler",
+    "email": "Écrire"
+  },
+  "techProfile": {
+    "title": "Profil terrain",
+    "specialty": "Spécialité",
+    "experience": "Années d’expérience",
+    "bio": "Présentation",
+    "available": "Disponible pour de nouvelles missions",
+    "location": "Position",
+    "locate": "Mettre à jour ma position",
+    "locating": "Localisation…",
+    "locationSaved": "Position enregistrée : {place}",
+    "locationFailed": "Impossible d’obtenir votre position.",
+    "noLocation": "Aucune position enregistrée."
+  },
+  "workflowSettings": {
+    "title": "Paramètres du workflow",
+    "sub": "Ces réglages s’appliquent immédiatement aux nouveaux devis et relances.",
+    "threshold": "Seuil de validation dirigeant (€ TTC)",
+    "thresholdHint": "Les devis à partir de ce montant doivent être validés par le dirigeant.",
+    "reminder1": "1re relance (jours après émission)",
+    "reminder2": "2e relance (jours après émission)",
+    "pricingNote": "Consignes de chiffrage pour l’IA",
+    "pricingNoteHint": "Ex. : taux horaire, déplacement, marges."
+  },
+  "dashboardRole": {
+    "openCases": "Dossiers en cours",
+    "toAssign": "À assigner",
+    "toApprove": "Devis à valider",
+    "planned": "Interventions planifiées",
+    "myOpen": "Mes dossiers en cours",
+    "quotesWaiting": "Devis à accepter",
+    "unpaidInvoices": "Factures à régler",
+    "myTasks": "Missions en cours",
+    "siteVisits": "Visites à faire",
+    "today": "Interventions à venir",
+    "receivables": "À encaisser",
+    "recent": "Dossiers récents",
+    "viewAll": "Tout voir"
   }
 }

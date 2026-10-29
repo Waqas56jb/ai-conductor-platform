@@ -15,6 +15,9 @@ export type E2EState = {
   orphan: { authId: string; email: string };
   /** Dedicated account for the password-recovery test (its password changes). */
   recovery: { authId: string; profileId: string; email: string };
+  /** Second client / technician: must never see the first one's cases. */
+  client2: { authId: string; profileId: string; email: string; name: string };
+  technician2: { authId: string; profileId: string; email: string; name: string };
 };
 
 const STATE_FILE = join(__dirname, "..", ".state.json");
