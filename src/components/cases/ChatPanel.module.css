@@ -40,7 +40,11 @@
 }
 
 .mine .bubble {
-  background: linear-gradient(135deg, rgba(47, 107, 255, 0.55), rgba(139, 92, 246, 0.5));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--blue) 55%, transparent),
+    color-mix(in srgb, var(--violet) 50%, transparent)
+  );
   border-top-right-radius: 4px;
 }
 

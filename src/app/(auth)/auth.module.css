@@ -14,8 +14,16 @@
   align-items: flex-end;
   padding: clamp(2rem, 5vw, 4rem);
   background:
-    radial-gradient(700px 500px at 20% 10%, rgba(47, 107, 255, 0.35), transparent 60%),
-    radial-gradient(600px 500px at 90% 80%, rgba(139, 92, 246, 0.3), transparent 60%),
+    radial-gradient(
+      700px 500px at 20% 10%,
+      color-mix(in srgb, var(--blue) 35%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      600px 500px at 90% 80%,
+      color-mix(in srgb, var(--violet) 30%, transparent),
+      transparent 60%
+    ),
     linear-gradient(160deg, #0a1440, var(--navy-950));
   border-right: 1px solid var(--line);
 }

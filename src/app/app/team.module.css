@@ -71,7 +71,7 @@
 }
 
 .unread {
-  background: rgba(47, 107, 255, 0.08);
+  background: color-mix(in srgb, var(--blue) 8%, transparent);
 }
 
 .item a {

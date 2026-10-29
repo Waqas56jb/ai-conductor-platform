@@ -59,6 +59,10 @@ export type NotificationRow = {
   task_id: string | null;
   quotation_id: string | null;
   invoice_id: string | null;
+  priority: "urgent" | "important" | "digest";
+  source: "email" | "call" | "meeting" | "file" | "task" | "system";
+  /** Moved by the user: priority rules leave it alone. */
+  priority_overridden: boolean;
   created_at: string;
 };
 
@@ -222,13 +226,55 @@ export type FeedbackRow = {
   created_at: string;
 };
 
-export type AgentProfileRow = Timestamps & {
+export const THEME_COLORS = ["blue", "ocean", "violet", "emerald", "amber", "rose"] as const;
+export type ThemeColor = (typeof THEME_COLORS)[number];
+
+export const ASSISTANT_TONES = [
+  "direct",
+  "friendly",
+  "professional",
+  "motivating",
+  "neutral",
+] as const;
+export type AssistantTone = (typeof ASSISTANT_TONES)[number];
+
+export const ASSISTANT_VOICES = ["calm", "energetic", "neutral", "off"] as const;
+export type AssistantVoice = (typeof ASSISTANT_VOICES)[number];
+
+export const AVATAR_TYPES = ["human", "abstract", "none"] as const;
+export type AvatarType = (typeof AVATAR_TYPES)[number];
+
+export type AssistantProfileRow = Timestamps & {
   user_id: string;
   company_id: string;
-  assistant_name: string;
-  tone: "professional" | "friendly" | "concise";
+  display_name: string;
+  tone: AssistantTone;
   language: "fr" | "en";
-  instructions: string;
+  avatar_type: AvatarType;
+  avatar_url: string | null;
+  voice: AssistantVoice;
+  context_aware_tone: boolean;
+  /** Null follows the company colour. */
+  theme_color: ThemeColor | null;
+};
+
+export const MEMORY_KINDS = ["preference", "rule", "fact"] as const;
+export type MemoryKind = (typeof MEMORY_KINDS)[number];
+
+export type AssistantMemoryRow = Timestamps & {
+  id: string;
+  user_id: string;
+  company_id: string;
+  kind: MemoryKind;
+  content: string;
+  approved: boolean;
+  source: "user" | "assistant";
+};
+
+export type CompanyThemeRow = Timestamps & {
+  company_id: string;
+  primary_color: ThemeColor;
+  updated_by: string | null;
 };
 
 export type AiConversationRow = Timestamps & {
@@ -279,6 +325,69 @@ export type AiActionRow = Timestamps & {
   result: Record<string, unknown> | null;
   error: string | null;
   expires_at: string | null;
+};
+
+export type SignatureEvent = { status: string; at: string; source: "app" | "webhook" | "poll" };
+
+export type SignatureRequestRow = Timestamps & {
+  id: string;
+  company_id: string;
+  document_type: "quotation" | "contract" | "service_order";
+  document_id: string;
+  incident_id: string | null;
+  provider: "docusign";
+  envelope_id: string;
+  signer_id: string | null;
+  signer_email: string;
+  status: "sent" | "delivered" | "completed" | "declined" | "voided";
+  /** Path in the signatures bucket once completed. */
+  signed_pdf_url: string | null;
+  events: SignatureEvent[];
+  created_by: string | null;
+  completed_at: string | null;
+};
+
+export type PriorityRuleRow = Timestamps & {
+  id: string;
+  user_id: string;
+  company_id: string;
+  condition: Record<string, unknown>;
+  priority: NotificationRow["priority"];
+  label: string;
+  approved: boolean;
+  source: "user" | "assistant" | "overrides";
+};
+
+export type ReminderRow = Timestamps & {
+  id: string;
+  company_id: string;
+  user_id: string;
+  kind: "meeting" | "call" | "email" | "task" | "follow_up";
+  title: string;
+  notes: string;
+  due_at: string;
+  incident_id: string | null;
+  task_id: string | null;
+  quotation_id: string | null;
+  invoice_id: string | null;
+  channel: "in_app" | "email" | "whatsapp" | "sms";
+  status: "scheduled" | "sent" | "done" | "cancelled" | "failed";
+  attempts: number;
+  sent_at: string | null;
+  last_error: string | null;
+  payload: Record<string, unknown>;
+  created_by: string | null;
+  created_via: "app" | "assistant";
+};
+
+export type PushSubscriptionRow = Timestamps & {
+  id: string;
+  company_id: string;
+  user_id: string;
+  endpoint: string;
+  p256dh: string;
+  auth: string;
+  user_agent: string;
 };
 
 type Table<Row, Insert, Update = Partial<Insert>> = {
@@ -374,9 +483,41 @@ export type Database = {
         FeedbackRow,
         Partial<FeedbackRow> & Pick<FeedbackRow, "company_id">
       >;
-      ai_conductor_agent_profiles: Table<
-        AgentProfileRow,
-        Partial<AgentProfileRow> & Pick<AgentProfileRow, "user_id" | "company_id">
+      ai_conductor_assistant_profiles: Table<
+        AssistantProfileRow,
+        Partial<AssistantProfileRow> & Pick<AssistantProfileRow, "user_id" | "company_id">
+      >;
+      ai_conductor_assistant_memories: Table<
+        AssistantMemoryRow,
+        Partial<AssistantMemoryRow> &
+          Pick<AssistantMemoryRow, "user_id" | "company_id" | "kind" | "content">
+      >;
+      ai_conductor_signature_requests: Table<
+        SignatureRequestRow,
+        Partial<SignatureRequestRow> &
+          Pick<
+            SignatureRequestRow,
+            "company_id" | "document_type" | "document_id" | "envelope_id" | "signer_email"
+          >
+      >;
+      ai_conductor_priority_rules: Table<
+        PriorityRuleRow,
+        Partial<PriorityRuleRow> &
+          Pick<PriorityRuleRow, "user_id" | "company_id" | "condition" | "priority" | "label">
+      >;
+      ai_conductor_reminders: Table<
+        ReminderRow,
+        Partial<ReminderRow> &
+          Pick<ReminderRow, "company_id" | "user_id" | "kind" | "title" | "due_at">
+      >;
+      ai_conductor_push_subscriptions: Table<
+        PushSubscriptionRow,
+        Partial<PushSubscriptionRow> &
+          Pick<PushSubscriptionRow, "company_id" | "user_id" | "endpoint" | "p256dh" | "auth">
+      >;
+      ai_conductor_company_themes: Table<
+        CompanyThemeRow,
+        Partial<CompanyThemeRow> & Pick<CompanyThemeRow, "company_id">
       >;
       ai_conductor_ai_conversations: Table<
         AiConversationRow,

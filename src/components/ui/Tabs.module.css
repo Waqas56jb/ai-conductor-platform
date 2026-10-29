@@ -32,7 +32,7 @@
 .active {
   color: #fff;
   background: var(--gradient);
-  box-shadow: 0 6px 18px -8px rgba(47, 107, 255, 0.9);
+  box-shadow: 0 6px 18px -8px color-mix(in srgb, var(--blue) 90%, transparent);
 }
 
 .panel {

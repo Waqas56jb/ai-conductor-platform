@@ -4,7 +4,9 @@ vi.mock("server-only", () => ({}));
 vi.mock("@/app/app/cases/actions", () => ({}));
 
 const { TOOLS, openAiTools, toolsForRole } = await import("./tools");
-const { systemPrompt, toChatHistory, DEFAULT_AGENT } = await import("./run");
+const { toChatHistory } = await import("./run");
+const { assistantSystemPrompt } = await import("@/lib/ai/system-prompt");
+const { DEFAULT_ASSISTANT } = await import("@/lib/assistant/defaults");
 
 const names = (role: Parameters<typeof toolsForRole>[0]) => toolsForRole(role).map(([n]) => n);
 
@@ -14,14 +16,16 @@ describe("assistant tools", () => {
       "list_cases",
       "get_case",
       "list_invoices",
+      "suggest_memory",
       "client_decision",
       "send_case_message",
     ]);
-    expect(names("technician")).toEqual(["list_cases", "get_case"]);
+    expect(names("technician")).toEqual(["list_cases", "get_case", "suggest_memory"]);
     expect(names("accountant")).toEqual([
       "list_cases",
       "get_case",
       "list_invoices",
+      "suggest_memory",
       "send_invoice_reminder",
     ]);
     for (const office of ["manager", "director", "admin"] as const) {
@@ -85,7 +89,7 @@ describe("toChatHistory", () => {
   });
 });
 
-describe("systemPrompt", () => {
+describe("assistantSystemPrompt", () => {
   const profile = {
     id: "u1",
     email: "m@x.fr",
@@ -96,17 +100,45 @@ describe("systemPrompt", () => {
     locale: "fr" as const,
     company_id: "c1",
   };
-
-  it("includes the user, the approval rule and personal instructions last", () => {
-    const prompt = systemPrompt(
+  const build = (
+    persona: Partial<typeof DEFAULT_ASSISTANT> = {},
+    memories: { kind: "rule" | "fact" | "preference"; content: string; approved: boolean }[] = [],
+  ) =>
+    assistantSystemPrompt({
       profile,
-      { ...DEFAULT_AGENT, assistant_name: "Léa", instructions: "Commence par l’urgent." },
-      "Syndic Martin",
-    );
+      persona: { ...DEFAULT_ASSISTANT, ...persona },
+      companyName: "Syndic Martin",
+      memories,
+    });
+
+  it("names the assistant and the user, and keeps the approval rule", () => {
+    const prompt = build({ display_name: "Léa" });
     expect(prompt).toContain("Ton nom est Léa");
     expect(prompt).toContain("Marie Martin (rôle : manager)");
     expect(prompt).toContain("« Syndic Martin »");
     expect(prompt).toMatch(/attend sa validation/);
-    expect(prompt.trim().endsWith("Commence par l’urgent.")).toBe(true);
+  });
+
+  it("defaults to Maya, professional, with the context-aware rule", () => {
+    const prompt = build();
+    expect(prompt).toContain("Ton nom est Maya");
+    expect(prompt).toContain("Ton professionnel et courtois.");
+    expect(prompt).toContain("Ton adapté au contexte");
+  });
+
+  it("follows the chosen tone and drops the context rule when switched off", () => {
+    const prompt = build({ tone: "direct", context_aware_tone: false });
+    expect(prompt).toContain("Ton direct");
+    expect(prompt).not.toContain("Ton adapté au contexte");
+    expect(prompt).not.toContain("Ton professionnel");
+  });
+
+  it("includes only approved memories, last", () => {
+    const prompt = build({}, [
+      { kind: "rule", content: "Commence par l’urgent.", approved: true },
+      { kind: "fact", content: "Secret non validé", approved: false },
+    ]);
+    expect(prompt).not.toContain("Secret non validé");
+    expect(prompt.trim().endsWith("- [règle] Commence par l’urgent.")).toBe(true);
   });
 });

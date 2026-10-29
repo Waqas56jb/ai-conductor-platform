@@ -3,6 +3,8 @@ import { z } from "zod";
 import type { Role } from "@/lib/auth/roles";
 import type { Profile } from "@/lib/auth/session";
 import { getCaseDetail, listCases, listTechnicians } from "@/lib/cases/queries";
+import { MEMORY_KINDS } from "@/lib/db/types";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { INCIDENT_STATUSES } from "@/lib/workflows/incident";
 import {
@@ -204,6 +206,31 @@ export const TOOLS: Record<string, AssistantTool> = {
       if (status) query = query.eq("status", status);
       const { data } = await query;
       return data ?? [];
+    },
+  }),
+
+  // Not a business action: it only stores a suggestion, used once the user approves it.
+  suggest_memory: tool({
+    kind: "read",
+    description:
+      "Suggest remembering a lasting preference, rule or fact the user stated (e.g. “always address clients formally”). Saved as a suggestion the user approves in their assistant settings; it is not used before.",
+    roles: EVERYONE,
+    schema: z.object({
+      kind: z.enum(MEMORY_KINDS),
+      content: z.string().trim().min(3).max(500),
+    }),
+    run: async ({ kind, content }, profile) => {
+      const { error } = await createAdminClient().from("ai_conductor_assistant_memories").insert({
+        user_id: profile.id,
+        company_id: profile.company_id,
+        kind,
+        content,
+        approved: false,
+        source: "assistant",
+      });
+      return error
+        ? { error: "Suggestion not saved" }
+        : { status: "suggested_pending_user_approval" };
     },
   }),
 

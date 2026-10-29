@@ -34,7 +34,7 @@
 
 .filter[aria-current="page"] {
   color: #fff;
-  background: rgba(47, 107, 255, 0.28);
+  background: color-mix(in srgb, var(--blue) 28%, transparent);
   border-color: rgba(73, 216, 255, 0.35);
 }
 

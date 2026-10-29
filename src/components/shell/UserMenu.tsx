@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { LogOut, UserRound } from "lucide-react";
+import { LogOut, Sparkles, UserRound } from "lucide-react";
 import { Button, Modal } from "@/components/ui";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import type { ShellUser } from "./types";
@@ -63,6 +63,15 @@ export function UserMenu({ user }: { user: ShellUser }) {
           <Link href="/app/profile" role="menuitem" className={styles.menuItem} onClick={close}>
             <UserRound aria-hidden="true" />
             {tn("profile")}
+          </Link>
+          <Link
+            href="/app/settings/assistant"
+            role="menuitem"
+            className={styles.menuItem}
+            onClick={close}
+          >
+            <Sparkles aria-hidden="true" />
+            {tn("assistantSettings")}
           </Link>
           <button
             type="button"

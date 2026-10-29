@@ -20,14 +20,19 @@
   --glass: rgba(255, 255, 255, 0.05);
   --glass-strong: rgba(255, 255, 255, 0.08);
   --surface: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025));
-  --gradient: linear-gradient(135deg, var(--blue) 0%, #5a5cff 55%, var(--violet) 100%);
+  --gradient: linear-gradient(
+    135deg,
+    var(--blue) 0%,
+    color-mix(in srgb, var(--blue), var(--violet) 40%) 55%,
+    var(--violet) 100%
+  );
   --gradient-text: linear-gradient(90deg, var(--cyan), var(--blue) 45%, var(--violet));
 
   --radius-sm: 10px;
   --radius: 14px;
   --radius-lg: 20px;
   --shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.8);
-  --shadow-glow: 0 12px 32px -8px rgba(47, 107, 255, 0.65);
+  --shadow-glow: 0 12px 32px -8px color-mix(in srgb, var(--blue) 65%, transparent);
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -63,8 +68,16 @@ body {
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   background:
-    radial-gradient(900px 600px at 100% -10%, rgba(139, 92, 246, 0.12), transparent 60%),
-    radial-gradient(900px 600px at -10% 10%, rgba(47, 107, 255, 0.12), transparent 60%),
+    radial-gradient(
+      900px 600px at 100% -10%,
+      color-mix(in srgb, var(--violet) 12%, transparent),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 600px at -10% 10%,
+      color-mix(in srgb, var(--blue) 12%, transparent),
+      transparent 60%
+    ),
     var(--navy-950);
   background-attachment: fixed;
 }

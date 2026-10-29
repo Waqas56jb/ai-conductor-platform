@@ -13,6 +13,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
+import { WelcomeCard, type Priority } from "@/components/assistant/WelcomeCard";
 import { CaseTable } from "@/components/cases/CaseTable";
 import { LiveRefresh } from "@/components/cases/LiveRefresh";
 import { Card, EmptyState, KpiTile, buttonClass } from "@/components/ui";
@@ -26,6 +27,8 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 const OPEN = INCIDENT_STATUSES.filter((s) => !FINAL_STATUSES.includes(s));
+/** A case message older than this no longer counts as waiting for an answer. */
+const UNANSWERED_DAYS = 14;
 
 type Kpi = {
   label: string;
@@ -45,18 +48,37 @@ export default async function DashboardPage() {
     getFormatter(),
   ]);
   const supabase = await createClient();
-  const [{ data: company }, cases, { data: invoices }, { data: interventions }] = await Promise.all(
-    [
-      supabase.from("ai_conductor_companies").select("name").eq("id", profile.company_id).single(),
-      listCases(),
-      supabase.from("ai_conductor_invoices").select("amount, status, due_at"),
-      supabase
-        .from("ai_conductor_interventions")
-        .select("id")
-        .eq("status", "planned")
-        .gte("scheduled_at", new Date().toISOString()),
-    ],
-  );
+  const now = new Date();
+  const [
+    { data: company },
+    cases,
+    { data: invoices },
+    { data: interventions },
+    { count: pendingProposals },
+    { data: messages },
+  ] = await Promise.all([
+    supabase.from("ai_conductor_companies").select("name").eq("id", profile.company_id).single(),
+    listCases(),
+    supabase.from("ai_conductor_invoices").select("amount, status, due_at"),
+    supabase
+      .from("ai_conductor_interventions")
+      .select("id")
+      .eq("status", "planned")
+      .gte("scheduled_at", now.toISOString()),
+    // The user's own assistant proposals still waiting for a decision.
+    supabase
+      .from("ai_conductor_ai_actions")
+      .select("id", { count: "exact", head: true })
+      .eq("status", "pending")
+      .gt("expires_at", now.toISOString()),
+    // Recent case messages the user can see, newest first.
+    supabase
+      .from("ai_conductor_incident_messages")
+      .select("incident_id, from_id")
+      .gte("created_at", new Date(now.getTime() - UNANSWERED_DAYS * 86_400_000).toISOString())
+      .order("created_at", { ascending: false })
+      .limit(500),
+  ]);
 
   const count = (statuses: readonly string[]) =>
     cases.filter((c) => statuses.includes(c.status)).length;
@@ -106,7 +128,7 @@ export default async function DashboardPage() {
         },
         {
           label: ti("kpi.overdue"),
-          value: unpaid.filter((i) => i.due_at && new Date(i.due_at).getTime() < Date.now()).length,
+          value: unpaid.filter((i) => i.due_at && new Date(i.due_at) < now).length,
           icon: <AlarmClock />,
           tone: "violet",
         },
@@ -135,23 +157,49 @@ export default async function DashboardPage() {
 
   const firstName = (profile.display_name || profile.email).split(" ")[0];
 
+  // Today's priorities: overdue invoices, what waits for this user's decision,
+  // and cases whose latest message is from someone else.
+  const overdue = unpaid.filter((i) => i.due_at && new Date(i.due_at) < now).length;
+  const toDecide: Record<typeof profile.role, number> = {
+    client: count(["sent_to_client"]),
+    technician: count(["site_visit"]),
+    manager: count(["devis_pending_manager"]),
+    director: count(["devis_pending_director"]),
+    admin: count(["devis_pending_manager", "devis_pending_director"]),
+    accountant: (invoices ?? []).filter((i) => i.status === "under_review").length,
+  };
+  const latest = new Map<string, string | null>();
+  for (const m of messages ?? [])
+    if (!latest.has(m.incident_id)) latest.set(m.incident_id, m.from_id);
+  const unanswered = [...latest.values()].filter((from) => from !== profile.id).length;
+  const priorities: Priority[] = [
+    { key: "overdue", count: overdue },
+    { key: "approvals", count: toDecide[profile.role] + (pendingProposals ?? 0) },
+    { key: "messages", count: unanswered },
+  ];
+
   return (
     <div className="stack">
       <LiveRefresh
         channel="dashboard"
-        tables={[{ table: "ai_conductor_incidents" }, { table: "ai_conductor_invoices" }]}
+        tables={[
+          { table: "ai_conductor_incidents" },
+          { table: "ai_conductor_invoices" },
+          { table: "ai_conductor_incident_messages" },
+        ]}
       />
-      <div className="page-header">
-        <div>
-          <h1>{t("welcome", { name: firstName })}</h1>
-          <p>{t("sub", { company: company?.name ?? "" })}</p>
-        </div>
-        {profile.role === "client" ? (
-          <Link href="/app/cases/new" className={buttonClass()}>
-            {tn("report")}
-          </Link>
-        ) : null}
-      </div>
+      <WelcomeCard
+        firstName={firstName}
+        company={company?.name ?? ""}
+        priorities={priorities}
+        action={
+          profile.role === "client" ? (
+            <Link href="/app/cases/new" className={buttonClass()}>
+              {tn("report")}
+            </Link>
+          ) : undefined
+        }
+      />
 
       <div className="grid-kpi">
         {kpis.map((k) => (

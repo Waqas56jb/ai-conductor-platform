@@ -11,7 +11,9 @@
     "back": "Retour",
     "optional": "facultatif",
     "yes": "Oui",
-    "no": "Non"
+    "no": "Non",
+    "forbidden": "Action non autorisée.",
+    "unauthorized": "Session expirée : reconnectez-vous."
   },
   "roles": {
     "client": "Client",
@@ -127,7 +129,7 @@
   },
   "nav": {
     "dashboard": "Tableau de bord",
-    "assistant": "Assistant IA",
+    "assistant": "Assistante IA",
     "profile": "Mon profil",
     "company": "Entreprise",
     "report": "Signaler un problème",
@@ -144,11 +146,10 @@
     "chats": "Discussions",
     "support": "Support",
     "notifications": "Notifications",
-    "directory": "Annuaire"
+    "directory": "Annuaire",
+    "assistantSettings": "Réglages de l’assistante"
   },
   "dashboard": {
-    "welcome": "Bonjour {name}",
-    "sub": "Votre espace {company}",
     "kpi": {
       "team": "Membres de l’équipe",
       "teamHint": "Comptes actifs",
@@ -969,7 +970,7 @@
     "viewAll": "Tout voir"
   },
   "assistant": {
-    "title": "Assistant IA",
+    "title": "Assistante IA",
     "sub": "Posez vos questions sur vos dossiers, devis et factures. Toute action proposée attend votre validation.",
     "newChat": "Nouvelle conversation",
     "history": "Historique",
@@ -977,9 +978,9 @@
     "archive": "Archiver la conversation",
     "placeholder": "Écrivez votre message…",
     "send": "Envoyer",
-    "thinking": "L’assistant réfléchit…",
+    "thinking": "{name} réfléchit…",
     "welcome": "Bonjour, je suis {name}. Comment puis-je vous aider ?",
-    "conversation": "Conversation avec l’assistant",
+    "conversation": "Conversation avec {name}",
     "suggestionsLabel": "Suggestions",
     "suggestions": {
       "client": {
@@ -1018,7 +1019,8 @@
       "list_cases": "dossiers",
       "get_case": "détail du dossier",
       "list_technicians": "techniciens",
-      "list_invoices": "factures"
+      "list_invoices": "factures",
+      "suggest_memory": "mémoire proposée, à valider dans vos réglages"
     },
     "proposal": {
       "title": "Action proposée",
@@ -1066,23 +1068,128 @@
       "alreadyDecided": "Cette proposition a déjà été traitée.",
       "expired": "Cette proposition a expiré."
     },
-    "agent": {
-      "title": "Personnaliser mon assistant",
-      "description": "Ces réglages ne concernent que vous.",
-      "name": "Nom de l’assistant",
-      "tone": "Ton",
-      "tones": {
-        "professional": "Professionnel",
-        "friendly": "Chaleureux",
-        "concise": "Concis"
+    "settingsLink": "Personnaliser mon assistante",
+    "mic": "Parler à l’assistante",
+    "micSoon": "Bientôt : la voix arrive prochainement",
+    "entry": {
+      "label": "Assistante",
+      "aria": "Ouvrir l’assistante {name}"
+    },
+    "panel": {
+      "subtitle": "Votre assistante · en ligne",
+      "fullPage": "Ouvrir en plein écran",
+      "settings": "Réglages de l’assistante",
+      "close": "Fermer l’assistante"
+    }
+  },
+  "assistantSettings": {
+    "title": "Réglages de l’assistante",
+    "sub": "Ces réglages ne concernent que vous et s’appliquent immédiatement.",
+    "saved": "Enregistré.",
+    "invalid": "Valeur invalide.",
+    "notFound": "Élément introuvable.",
+    "identity": {
+      "title": "Identité",
+      "description": "Son nom, son apparence et sa voix."
+    },
+    "name": "Nom de l’assistante",
+    "nameHint": "Affiché dans l’en-tête, le panneau et la conversation.",
+    "language": "Langue des réponses",
+    "voice": {
+      "label": "Voix",
+      "calm": "Calme",
+      "energetic": "Énergique",
+      "neutral": "Neutre",
+      "off": "Désactivée",
+      "hint": "La voix servira à l’assistante vocale, bientôt disponible."
+    },
+    "avatar": {
+      "title": "Avatar",
+      "human": "Humain",
+      "abstract": "Abstrait",
+      "none": "Aucun"
+    },
+    "tone": {
+      "title": "Ton",
+      "description": "Choisissez comment elle vous parle.",
+      "direct": "Direct",
+      "friendly": "Chaleureux",
+      "professional": "Professionnel",
+      "motivating": "Motivant",
+      "neutral": "Neutre",
+      "samples": {
+        "direct": "Facture FAC-2026-0012 en retard de 5 jours. Je relance ?",
+        "friendly": "Bonne nouvelle : deux devis signés ce matin ! On planifie les interventions ?",
+        "professional": "Trois dossiers attendent votre validation. Souhaitez-vous que je vous les présente ?",
+        "motivating": "Plus que deux dossiers à clôturer cette semaine : vous y êtes presque !",
+        "neutral": "Deux nouveaux dossiers ont été créés aujourd’hui."
+      }
+    },
+    "contextAware": {
+      "label": "Ton adapté au contexte",
+      "hint": "Pour les alertes et les échéances (facture en retard, devis qui expire), elle reste claire et ferme, quel que soit le ton choisi."
+    },
+    "theme": {
+      "title": "Couleur de l’espace de travail",
+      "description": "Appliquée immédiatement à toute votre interface.",
+      "followCompany": "Couleur de l’entreprise ({color})",
+      "company": "Appliquer à toute l’entreprise",
+      "companyHint": "Couleur par défaut des membres qui n’en ont pas choisi.",
+      "companySaved": "Couleur de l’entreprise enregistrée.",
+      "colors": {
+        "blue": "Bleu Pratonna",
+        "ocean": "Océan",
+        "violet": "Violet",
+        "emerald": "Émeraude",
+        "amber": "Ambre",
+        "rose": "Rose"
+      }
+    },
+    "memory": {
+      "title": "Mémoire & règles",
+      "description": "Ce que votre assistante retient de vous. Seuls les éléments validés sont utilisés.",
+      "kind": "Type",
+      "kinds": {
+        "preference": "Préférence",
+        "rule": "Règle",
+        "fact": "Fait"
       },
-      "language": "Langue des réponses",
-      "languages": {
-        "fr": "Français",
-        "en": "English"
-      },
-      "instructions": "Consignes personnelles",
-      "instructionsHint": "Ex. : « Commence toujours par les dossiers urgents. »"
+      "new": "Nouvel élément",
+      "placeholder": "Ex. : Toujours vouvoyer les clients.",
+      "add": "Ajouter",
+      "added": "Ajouté à la mémoire.",
+      "pending": "Suggestion à valider",
+      "fromAssistant": "Proposée par l’assistante",
+      "approve": "Valider",
+      "approved": "Validé.",
+      "edit": "Modifier",
+      "updated": "Modifié.",
+      "delete": "Supprimer",
+      "deleted": "Supprimé.",
+      "empty": "Aucune mémoire pour l’instant.",
+      "emptyText": "Ajoutez une règle ou une préférence, ou laissez l’assistante vous en proposer.",
+      "clearAll": "Tout effacer",
+      "clearConfirm": "Effacer toutes les mémoires et règles ? Cette action est définitive.",
+      "clearConfirmButton": "Tout effacer",
+      "cleared": "Mémoire effacée."
+    }
+  },
+  "welcome": {
+    "title": "Bonjour {name}, voici vos priorités du jour",
+    "sub": "{assistant} s’en occupe avec vous : vous validez, elle exécute. · {company}",
+    "ask": "Demander à l’assistante",
+    "handle": "Elle s’en occupe",
+    "overdue": {
+      "label": "{count, plural, =0 {facture en retard} one {facture en retard} other {factures en retard}}",
+      "prompt": "Quelles factures sont en retard ? Prépare les relances à valider."
+    },
+    "approvals": {
+      "label": "{count, plural, =0 {validation en attente} one {validation en attente} other {validations en attente}}",
+      "prompt": "Qu’est-ce qui attend ma validation aujourd’hui ? Aide-moi à le traiter."
+    },
+    "messages": {
+      "label": "{count, plural, =0 {message sans réponse} one {message sans réponse} other {messages sans réponse}}",
+      "prompt": "Quels messages de dossiers attendent ma réponse ? Aide-moi à y répondre."
     }
   }
 }

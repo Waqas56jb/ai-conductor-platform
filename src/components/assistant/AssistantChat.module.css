@@ -43,7 +43,11 @@
 
 .mine .bubble {
   white-space: pre-wrap;
-  background: linear-gradient(135deg, rgba(47, 107, 255, 0.55), rgba(139, 92, 246, 0.5));
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--blue) 55%, transparent),
+    color-mix(in srgb, var(--violet) 50%, transparent)
+  );
   border-top-right-radius: 4px;
 }
 
@@ -92,12 +96,6 @@
   padding: var(--space-6) var(--space-3);
   text-align: center;
   color: var(--text-soft);
-}
-
-.welcome > svg {
-  width: 32px;
-  height: 32px;
-  color: var(--cyan);
 }
 
 .suggestions {
@@ -281,7 +279,7 @@
 }
 
 .history ul a[aria-current="page"] {
-  background: rgba(47, 107, 255, 0.18);
+  background: color-mix(in srgb, var(--blue) 18%, transparent);
   color: var(--text);
 }
 
@@ -296,4 +294,51 @@
   gap: var(--space-2);
   justify-content: space-between;
   align-items: center;
+}
+
+/* ---------- slide-over variant, streaming, mic ---------- */
+
+.inPanel {
+  height: 100%;
+  min-height: 0;
+}
+
+.inPanel .list {
+  max-height: none;
+  min-height: 0;
+}
+
+.inPanel .mine,
+.inPanel .theirs {
+  max-width: 92%;
+}
+
+.streaming {
+  border-color: color-mix(in srgb, var(--cyan) 40%, transparent);
+}
+
+.micWrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.tooltip {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 6px);
+  padding: 0.3rem 0.55rem;
+  border-radius: 8px;
+  border: 1px solid var(--line-strong);
+  background: var(--navy-800);
+  color: var(--text);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.micWrap:hover .tooltip,
+.micWrap:focus-within .tooltip {
+  opacity: 1;
 }

@@ -13,7 +13,7 @@ import {
 const MENUS = {
   client: [
     "Tableau de bord",
-    "Assistant IA",
+    "Assistante IA",
     "Signaler un problème",
     "Mes dossiers",
     "Devis",
@@ -24,7 +24,7 @@ const MENUS = {
   ],
   technician: [
     "Tableau de bord",
-    "Assistant IA",
+    "Assistante IA",
     "Mes tâches",
     "Calendrier",
     "Discussions",
@@ -34,7 +34,7 @@ const MENUS = {
   ],
   manager: [
     "Tableau de bord",
-    "Assistant IA",
+    "Assistante IA",
     "Dossiers",
     "Validations",
     "Factures",
@@ -47,7 +47,7 @@ const MENUS = {
   ],
   director: [
     "Tableau de bord",
-    "Assistant IA",
+    "Assistante IA",
     "Dossiers",
     "Validations",
     "Finance",
@@ -61,7 +61,7 @@ const MENUS = {
   ],
   accountant: [
     "Tableau de bord",
-    "Assistant IA",
+    "Assistante IA",
     "Dossiers",
     "Finance",
     "Annuaire",
@@ -70,7 +70,7 @@ const MENUS = {
   ],
   admin: [
     "Tableau de bord",
-    "Assistant IA",
+    "Assistante IA",
     "Dossiers",
     "Validations",
     "Factures",
@@ -109,7 +109,7 @@ test.describe("role-based shell", () => {
       await login(page, role);
       const { users } = readState();
       await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-        `Bonjour ${users[role].name.split(" ")[0]}`,
+        `Bonjour ${users[role].name.split(" ")[0]}, voici vos priorités du jour`,
       );
       await expect(page.getByText(FIRST_KPI[role], { exact: true })).toBeVisible();
       await expect(page.getByRole("heading", { name: "Dossiers récents" })).toBeVisible();
@@ -205,7 +205,9 @@ test.describe("navigation", () => {
       .first()
       .getByRole("button", { name: "EN" })
       .click();
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Hello Théo");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+      "Hello Théo, here are today’s priorities",
+    );
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await page.reload();
     await expect(page.getByText("Active jobs")).toBeVisible();
@@ -215,7 +217,9 @@ test.describe("navigation", () => {
       .first()
       .getByRole("button", { name: "FR" })
       .click();
-    await expect(page.getByRole("heading", { level: 1 })).toHaveText("Bonjour Théo");
+    await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+      "Bonjour Théo, voici vos priorités du jour",
+    );
   });
 
   // The language is saved on the profile: if the test above fails midway, the

@@ -4,6 +4,12 @@ import { useEffect, useState, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Menu } from "lucide-react";
+import { AssistantButton } from "@/components/assistant/AssistantButton";
+import { AssistantPanel } from "@/components/assistant/AssistantPanel";
+import { AssistantProvider } from "@/components/assistant/AssistantProvider";
+import type { AssistantSettings } from "@/lib/assistant/defaults";
+import type { Role } from "@/lib/auth/roles";
+import type { ThemeColor } from "@/lib/db/types";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { NotificationsMenu } from "./NotificationsMenu";
 import { SearchPalette } from "./SearchPalette";
@@ -19,10 +25,11 @@ type Props = {
   user: ShellUser;
   notifications: ShellNotification[];
   unreadCount: number;
+  assistant: { role: Role; settings: AssistantSettings; companyTheme: ThemeColor };
   children: ReactNode;
 };
 
-export function AppShell({ nav, user, notifications, unreadCount, children }: Props) {
+export function AppShell({ nav, user, notifications, unreadCount, assistant, children }: Props) {
   const t = useTranslations("shell");
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
@@ -60,45 +67,49 @@ export function AppShell({ nav, user, notifications, unreadCount, children }: Pr
   }, [drawerOpen]);
 
   return (
-    <div className={`${styles.shell} ${collapsed ? styles.collapsed : ""}`}>
-      <a href="#main" className={styles.skip}>
-        {t("skip")}
-      </a>
+    <AssistantProvider {...assistant}>
+      <div className={`${styles.shell} ${collapsed ? styles.collapsed : ""}`}>
+        <a href="#main" className={styles.skip}>
+          {t("skip")}
+        </a>
 
-      <Sidebar
-        nav={nav}
-        pathname={pathname}
-        collapsed={collapsed}
-        onToggleCollapsed={toggleCollapsed}
-        drawerOpen={drawerOpen}
-        onCloseDrawer={() => setDrawerOpen(false)}
-      />
+        <Sidebar
+          nav={nav}
+          pathname={pathname}
+          collapsed={collapsed}
+          onToggleCollapsed={toggleCollapsed}
+          drawerOpen={drawerOpen}
+          onCloseDrawer={() => setDrawerOpen(false)}
+        />
 
-      <div className={styles.column}>
-        <header className={styles.topbar}>
-          <button
-            type="button"
-            className={`${styles.iconButton} ${styles.burger}`}
-            aria-label={t("openMenu")}
-            aria-expanded={drawerOpen}
-            aria-controls="app-sidebar"
-            onClick={() => setDrawerOpen(true)}
-          >
-            <Menu aria-hidden="true" />
-          </button>
-          <SearchPalette nav={nav} />
-          <div className={styles.topActions}>
-            <div className={styles.topLang}>
-              <LanguageSwitcher />
+        <div className={styles.column}>
+          <header className={styles.topbar}>
+            <button
+              type="button"
+              className={`${styles.iconButton} ${styles.burger}`}
+              aria-label={t("openMenu")}
+              aria-expanded={drawerOpen}
+              aria-controls="app-sidebar"
+              onClick={() => setDrawerOpen(true)}
+            >
+              <Menu aria-hidden="true" />
+            </button>
+            <SearchPalette nav={nav} />
+            <div className={styles.topActions}>
+              <div className={styles.topLang}>
+                <LanguageSwitcher />
+              </div>
+              <AssistantButton />
+              <NotificationsMenu notifications={notifications} unreadCount={unreadCount} />
+              <UserMenu user={user} />
             </div>
-            <NotificationsMenu notifications={notifications} unreadCount={unreadCount} />
-            <UserMenu user={user} />
-          </div>
-        </header>
-        <main id="main" className={styles.main} tabIndex={-1}>
-          {children}
-        </main>
+          </header>
+          <main id="main" className={styles.main} tabIndex={-1}>
+            {children}
+          </main>
+        </div>
+        <AssistantPanel />
       </div>
-    </div>
+    </AssistantProvider>
   );
 }

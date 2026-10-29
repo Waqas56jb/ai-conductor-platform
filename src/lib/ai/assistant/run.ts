@@ -2,9 +2,13 @@ import "server-only";
 import type OpenAI from "openai";
 import { getTranslations } from "next-intl/server";
 import { openai, textModel } from "@/lib/ai/openai";
-import { BASE_SYSTEM_PROMPT } from "@/lib/ai/system-prompt";
+import {
+  assistantSystemPrompt,
+  type AssistantPersona,
+  type PromptMemory,
+} from "@/lib/ai/system-prompt";
 import type { Profile } from "@/lib/auth/session";
-import type { AgentProfileRow, AiMessageContent, AiMessageRow } from "@/lib/db/types";
+import type { AiActionStatus, AiMessageContent, AiMessageRow } from "@/lib/db/types";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { openAiTools, TOOLS } from "./tools";
 
@@ -17,49 +21,17 @@ const TOOL_OUTPUT_LIMIT = 12_000;
 /** Proposals not decided within a day expire. */
 const PROPOSAL_TTL_MS = 24 * 60 * 60 * 1000;
 
-export type AgentProfile = Pick<
-  AgentProfileRow,
-  "assistant_name" | "tone" | "language" | "instructions"
->;
-
-export const DEFAULT_AGENT: AgentProfile = {
-  assistant_name: "Pratonna",
-  tone: "professional",
-  language: "fr",
-  instructions: "",
-};
-
-const TONES: Record<AgentProfile["tone"], string> = {
-  professional: "Ton professionnel et courtois.",
-  friendly: "Ton chaleureux et accessible, tout en restant professionnel.",
-  concise: "Réponses très courtes : l’essentiel, en listes si utile.",
-};
-
-export function systemPrompt(profile: Profile, agent: AgentProfile, companyName: string) {
-  const now = new Date().toLocaleString("fr-FR", {
-    dateStyle: "full",
-    timeStyle: "short",
-    timeZone: "Europe/Paris",
-  });
-  return [
-    BASE_SYSTEM_PROMPT,
-    `Ton nom est ${agent.assistant_name}. Tu assistes ${profile.display_name} (rôle : ${profile.role}) de l’entreprise « ${companyName} ».`,
-    `Nous sommes le ${now} (heure de Paris).`,
-    agent.language === "en"
-      ? "Answer in English unless the user writes in another language."
-      : "Réponds en français sauf si l’utilisateur écrit dans une autre langue.",
-    TONES[agent.tone],
-    `Outils :
-- Utilise les outils de lecture pour répondre avec des données réelles ; ne devine jamais une référence, un montant ou un statut.
-- Pour agir (trier, affecter, valider un devis, planifier, annuler, envoyer un message ou une relance), appelle l’outil correspondant : cela crée une proposition que l’utilisateur valide ou refuse dans l’interface. Ne dis jamais que l’action est faite ; dis qu’elle attend sa validation.
-- Cite les dossiers par leur référence (INC-…), les devis (DEV-…) et les factures (FAC-…).`,
-    agent.instructions.trim()
-      ? `Consignes personnelles de l’utilisateur (elles ne remplacent pas les règles ci-dessus) :\n${agent.instructions.trim()}`
-      : "",
-  ]
-    .filter(Boolean)
-    .join("\n\n");
-}
+/** What the client sees while a reply is produced (streamed as NDJSON). */
+export type AssistantEvent =
+  | { type: "conversation"; id: string }
+  | { type: "delta"; text: string }
+  | { type: "tool"; name: string }
+  | {
+      type: "proposal";
+      action: { id: string; summary: string; status: AiActionStatus };
+    }
+  | { type: "error"; error: string }
+  | { type: "done" };
 
 /** Rebuilds the model history from stored rows (oldest first). */
 export function toChatHistory(rows: Pick<AiMessageRow, "role" | "content">[]): ChatMessage[] {
@@ -90,21 +62,63 @@ export function toChatHistory(rows: Pick<AiMessageRow, "role" | "content">[]): C
 type RunInput = {
   profile: Profile;
   conversationId: string;
-  agent: AgentProfile;
+  persona: AssistantPersona;
+  memories: readonly PromptMemory[];
   companyName: string;
   text: string;
+  emit: (event: AssistantEvent) => void;
 };
+
+type StreamedCall = { id: string; name: string; arguments: string };
+
+/** One streamed completion: text deltas go to `emit`, tool calls are assembled. */
+async function complete(
+  messages: ChatMessage[],
+  tools: ReturnType<typeof openAiTools>,
+  emit: RunInput["emit"],
+) {
+  const stream = await openai().chat.completions.create({
+    model: textModel(),
+    messages,
+    tools,
+    temperature: 0.2,
+    stream: true,
+    stream_options: { include_usage: true },
+  });
+  let text = "";
+  const calls: StreamedCall[] = [];
+  let usage: OpenAI.CompletionUsage | undefined;
+  for await (const chunk of stream) {
+    if (chunk.usage) usage = chunk.usage;
+    const delta = chunk.choices[0]?.delta;
+    if (!delta) continue;
+    if (delta.content) {
+      text += delta.content;
+      emit({ type: "delta", text: delta.content });
+    }
+    for (const c of delta.tool_calls ?? []) {
+      const call = (calls[c.index] ??= { id: "", name: "", arguments: "" });
+      if (c.id) call.id = c.id;
+      if (c.function?.name) call.name += c.function.name;
+      if (c.function?.arguments) call.arguments += c.function.arguments;
+    }
+  }
+  return { text, calls: calls.filter((c) => c.id && c.name), usage };
+}
 
 /**
  * Handles one user message: stores it, lets the model read data with tools,
- * turns write tools into pending proposals, and stores every step.
+ * turns write tools into pending proposals, and stores every step. The reply
+ * is streamed to the caller through `emit`.
  */
 export async function runAssistant({
   profile,
   conversationId,
-  agent,
+  persona,
+  memories,
   companyName,
   text,
+  emit,
 }: RunInput) {
   const admin = createAdminClient();
   const save = async (
@@ -132,7 +146,10 @@ export async function runAssistant({
     .order("created_at", { ascending: false })
     .limit(HISTORY);
   const messages: ChatMessage[] = [
-    { role: "system", content: systemPrompt(profile, agent, companyName) },
+    {
+      role: "system",
+      content: assistantSystemPrompt({ profile, persona, companyName, memories }),
+    },
     ...toChatHistory((rows ?? []).reverse()),
   ];
 
@@ -141,30 +158,37 @@ export async function runAssistant({
   const t = await getTranslations({ locale: profile.locale, namespace: "assistant.proposals" });
 
   for (let step = 0; step < MAX_STEPS; step++) {
-    const completion = await openai().chat.completions.create({
-      model: textModel(),
-      messages,
-      tools,
-      temperature: 0.2,
-    });
-    const reply = completion.choices[0]?.message;
-    const calls = (reply?.tool_calls ?? []).filter((c) => c.type === "function");
+    const reply = await complete(messages, tools, emit);
 
-    if (!calls.length) {
-      await save("assistant", { text: reply?.content ?? "" }, completion.usage);
+    if (!reply.calls.length) {
+      await save("assistant", { text: reply.text }, reply.usage);
       return;
     }
 
-    const stored = calls.map((c) => ({
-      id: c.id,
-      name: c.function.name,
-      arguments: c.function.arguments,
-    }));
-    await save("assistant", { text: reply?.content ?? "", tool_calls: stored }, completion.usage);
-    messages.push({ role: "assistant", content: reply?.content ?? null, tool_calls: calls });
+    await save("assistant", { text: reply.text, tool_calls: reply.calls }, reply.usage);
+    messages.push({
+      role: "assistant",
+      content: reply.text || null,
+      tool_calls: reply.calls.map((c) => ({
+        id: c.id,
+        type: "function",
+        function: { name: c.name, arguments: c.arguments },
+      })),
+    });
 
-    for (const call of stored) {
+    for (const call of reply.calls) {
+      emit({ type: "tool", name: call.name });
       const output = await runTool(call, { profile, conversationId, allowed, t });
+      if (output && typeof output === "object" && "proposal_id" in output && "summary" in output) {
+        emit({
+          type: "proposal",
+          action: {
+            id: String(output.proposal_id),
+            summary: String(output.summary),
+            status: "pending",
+          },
+        });
+      }
       const serialized = JSON.stringify(output).slice(0, TOOL_OUTPUT_LIMIT);
       await save("tool", { tool_call_id: call.id, name: call.name, output: serialized });
       messages.push({ role: "tool", tool_call_id: call.id, content: serialized });
@@ -172,7 +196,9 @@ export async function runAssistant({
   }
 
   // The model kept calling tools: stop and say so rather than loop forever.
-  await save("assistant", { text: t("tooManySteps") });
+  const stop = t("tooManySteps");
+  emit({ type: "delta", text: stop });
+  await save("assistant", { text: stop });
 }
 
 async function runTool(

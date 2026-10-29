@@ -97,7 +97,7 @@
 
 .techOn {
   border-color: rgba(73, 216, 255, 0.5);
-  background: rgba(47, 107, 255, 0.12);
+  background: color-mix(in srgb, var(--blue) 12%, transparent);
 }
 
 .techOff {

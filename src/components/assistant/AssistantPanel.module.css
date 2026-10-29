@@ -1,0 +1,236 @@
+/* ---------- avatar ---------- */
+
+.avatar {
+  display: block;
+  flex: none;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* "Abstract": a slowly turning gradient orb in the workspace colours. */
+.orb {
+  background:
+    radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.85), transparent 28%),
+    conic-gradient(from 0deg, var(--cyan), var(--blue), var(--violet), var(--cyan));
+  box-shadow: inset 0 -6px 14px rgba(6, 11, 30, 0.45);
+  animation: spin 12s linear infinite;
+}
+
+.initial {
+  display: grid;
+  place-items: center;
+  background: var(--gradient);
+  color: #fff;
+  font-weight: 700;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* ---------- header button ---------- */
+
+.entry {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  height: 44px;
+  padding: 2px 0.9rem 2px 2px;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  background: var(--glass);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.entry:hover {
+  border-color: var(--cyan);
+  background: var(--glass-strong);
+}
+
+.entryAvatar {
+  position: relative;
+  display: block;
+  width: 40px;
+  height: 40px;
+  flex: none;
+}
+
+.online,
+.onlineInline {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 0 2px var(--navy-950);
+}
+
+.online {
+  position: absolute;
+  right: 0;
+  bottom: 1px;
+}
+
+.online::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #34d399;
+  animation: ping 2s ease-out infinite;
+}
+
+.onlineInline {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 0.4rem;
+  box-shadow: none;
+}
+
+@keyframes ping {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+/* Phones: the avatar alone. */
+@media (max-width: 640px) {
+  .entry {
+    padding: 2px;
+  }
+
+  .entryLabel {
+    display: none;
+  }
+}
+
+/* ---------- slide-over ---------- */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(3, 6, 18, 0.55);
+  backdrop-filter: blur(2px);
+  animation: fade 0.2s ease;
+}
+
+.panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 61;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  width: min(440px, 100vw);
+  padding: var(--space-4);
+  gap: var(--space-3);
+  border-left: 1px solid var(--line-strong);
+  background:
+    radial-gradient(
+      120% 50% at 100% 0%,
+      color-mix(in srgb, var(--blue) 18%, transparent),
+      transparent
+    ),
+    var(--navy-900);
+  box-shadow: -30px 0 80px -20px rgba(0, 0, 0, 0.85);
+  animation: slide 0.28s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line);
+}
+
+.panelTitle {
+  flex: 1;
+  min-width: 0;
+}
+
+.panelTitle h2 {
+  overflow: hidden;
+  font-size: 1.05rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.panelTitle p {
+  display: flex;
+  align-items: center;
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+.panelActions {
+  display: flex;
+  gap: 2px;
+}
+
+.panelIcon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--text-soft);
+  cursor: pointer;
+}
+
+.panelIcon:hover {
+  background: var(--glass-strong);
+  color: var(--text);
+}
+
+.panelIcon svg {
+  width: 18px;
+  height: 18px;
+}
+
+@keyframes slide {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .panel {
+    padding: var(--space-3);
+    border-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb,
+  .online::after,
+  .panel,
+  .scrim {
+    animation: none;
+  }
+}

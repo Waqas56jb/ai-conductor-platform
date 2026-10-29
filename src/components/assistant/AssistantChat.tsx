@@ -1,30 +1,32 @@
 "use client";
 
-import { Fragment, useEffect, useRef, useState, useTransition, type ReactNode } from "react";
+import { Fragment, useEffect, useId, useRef, useState, useTransition, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useFormatter, useTranslations } from "next-intl";
-import { Check, Search, Send, Sparkles, X } from "lucide-react";
-import { decideAiAction, sendAssistantMessage } from "@/app/app/assistant/actions";
+import { Check, Mic, Search, Send, X } from "lucide-react";
+import { decideAiAction } from "@/app/app/assistant/actions";
 import { Badge, Button, useToast, type BadgeTone } from "@/components/ui";
+import type { ChatItem } from "@/lib/assistant/chat";
 import type { AiActionStatus } from "@/lib/db/types";
+import type { AssistantEvent } from "@/lib/ai/assistant/run";
+import { AssistantAvatar } from "./AssistantAvatar";
+import { useAssistant } from "./AssistantProvider";
 import styles from "./AssistantChat.module.css";
-
-export type ChatItem =
-  | { id: string; kind: "user" | "assistant"; text: string; at: string }
-  | { id: string; kind: "read"; tool: string; at: string }
-  | {
-      id: string;
-      kind: "proposal";
-      at: string;
-      action: { id: string; summary: string; status: AiActionStatus };
-    };
 
 type Props = {
   conversationId: string | null;
-  items: ChatItem[];
-  assistantName: string;
+  /** Server-rendered items (page); null loads them (panel). */
+  initialItems: ChatItem[] | null;
   suggestions: string[];
+  prefill?: string;
+  variant?: "page" | "panel";
+  onConversation?: (id: string) => void;
 };
+
+type Proposal = { id: string; summary: string; status: AiActionStatus };
+
+/** The reply being streamed: its text, the tools it read and what it proposed. */
+type Live = { text: string; reads: string[]; proposals: Proposal[] };
 
 const STATUS_TONE: Record<AiActionStatus, BadgeTone> = {
   pending: "warning",
@@ -73,11 +75,10 @@ function RichText({ text }: { text: string }) {
   return <>{blocks}</>;
 }
 
-function Proposal({ action }: { action: { id: string; summary: string; status: AiActionStatus } }) {
+function ProposalCard({ action, onDecided }: { action: Proposal; onDecided: () => void }) {
   const t = useTranslations("assistant.proposal");
   const tAll = useTranslations();
   const toast = useToast();
-  const router = useRouter();
   const [pending, startTransition] = useTransition();
 
   const decide = (approve: boolean) =>
@@ -85,7 +86,7 @@ function Proposal({ action }: { action: { id: string; summary: string; status: A
       const r = await decideAiAction(action.id, approve);
       if (r.ok) toast(approve ? t("executed") : t("rejected"));
       else toast(tAll(r.error), "error");
-      router.refresh();
+      onDecided();
     });
 
   return (
@@ -111,53 +112,146 @@ function Proposal({ action }: { action: { id: string; summary: string; status: A
   );
 }
 
-export function AssistantChat({ conversationId, items, assistantName, suggestions }: Props) {
+async function loadItems(id: string): Promise<ChatItem[] | null> {
+  const res = await fetch(`/api/assistant?c=${id}`, { cache: "no-store" });
+  if (!res.ok) return null;
+  return ((await res.json()) as { items: ChatItem[] }).items;
+}
+
+export function AssistantChat({
+  conversationId: initialId,
+  initialItems,
+  suggestions,
+  prefill = "",
+  variant = "page",
+  onConversation,
+}: Props) {
   const t = useTranslations("assistant");
   const tAll = useTranslations();
   const format = useFormatter();
   const toast = useToast();
   const router = useRouter();
-  const [text, setText] = useState("");
+  const { settings } = useAssistant();
+  const inputId = useId();
+  const micHintId = useId();
+  const [conversationId, setConversationId] = useState(initialId);
+  const [items, setItems] = useState<ChatItem[]>(initialItems ?? []);
+  const [text, setText] = useState(prefill);
   const [sent, setSent] = useState<string | null>(null);
-  const [pending, startTransition] = useTransition();
+  const [live, setLive] = useState<Live | null>(null);
+  const [busy, setBusy] = useState(false);
   const listRef = useRef<HTMLOListElement>(null);
+  const name = settings.display_name;
+
+  // The page stays mounted when its URL catches up with a new conversation
+  // (no lost draft); only switching to another conversation resets the chat.
+  const [shownId, setShownId] = useState(initialId);
+  if (initialId !== shownId) {
+    setShownId(initialId);
+    if (initialId !== conversationId) {
+      setConversationId(initialId);
+      setItems(initialItems ?? []);
+      setText("");
+    }
+  }
+
+  // The panel opens on an existing conversation: fetch it.
+  useEffect(() => {
+    if (initialItems || !initialId) return;
+    let cancelled = false;
+    loadItems(initialId).then((loaded) => !cancelled && loaded && setItems(loaded));
+    return () => {
+      cancelled = true;
+    };
+  }, [initialId, initialItems]);
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
-  }, [items.length, sent]);
+  }, [items.length, sent, live?.text, live?.reads.length, live?.proposals.length]);
 
-  // The server copy replaces the optimistic bubble once it arrives.
-  useEffect(() => setSent(null), [items.length]);
+  async function refresh(id: string | null) {
+    if (id) {
+      const loaded = await loadItems(id);
+      if (loaded) setItems(loaded);
+    }
+    router.refresh();
+  }
 
-  function send(body: string) {
+  async function send(body: string) {
     const message = body.trim();
-    if (!message || pending) return;
+    if (!message || busy) return;
     setSent(message);
     setText("");
-    startTransition(async () => {
-      const r = await sendAssistantMessage(conversationId, message);
-      if (!r.ok) {
-        toast(tAll(r.error), "error");
-        if (!r.conversationId) setText(message);
+    setBusy(true);
+    setLive({ text: "", reads: [], proposals: [] });
+    let id = conversationId;
+    try {
+      const res = await fetch("/api/assistant", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ conversationId: id, text: message }),
+      });
+      if (!res.ok || !res.body) {
+        const { error } = (await res.json().catch(() => ({}))) as { error?: string };
+        toast(tAll(error ?? "common.error"), "error");
+        setText(message);
+        return;
       }
-      const id = r.conversationId;
-      if (id && id !== conversationId) router.replace(`/app/assistant?c=${id}`);
-      else router.refresh();
-    });
+      const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
+      let buffer = "";
+      for (;;) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buffer += value;
+        let nl: number;
+        while ((nl = buffer.indexOf("\n")) >= 0) {
+          const line = buffer.slice(0, nl);
+          buffer = buffer.slice(nl + 1);
+          if (!line) continue;
+          const event = JSON.parse(line) as AssistantEvent;
+          if (event.type === "conversation") {
+            id = event.id;
+            setConversationId(id);
+            onConversation?.(id);
+            // The full page keeps the conversation in its URL.
+            if (variant === "page") window.history.replaceState(null, "", `/app/assistant?c=${id}`);
+          } else if (event.type === "delta") {
+            setLive((l) => l && { ...l, text: l.text + event.text });
+          } else if (event.type === "tool") {
+            setLive((l) => l && { ...l, reads: [...l.reads, event.name] });
+          } else if (event.type === "proposal") {
+            setLive((l) => l && { ...l, proposals: [...l.proposals, event.action] });
+          } else if (event.type === "error") {
+            toast(tAll(event.error), "error");
+          }
+        }
+      }
+    } catch {
+      toast(tAll("assistant.errors.failed"), "error");
+    } finally {
+      await refresh(id);
+      setLive(null);
+      setSent(null);
+      setBusy(false);
+    }
   }
 
   const time = (at: string) => format.dateTime(new Date(at), { timeStyle: "short" });
+  const toolLabel = (tool: string) => (t.has(`tools.${tool}`) ? t(`tools.${tool}`) : tool);
 
   return (
-    <section className={styles.chat} aria-label={t("conversation")}>
+    <section
+      className={`${styles.chat} ${variant === "panel" ? styles.inPanel : ""}`}
+      aria-label={t("conversation", { name })}
+    >
       <ol className={styles.list} ref={listRef} aria-live="polite">
         {!items.length && !sent ? (
           <li className={styles.welcome}>
-            <Sparkles aria-hidden="true" />
-            <p>{t("welcome", { name: assistantName })}</p>
+            <AssistantAvatar type={settings.avatar_type} name={name} size={64} />
+            <p>{t("welcome", { name })}</p>
             <div className={styles.suggestions} role="group" aria-label={t("suggestionsLabel")}>
               {suggestions.map((s) => (
-                <button key={s} type="button" onClick={() => send(s)} disabled={pending}>
+                <button key={s} type="button" onClick={() => send(s)} disabled={busy}>
                   {s}
                 </button>
               ))}
@@ -169,16 +263,14 @@ export function AssistantChat({ conversationId, items, assistantName, suggestion
             return (
               <li key={item.id} className={styles.read}>
                 <Search aria-hidden="true" />
-                {t("readTool", {
-                  tool: t.has(`tools.${item.tool}`) ? t(`tools.${item.tool}`) : item.tool,
-                })}
+                {t("readTool", { tool: toolLabel(item.tool) })}
               </li>
             );
           }
           if (item.kind === "proposal") {
             return (
               <li key={item.id} className={styles.theirs}>
-                <Proposal action={item.action} />
+                <ProposalCard action={item.action} onDecided={() => refresh(conversationId)} />
               </li>
             );
           }
@@ -188,7 +280,7 @@ export function AssistantChat({ conversationId, items, assistantName, suggestion
                 {item.kind === "user" ? item.text : <RichText text={item.text} />}
               </div>
               <time className={styles.time} dateTime={item.at}>
-                {item.kind === "assistant" ? `${assistantName} · ` : ""}
+                {item.kind === "assistant" ? `${name} · ` : ""}
                 {time(item.at)}
               </time>
             </li>
@@ -199,14 +291,31 @@ export function AssistantChat({ conversationId, items, assistantName, suggestion
             <div className={styles.bubble}>{sent}</div>
           </li>
         ) : null}
-        {pending ? (
+        {live?.reads.map((tool, i) => (
+          <li key={`r${i}`} className={styles.read}>
+            <Search aria-hidden="true" />
+            {t("readTool", { tool: toolLabel(tool) })}
+          </li>
+        ))}
+        {live?.proposals.map((action) => (
+          <li key={action.id} className={styles.theirs}>
+            <ProposalCard action={action} onDecided={() => refresh(conversationId)} />
+          </li>
+        ))}
+        {live?.text ? (
+          <li className={styles.theirs}>
+            <div className={`${styles.bubble} ${styles.streaming}`}>
+              <RichText text={live.text} />
+            </div>
+          </li>
+        ) : busy ? (
           <li className={styles.thinking} role="status">
             <span className={styles.dots} aria-hidden="true">
               <span />
               <span />
               <span />
             </span>
-            {t("thinking")}
+            {t("thinking", { name })}
           </li>
         ) : null}
       </ol>
@@ -217,11 +326,11 @@ export function AssistantChat({ conversationId, items, assistantName, suggestion
           send(text);
         }}
       >
-        <label className="sr-only" htmlFor="assistant-input">
+        <label className="sr-only" htmlFor={inputId}>
           {t("placeholder")}
         </label>
         <textarea
-          id="assistant-input"
+          id={inputId}
           rows={2}
           value={text}
           placeholder={t("placeholder")}
@@ -234,7 +343,22 @@ export function AssistantChat({ conversationId, items, assistantName, suggestion
             }
           }}
         />
-        <Button type="submit" loading={pending} disabled={!text.trim()} aria-label={t("send")}>
+        {/* Voice arrives with the realtime agent; until then the mic says so. */}
+        <span className={styles.micWrap}>
+          <Button
+            variant="secondary"
+            disabled
+            aria-label={t("mic")}
+            aria-describedby={micHintId}
+            data-testid="assistant-mic"
+          >
+            <Mic aria-hidden="true" />
+          </Button>
+          <span role="tooltip" id={micHintId} className={styles.tooltip}>
+            {t("micSoon")}
+          </span>
+        </span>
+        <Button type="submit" loading={busy} disabled={!text.trim()} aria-label={t("send")}>
           <Send aria-hidden="true" />
         </Button>
       </form>

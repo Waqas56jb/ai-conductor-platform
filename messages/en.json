@@ -11,7 +11,9 @@
     "back": "Back",
     "optional": "optional",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "forbidden": "Action not allowed.",
+    "unauthorized": "Session expired: please sign in again."
   },
   "roles": {
     "client": "Client",
@@ -144,11 +146,10 @@
     "chats": "Conversations",
     "support": "Support",
     "notifications": "Notifications",
-    "directory": "Directory"
+    "directory": "Directory",
+    "assistantSettings": "Assistant settings"
   },
   "dashboard": {
-    "welcome": "Hello {name}",
-    "sub": "Your {company} workspace",
     "kpi": {
       "team": "Team members",
       "teamHint": "Active accounts",
@@ -977,9 +978,9 @@
     "archive": "Archive conversation",
     "placeholder": "Write your message…",
     "send": "Send",
-    "thinking": "The assistant is thinking…",
+    "thinking": "{name} is thinking…",
     "welcome": "Hello, I’m {name}. How can I help?",
-    "conversation": "Conversation with the assistant",
+    "conversation": "Conversation with {name}",
     "suggestionsLabel": "Suggestions",
     "suggestions": {
       "client": {
@@ -1018,7 +1019,8 @@
       "list_cases": "cases",
       "get_case": "case details",
       "list_technicians": "technicians",
-      "list_invoices": "invoices"
+      "list_invoices": "invoices",
+      "suggest_memory": "memory suggested, to approve in your settings"
     },
     "proposal": {
       "title": "Proposed action",
@@ -1066,23 +1068,128 @@
       "alreadyDecided": "This proposal has already been handled.",
       "expired": "This proposal has expired."
     },
-    "agent": {
-      "title": "Personalise my assistant",
-      "description": "These settings only apply to you.",
-      "name": "Assistant name",
-      "tone": "Tone",
-      "tones": {
-        "professional": "Professional",
-        "friendly": "Friendly",
-        "concise": "Concise"
+    "settingsLink": "Personalise my assistant",
+    "mic": "Talk to the assistant",
+    "micSoon": "Coming soon: voice is on its way",
+    "entry": {
+      "label": "Assistant",
+      "aria": "Open the assistant {name}"
+    },
+    "panel": {
+      "subtitle": "Your assistant · online",
+      "fullPage": "Open full screen",
+      "settings": "Assistant settings",
+      "close": "Close the assistant"
+    }
+  },
+  "assistantSettings": {
+    "title": "Assistant settings",
+    "sub": "These settings are yours alone and apply immediately.",
+    "saved": "Saved.",
+    "invalid": "Invalid value.",
+    "notFound": "Item not found.",
+    "identity": {
+      "title": "Identity",
+      "description": "Her name, look and voice."
+    },
+    "name": "Assistant name",
+    "nameHint": "Shown in the header, the panel and the conversation.",
+    "language": "Answer language",
+    "voice": {
+      "label": "Voice",
+      "calm": "Calm",
+      "energetic": "Energetic",
+      "neutral": "Neutral",
+      "off": "Off",
+      "hint": "The voice will be used by the voice assistant, coming soon."
+    },
+    "avatar": {
+      "title": "Avatar",
+      "human": "Human",
+      "abstract": "Abstract",
+      "none": "None"
+    },
+    "tone": {
+      "title": "Tone",
+      "description": "Choose how she talks to you.",
+      "direct": "Direct",
+      "friendly": "Friendly",
+      "professional": "Professional",
+      "motivating": "Motivating",
+      "neutral": "Neutral",
+      "samples": {
+        "direct": "Invoice FAC-2026-0012 is 5 days overdue. Shall I send a reminder?",
+        "friendly": "Good news: two quotes signed this morning! Shall we schedule the jobs?",
+        "professional": "Three cases are waiting for your approval. Shall I go through them with you?",
+        "motivating": "Only two cases left to close this week: you’re nearly there!",
+        "neutral": "Two new cases were created today."
+      }
+    },
+    "contextAware": {
+      "label": "Context-aware tone",
+      "hint": "For alerts and deadlines (overdue invoice, expiring quote), she stays clear and firm, whatever tone you chose."
+    },
+    "theme": {
+      "title": "Workspace colour",
+      "description": "Applied straight away to your whole interface.",
+      "followCompany": "Company colour ({color})",
+      "company": "Apply to the whole company",
+      "companyHint": "Default colour for members who have not picked one.",
+      "companySaved": "Company colour saved.",
+      "colors": {
+        "blue": "Pratonna blue",
+        "ocean": "Ocean",
+        "violet": "Violet",
+        "emerald": "Emerald",
+        "amber": "Amber",
+        "rose": "Rose"
+      }
+    },
+    "memory": {
+      "title": "Memory & rules",
+      "description": "What your assistant remembers about you. Only approved items are used.",
+      "kind": "Type",
+      "kinds": {
+        "preference": "Preference",
+        "rule": "Rule",
+        "fact": "Fact"
       },
-      "language": "Answer language",
-      "languages": {
-        "fr": "Français",
-        "en": "English"
-      },
-      "instructions": "Personal instructions",
-      "instructionsHint": "E.g. “Always start with urgent cases.”"
+      "new": "New item",
+      "placeholder": "E.g. Always address clients formally.",
+      "add": "Add",
+      "added": "Added to memory.",
+      "pending": "Suggestion to approve",
+      "fromAssistant": "Suggested by the assistant",
+      "approve": "Approve",
+      "approved": "Approved.",
+      "edit": "Edit",
+      "updated": "Updated.",
+      "delete": "Delete",
+      "deleted": "Deleted.",
+      "empty": "Nothing remembered yet.",
+      "emptyText": "Add a rule or a preference, or let the assistant suggest some.",
+      "clearAll": "Clear all",
+      "clearConfirm": "Delete every memory and rule? This cannot be undone.",
+      "clearConfirmButton": "Clear all",
+      "cleared": "Memory cleared."
+    }
+  },
+  "welcome": {
+    "title": "Hello {name}, here are today’s priorities",
+    "sub": "{assistant} handles them with you: you approve, she executes. · {company}",
+    "ask": "Ask the assistant",
+    "handle": "She’ll handle it",
+    "overdue": {
+      "label": "{count, plural, one {overdue invoice} other {overdue invoices}}",
+      "prompt": "Which invoices are overdue? Prepare the reminders for my approval."
+    },
+    "approvals": {
+      "label": "{count, plural, one {pending approval} other {pending approvals}}",
+      "prompt": "What is waiting for my approval today? Help me deal with it."
+    },
+    "messages": {
+      "label": "{count, plural, one {unanswered message} other {unanswered messages}}",
+      "prompt": "Which case messages are waiting for my reply? Help me answer them."
     }
   }
 }

@@ -26,7 +26,7 @@ async function ask(page: Page, text: string) {
   await page.getByRole("button", { name: "Envoyer" }).click();
   // A reply can hold several bubbles (text before and after a tool call).
   await expect.poll(() => replies.count(), { timeout: AI_TIMEOUT }).toBeGreaterThan(before);
-  await expect(page.getByText("L’assistant réfléchit…")).toBeHidden({ timeout: AI_TIMEOUT });
+  await expect(page.getByText(/réfléchit…/)).toBeHidden({ timeout: AI_TIMEOUT });
 }
 
 test.beforeAll(async () => {
@@ -55,8 +55,8 @@ test("manager: the assistant reads real cases and proposes a triage that runs on
 }) => {
   await login(page, "manager");
   await page.goto("/app/assistant");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Assistant IA");
-  await expect(page.getByText("Bonjour, je suis Pratonna.")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Assistante IA");
+  await expect(page.getByText("Bonjour, je suis Maya.")).toBeVisible();
   await expectNoHorizontalScroll(page);
   await shot("assistant-empty");
 
@@ -105,27 +105,4 @@ test("another client's case stays invisible to the assistant", async ({ page }) 
   await ask(page, `Donne-moi le titre et la description du dossier ${reference}.`);
   await expect(page.getByRole("main")).not.toContainText(marker);
   await expect(page.getByRole("main")).not.toContainText("Infiltration au plafond");
-});
-
-test("each user personalises their own assistant", async ({ page, shot }) => {
-  await login(page, "technician");
-  await page.goto("/app/assistant");
-  await page.getByLabel("Nom de l’assistant").fill("Léa");
-  await page.getByLabel("Ton", { exact: true }).selectOption("concise");
-  await page.getByRole("button", { name: "Enregistrer" }).click();
-  await expect(
-    page.getByRole("status").filter({ hasText: "Modifications enregistrées." }),
-  ).toBeVisible();
-  await page.reload();
-  await expect(page.getByText("Bonjour, je suis Léa.")).toBeVisible();
-  await expect(page.getByLabel("Ton", { exact: true })).toHaveValue("concise");
-  await shot("assistant-agent-profile");
-
-  // Someone else's assistant is unchanged.
-  const { users } = readState();
-  const { data } = await adminClient()
-    .from("ai_conductor_agent_profiles")
-    .select("user_id")
-    .eq("company_id", readState().companyId);
-  expect((data ?? []).map((r) => r.user_id)).toEqual([users.technician.profileId]);
 });
