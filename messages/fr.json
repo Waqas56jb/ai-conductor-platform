@@ -1,0 +1,622 @@
+{
+  "common": {
+    "appName": "Pratonna",
+    "save": "Enregistrer",
+    "saving": "Enregistrement…",
+    "saved": "Modifications enregistrées.",
+    "cancel": "Annuler",
+    "close": "Fermer",
+    "loading": "Chargement…",
+    "error": "Une erreur est survenue. Réessayez.",
+    "back": "Retour",
+    "optional": "facultatif",
+    "yes": "Oui",
+    "no": "Non"
+  },
+  "roles": {
+    "client": "Client",
+    "technician": "Technicien",
+    "manager": "Gestionnaire",
+    "director": "Dirigeant",
+    "accountant": "Comptable",
+    "admin": "Administrateur"
+  },
+  "templates": {
+    "btp": "BTP",
+    "immobilier": "Immobilier",
+    "barber": "Barbier / coiffure",
+    "entrepreneur": "Entrepreneur"
+  },
+  "validation": {
+    "required": "Champ obligatoire.",
+    "email": "Adresse e-mail invalide.",
+    "passwordLength": "8 caractères minimum.",
+    "passwordStrength": "Au moins une lettre et un chiffre.",
+    "passwordMismatch": "Les mots de passe ne correspondent pas.",
+    "tooLong": "Texte trop long.",
+    "siret": "Le SIRET comporte 14 chiffres.",
+    "phone": "Numéro de téléphone invalide."
+  },
+  "auth": {
+    "visualTitle": "Votre 6ème collaborateur, 100 % IA",
+    "visualText": "Dossiers, devis, relances et interventions : Pratonna prépare, vous validez.",
+    "login": {
+      "title": "Bon retour parmi nous",
+      "sub": "Connectez-vous à votre espace Pratonna.",
+      "email": "E-mail",
+      "password": "Mot de passe",
+      "submit": "Se connecter",
+      "forgot": "Mot de passe oublié ?",
+      "noAccount": "Pas encore de compte ?",
+      "signupLink": "Créer un compte",
+      "invalid": "E-mail ou mot de passe incorrect.",
+      "unconfirmed": "Confirmez d’abord votre adresse e-mail grâce au lien reçu à l’inscription.",
+      "noProfile": "Ce compte n’est rattaché à aucune entreprise Pratonna.",
+      "linkError": "Ce lien est invalide ou a expiré.",
+      "signedOut": "Vous êtes déconnecté."
+    },
+    "signup": {
+      "title": "Créez votre espace",
+      "sub": "Votre entreprise et votre compte dirigeant, en une minute.",
+      "fullName": "Nom complet",
+      "company": "Nom de l’entreprise",
+      "email": "E-mail professionnel",
+      "password": "Mot de passe",
+      "passwordHint": "8 caractères minimum, dont une lettre et un chiffre.",
+      "submit": "Créer mon compte",
+      "hasAccount": "Déjà un compte ?",
+      "loginLink": "Se connecter",
+      "exists": "Un compte existe déjà avec cet e-mail.",
+      "emailFailed": "L’e-mail de confirmation n’a pas pu être envoyé. Réessayez plus tard ou contactez le support."
+    },
+    "checkEmail": {
+      "title": "Vérifiez votre boîte mail",
+      "body": "Nous avons envoyé un lien de confirmation à {email}. Cliquez dessus pour activer votre compte.",
+      "back": "Retour à la connexion"
+    },
+    "forgot": {
+      "title": "Mot de passe oublié",
+      "sub": "Indiquez votre e-mail : nous vous envoyons un lien de réinitialisation.",
+      "email": "E-mail",
+      "submit": "Envoyer le lien",
+      "sent": "Si un compte existe pour cette adresse, un lien de réinitialisation vient d’être envoyé.",
+      "back": "Retour à la connexion",
+      "failed": "L’e-mail n’a pas pu être envoyé pour le moment. Réessayez dans quelques minutes."
+    },
+    "reset": {
+      "title": "Nouveau mot de passe",
+      "sub": "Choisissez un nouveau mot de passe pour votre compte.",
+      "password": "Nouveau mot de passe",
+      "confirm": "Confirmer le mot de passe",
+      "submit": "Mettre à jour",
+      "expired": "Le lien a expiré ou a déjà été utilisé. Demandez-en un nouveau.",
+      "requestNew": "Demander un nouveau lien",
+      "samePassword": "Choisissez un mot de passe différent de l’actuel."
+    }
+  },
+  "shell": {
+    "skip": "Aller au contenu",
+    "openMenu": "Ouvrir le menu",
+    "closeMenu": "Fermer le menu",
+    "collapse": "Réduire le menu",
+    "expand": "Déplier le menu",
+    "mainNav": "Navigation principale",
+    "search": "Rechercher…",
+    "searchTitle": "Rechercher une page",
+    "searchShortcut": "Ctrl K",
+    "noResults": "Aucun résultat.",
+    "notifications": "Notifications",
+    "unread": "{count, plural, =0 {Aucune non lue} one {# non lue} other {# non lues}}",
+    "noNotifications": "Aucune notification.",
+    "markAllRead": "Tout marquer comme lu",
+    "language": "Langue",
+    "userMenu": "Menu utilisateur",
+    "signOut": "Se déconnecter",
+    "signOutTitle": "Se déconnecter ?",
+    "signOutText": "Vous devrez vous reconnecter pour accéder à votre espace."
+  },
+  "nav": {
+    "dashboard": "Tableau de bord",
+    "profile": "Mon profil",
+    "company": "Entreprise"
+  },
+  "dashboard": {
+    "welcome": "Bonjour {name}",
+    "sub": "Votre espace {company}",
+    "kpi": {
+      "team": "Membres de l’équipe",
+      "teamHint": "Comptes actifs",
+      "unread": "Notifications non lues",
+      "unreadHint": "À consulter",
+      "threshold": "Seuil d’approbation",
+      "thresholdHint": "Devis validés par le dirigeant au-delà",
+      "template": "Modèle métier",
+      "templateHint": "Configuration de l’espace"
+    },
+    "activityTitle": "Activité récente",
+    "activityEmpty": "Aucune activité pour le moment.",
+    "activityEmptyText": "Les dossiers, devis et factures de votre entreprise apparaîtront ici."
+  },
+  "profile": {
+    "title": "Mon profil",
+    "sub": "Vos informations personnelles et votre sécurité.",
+    "tabs": {
+      "info": "Informations",
+      "security": "Sécurité"
+    },
+    "displayName": "Nom affiché",
+    "phone": "Téléphone",
+    "locale": "Langue de l’interface",
+    "email": "E-mail (identifiant)",
+    "role": "Rôle",
+    "company": "Entreprise",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "updatePassword": "Changer le mot de passe",
+    "passwordUpdated": "Mot de passe mis à jour."
+  },
+  "company": {
+    "title": "Entreprise",
+    "sub": "Informations légales et équipe.",
+    "infoTitle": "Informations de l’entreprise",
+    "name": "Raison sociale",
+    "legalForm": "Forme juridique",
+    "siret": "SIRET",
+    "vat": "N° de TVA intracommunautaire",
+    "address": "Adresse",
+    "postalCode": "Code postal",
+    "city": "Ville",
+    "country": "Pays",
+    "phone": "Téléphone",
+    "email": "E-mail de contact",
+    "teamTitle": "Équipe",
+    "teamCount": "{count, plural, one {# membre} other {# membres}}",
+    "columns": {
+      "name": "Nom",
+      "email": "E-mail",
+      "role": "Rôle",
+      "status": "Statut"
+    },
+    "active": "Actif",
+    "inactive": "Inactif",
+    "you": "vous"
+  },
+  "errors": {
+    "notFoundTitle": "Page introuvable",
+    "notFoundText": "Cette page n’existe pas ou vous n’y avez pas accès.",
+    "backHome": "Retour au tableau de bord"
+  },
+  "client": {
+    "portal": "Espace client",
+    "welcome": "Bonjour, {name}",
+    "subtitle": "Vos dossiers, devis et paiements au même endroit.",
+    "logout": "Déconnexion",
+    "nav": {
+      "overview": "Tableau de bord",
+      "report": "Signaler un problème",
+      "track": "Suivre les dossiers",
+      "quotations": "Devis",
+      "invoices": "Factures",
+      "support": "Support",
+      "profile": "Mon profil"
+    },
+    "kpi": {
+      "open": "Dossiers ouverts",
+      "openHint": "Signalements en cours",
+      "assigned": "Techniciens assignés",
+      "assignedHint": "Dossiers avec un pro terrain",
+      "quotes": "Devis à revoir",
+      "quotesHint": "Validés par le gestionnaire",
+      "unpaid": "Factures impayées",
+      "unpaidHint": "Joindre la preuve de paiement"
+    },
+    "overview": {
+      "recent": "Dossiers récents",
+      "recentSub": "Derniers signalements et leur statut.",
+      "reportCta": "Nouveau signalement",
+      "attention": "À traiter",
+      "attentionSub": "Devis et factures en attente de votre action.",
+      "allClear": "Rien en attente — tout est à jour."
+    },
+    "report": {
+      "title": "Signaler un problème",
+      "sub": "Prenez une photo en direct ou depuis la galerie, puis indiquez l’adresse de l’immeuble.",
+      "cameraPlaceholder": "L’aperçu caméra apparaîtra ici",
+      "openCamera": "Ouvrir la caméra",
+      "capture": "Prendre la photo",
+      "closeCamera": "Fermer la caméra",
+      "gallery": "Importer depuis la galerie",
+      "remove": "Retirer la photo",
+      "issueTitle": "Titre du problème",
+      "issuePlaceholder": "ex. Fuite d’eau dans la salle de bain",
+      "defaultTitle": "Demande de réparation",
+      "building": "Adresse de l’immeuble",
+      "buildingPlaceholder": "Rue, numéro, étage…",
+      "city": "Ville",
+      "urgency": "Urgence",
+      "urgencyLow": "Basse",
+      "urgencyMedium": "Moyenne",
+      "urgencyHigh": "Haute",
+      "submit": "Envoyer le signalement",
+      "hint": "Notre IA ouvre votre dossier et l’envoie immédiatement à notre équipe.",
+      "cameraError": "Accès caméra refusé. Utilisez la galerie.",
+      "needPhoto": "Ajoutez au moins une photo.",
+      "needAddress": "Indiquez l’adresse de l’immeuble."
+    },
+    "track": {
+      "title": "Suivre vos signalements",
+      "sub": "Statut d’assignation, profil technicien et chat une fois assigné.",
+      "noTech": "Pas encore de technicien",
+      "back": "Tous les dossiers",
+      "notFound": "Dossier introuvable.",
+      "techTitle": "Technicien",
+      "techSub": "Professionnel assigné à ce dossier.",
+      "waitingTech": "Technicien pas encore assigné. Son profil et le chat apparaîtront dès qu’un gestionnaire l’aura nommé.",
+      "rating": "Note",
+      "jobs": "Interventions",
+      "chatTitle": "Chat du dossier",
+      "chatSub": "Écrivez directement à votre technicien.",
+      "chatLocked": "Le chat s’ouvre quand un technicien est assigné.",
+      "chatPlaceholder": "Écrire un message…",
+      "noMessages": "Aucun message pour l’instant.",
+      "send": "Envoyer"
+    },
+    "quotes": {
+      "title": "Devis",
+      "sub": "Les devis arrivent ici après préparation direction et validation gestionnaire.",
+      "caseRef": "Dossier",
+      "fromDirector": "Issu de la direction",
+      "managerOk": "Validé gestionnaire",
+      "accept": "Accepter le devis",
+      "reject": "Refuser"
+    },
+    "invoices": {
+      "title": "Factures",
+      "sub": "Payez puis importez une capture de votre reçu de paiement.",
+      "caseRef": "Dossier",
+      "due": "Échéance",
+      "receipt": "Reçu de paiement",
+      "uploadReceipt": "Importer la capture de paiement",
+      "replaceReceipt": "Remplacer la capture",
+      "paidNote": "Paiement confirmé. Merci."
+    },
+    "support": {
+      "title": "Support & avis",
+      "sub": "Dites-nous comment s’est passé le service — qualité, rapidité, relation.",
+      "topic": "Sujet",
+      "topics": {
+        "service": "Service global",
+        "technician": "Technicien",
+        "billing": "Facturation",
+        "app": "Expérience application"
+      },
+      "rating": "Note",
+      "message": "Votre message",
+      "submit": "Envoyer l’avis",
+      "thanks": "Merci — votre avis a bien été envoyé.",
+      "history": "Vos avis",
+      "historySub": "Messages déjà partagés.",
+      "empty": "Aucun avis pour l’instant."
+    },
+    "profile": {
+      "title": "Mon profil",
+      "sub": "Vos informations utilisées pour les signalements."
+    }
+  },
+  "manager": {
+    "portal": "Gestionnaire",
+    "welcome": "Bonjour, {name}",
+    "subtitle": "Incidents IA → embauche tech → validation devis → interventions.",
+    "logout": "Déconnexion",
+    "nav": {
+      "overview": "Tableau de bord",
+      "incidents": "Incidents",
+      "technicians": "Carte techniciens",
+      "approvals": "Validation devis",
+      "calendar": "Agenda",
+      "invoices": "Factures & relances",
+      "chats": "Groupes de tâches"
+    },
+    "kpi": {
+      "open": "Incidents ouverts",
+      "openHint": "Dossiers immeuble actifs",
+      "assign": "À assigner",
+      "assignHint": "Urgence + embauche",
+      "devis": "Devis à valider",
+      "devisHint": "Sous le seuil directeur",
+      "planned": "Interventions planifiées",
+      "plannedHint": "Après signature client",
+      "unpaid": "Factures impayées",
+      "unpaidHint": "File de relances"
+    },
+    "overview": {
+      "alerts": "Alertes IA",
+      "alertsSub": "Plaintes WhatsApp, e-mail, téléphone — dossier auto.",
+      "actions": "Actions requises",
+      "actionsSub": "Assignations, devis manager, relances.",
+      "open": "Ouvrir"
+    },
+    "incidents": {
+      "title": "Boîte incidents",
+      "sub": "L’IA crée le dossier et rattache immeuble/lot. Vous fixez l’urgence et embauchez.",
+      "channels": {
+        "whatsapp": "WhatsApp",
+        "email": "E-mail",
+        "phone": "Téléphone"
+      },
+      "statuses": {
+        "new": "Nouveau",
+        "awaiting_assignment": "En attente d’assignation",
+        "site_visit": "Visite terrain",
+        "devis_pending_manager": "Devis → gestionnaire",
+        "devis_pending_director": "Devis → direction",
+        "sent_to_client": "Envoyé au client",
+        "client_signed": "Signé client",
+        "intervention_planned": "Intervention planifiée",
+        "in_progress": "En cours",
+        "invoiced": "Facturé",
+        "closed": "Clôturé"
+      }
+    },
+    "detail": {
+      "back": "Tous les incidents",
+      "notFound": "Incident introuvable.",
+      "aiFile": "Dossier IA",
+      "urgency": "Définir l’urgence",
+      "low": "Basse",
+      "medium": "Moyenne",
+      "high": "Haute",
+      "saveUrgency": "Enregistrer l’urgence",
+      "hireTitle": "Embaucher sur la carte",
+      "hireSub": "Sélectionnez les profils avec photo. Les tech embauchés rejoignent un groupe automatiquement.",
+      "available": "Disponible",
+      "busy": "Occupé",
+      "hire": "Embaucher & créer le groupe",
+      "hired": "Équipe embauchée",
+      "chat": "Chat de groupe",
+      "chatPh": "Écrire au groupe…",
+      "send": "Envoyer",
+      "report": "Rapport IA terrain",
+      "devis": "Devis",
+      "threshold": "Seuil directeur",
+      "approve": "Valider & envoyer au client",
+      "reject": "Refuser le devis",
+      "directorNote": "Montant au-dessus du seuil — en attente du directeur.",
+      "plan": "Planifier l’intervention",
+      "planHint": "Client a signé. Planifiez l’intervention pour l’équipe.",
+      "markProgress": "Marquer en cours",
+      "completeInvoice": "Terminer & générer facture",
+      "sentClient": "Devis envoyé au client pour signature électronique."
+    },
+    "techs": {
+      "title": "Annuaire techniciens",
+      "sub": "Profils live avec photo et position — embauchez depuis un incident.",
+      "openMap": "Ouvrir un incident pour embaucher"
+    },
+    "approvals": {
+      "title": "Validation des devis",
+      "sub": "Sous le seuil → vous validez. Au-dessus → directeur. Puis devis au client pour signature.",
+      "managerQueue": "File gestionnaire",
+      "directorQueue": "Envoyé au directeur",
+      "empty": "Aucun devis en attente."
+    },
+    "calendar": {
+      "title": "Agenda interventions",
+      "sub": "Planifié après signature électronique client. Les techniciens sont notifiés.",
+      "empty": "Aucune intervention planifiée."
+    },
+    "invoices": {
+      "title": "Factures & relances",
+      "sub": "Facture auto après travaux. Relances à J+7 et J+15 si impayé.",
+      "unpaid": "Impayé",
+      "paid": "Payé",
+      "send7": "Relance J+7",
+      "send15": "Relance J+15",
+      "reminders": "Relances envoyées"
+    },
+    "chats": {
+      "title": "Chats de groupe",
+      "sub": "Créés automatiquement à l’embauche pour un incident.",
+      "empty": "Aucun groupe.",
+      "open": "Ouvrir l’incident"
+    }
+  },
+  "technician": {
+    "portal": "Technicien",
+    "welcome": "Bonjour, {name}",
+    "subtitle": "Visites terrain, rapports IA, chats de groupe et interventions assignées.",
+    "logout": "Déconnexion",
+    "nav": {
+      "overview": "Tableau de bord",
+      "tasks": "Mes tâches",
+      "notifications": "Notifications",
+      "profile": "Mon profil",
+      "directory": "Annuaire manager"
+    },
+    "kpi": {
+      "active": "Tâches actives",
+      "activeHint": "Visites & interventions",
+      "reports": "Rapports envoyés",
+      "reportsHint": "Devis IA vers manager/direction",
+      "hired": "Statut",
+      "hiredHint": "Visible sur la carte manager",
+      "unread": "Alertes non lues",
+      "unreadHint": "Embauches & assignations"
+    },
+    "overview": {
+      "next": "Prochaines actions",
+      "nextSub": "Ce qui vous attend sur site aujourd’hui.",
+      "alerts": "Dernières alertes",
+      "alertsSub": "Embauches, signatures client, assignations.",
+      "openTasks": "Tâches ouvertes",
+      "viewAll": "Tout voir"
+    },
+    "directory": {
+      "title": "Envoyé à l’annuaire manager",
+      "sub": "Les managers voient votre photo et votre pin live. Ils embauchent pour une tâche — le groupe se crée automatiquement.",
+      "visible": "Visible sur la carte",
+      "coords": "Coordonnées",
+      "flowTitle": "Comment marche l’embauche",
+      "steps": [
+        "Vous créez un profil avec photo + position live.",
+        "Le manager ouvre une tâche et voit les techniciens sur la carte.",
+        "Il sélectionne des techniciens → chat de groupe créé automatiquement.",
+        "Vous faites la visite (photos + notes) → l’IA produit rapport + devis.",
+        "Après validation & signature client, vous recevez l’assignation d’intervention."
+      ]
+    },
+    "tasks": {
+      "title": "Mes tâches",
+      "sub": "Groupes embauchés, visites terrain et interventions après signature client.",
+      "empty": "Pas encore de tâche. Quand un manager vous embauche, elle apparaît ici.",
+      "stages": {
+        "site_visit": "Visite terrain requise",
+        "report_sent": "Rapport IA envoyé",
+        "awaiting_approval": "En attente de validation",
+        "awaiting_client_sign": "En attente signature client",
+        "intervention_assigned": "Intervention assignée",
+        "in_progress": "Travaux en cours",
+        "completed": "Terminé"
+      },
+      "group": "Groupe de tâche",
+      "members": "Techniciens embauchés",
+      "open": "Ouvrir"
+    },
+    "task": {
+      "back": "Toutes les tâches",
+      "notFound": "Tâche introuvable.",
+      "siteTitle": "Visite terrain — photos & constat",
+      "siteSub": "Photographiez les dégâts, écrivez un court constat. L’IA construit rapport + devis.",
+      "openCamera": "Ouvrir la caméra",
+      "capture": "Prendre la photo",
+      "closeCamera": "Fermer la caméra",
+      "gallery": "Depuis la galerie",
+      "notes": "Constat / notes",
+      "notesPh": "Court constat sur site…",
+      "generate": "Générer rapport IA + devis",
+      "generating": "L’IA rédige le rapport…",
+      "cameraError": "Caméra indisponible. Utilisez la galerie.",
+      "needPhoto": "Ajoutez au moins une photo sur site.",
+      "needNotes": "Écrivez un court constat.",
+      "reportTitle": "Rapport IA & devis",
+      "amount": "Devis estimé",
+      "routeManager": "Vers le manager (sous le seuil)",
+      "routeDirector": "Vers le directeur (au-dessus du seuil)",
+      "threshold": "Seuil directeur",
+      "sent": "Envoyé pour validation",
+      "chatTitle": "Chat de groupe",
+      "chatSub": "Créé automatiquement à l’embauche manager pour cette tâche.",
+      "chatPh": "Écrire au groupe…",
+      "send": "Envoyer",
+      "intervention": "Intervention",
+      "startWork": "Démarrer les travaux",
+      "completeWork": "Marquer terminé",
+      "completeHint": "La fin des travaux génère automatiquement la facture client.",
+      "assignedBanner": "Le client a signé le devis. Cette intervention est assignée à votre groupe à partir de vos photos terrain.",
+      "awaitingBanner": "Rapport envoyé. En attente validation manager/directeur, puis signature client."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "sub": "Embauches depuis la carte manager et assignations après signature client.",
+      "empty": "Aucune notification.",
+      "markRead": "Tout marquer lu"
+    },
+    "profile": {
+      "title": "Mon profil technicien",
+      "sub": "Les managers embauchent depuis ce profil sur la carte.",
+      "save": "Enregistrer",
+      "saved": "Profil mis à jour et synchronisé avec l’annuaire manager.",
+      "refreshLocation": "Actualiser la position"
+    }
+  },
+  "director": {
+    "portal": "Direction",
+    "welcome": "Bonjour, {name}",
+    "subtitle": "Centre de pilotage — dossiers, interventions, encaissements, relances.",
+    "logout": "Déconnexion",
+    "nav": {
+      "overview": "Tableau de bord",
+      "approvals": "Validation devis",
+      "cases": "Tous les dossiers",
+      "interventions": "Interventions",
+      "finance": "Finance & relances",
+      "settings": "Paramètres"
+    },
+    "kpi": {
+      "cases": "Dossiers en cours",
+      "casesHint": "Incidents immeuble actifs",
+      "interventions": "Interventions planifiées",
+      "interventionsHint": "Après signature client",
+      "unpaid": "Factures impayées",
+      "unpaidHint": "Encours client",
+      "reminders": "Relances à envoyer",
+      "remindersHint": "File J+7 / J+15",
+      "pending": "Validations direction",
+      "pendingHint": "Au-dessus de votre seuil",
+      "exposure": "Exposition en attente",
+      "exposureHint": "Somme des devis à valider"
+    },
+    "overview": {
+      "live": "Instantané live",
+      "liveSub": "Ce qui demande votre attention.",
+      "queue": "File validation direction",
+      "queueSub": "Montants au seuil ou au-dessus.",
+      "unpaid": "Qui ne paie pas",
+      "unpaidSub": "Factures impayées et état des relances.",
+      "open": "Ouvrir"
+    },
+    "approvals": {
+      "title": "Validation des gros devis",
+      "sub": "Le gestionnaire a cadré le process. Au-dessus du seuil, c’est ici. Valider → devis au client pour signature.",
+      "empty": "Aucun devis en attente direction.",
+      "approve": "Valider & envoyer au client",
+      "reject": "Refuser / renvoyer",
+      "threshold": "Votre seuil",
+      "team": "Techniciens embauchés",
+      "manager": "Gestionnaire"
+    },
+    "cases": {
+      "title": "Tous les dossiers",
+      "sub": "Vue entreprise des incidents et de leur étape.",
+      "statuses": {
+        "devis_pending_director": "En attente direction",
+        "site_visit": "Visite terrain",
+        "sent_to_client": "Envoyé au client",
+        "intervention_planned": "Intervention planifiée",
+        "in_progress": "En cours",
+        "invoiced": "Facturé",
+        "closed": "Clôturé",
+        "approved_sent": "Validé → client"
+      }
+    },
+    "interventions": {
+      "title": "Interventions planifiées",
+      "sub": "Agenda après signature électronique client.",
+      "empty": "Aucune intervention planifiée.",
+      "scheduled": "Planifié"
+    },
+    "finance": {
+      "title": "Finance & relances",
+      "sub": "Factures après travaux. Relances auto à J+7 et J+15.",
+      "unpaid": "Impayé",
+      "paid": "Payé",
+      "send7": "Relance J+7",
+      "send15": "Relance J+15",
+      "reminders": "Relances",
+      "totalUnpaid": "Total impayé",
+      "totalPaid": "Encaissé (échantillon)"
+    },
+    "settings": {
+      "title": "Paramètres direction",
+      "sub": "Seuils de validation et politique de relance pour toute l’entreprise.",
+      "threshold": "Seuil de validation (EUR)",
+      "thresholdHint": "En dessous → le gestionnaire valide. Au-dessus → vous validez.",
+      "rem1": "1re relance (jours)",
+      "rem2": "2e relance (jours)",
+      "company": "Nom de la société",
+      "aiNote": "Note grille IA",
+      "save": "Enregistrer",
+      "saved": "Paramètres enregistrés. Le routage manager / IA utilisera le nouveau seuil."
+    }
+  }
+}

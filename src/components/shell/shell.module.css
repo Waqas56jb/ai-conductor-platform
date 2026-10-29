@@ -1,0 +1,606 @@
+.shell {
+  --w: var(--sidebar-w);
+  min-height: 100dvh;
+}
+
+.collapsed {
+  --w: var(--sidebar-w-collapsed);
+}
+
+.skip {
+  position: fixed;
+  top: -100px;
+  left: var(--space-4);
+  z-index: 200;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  background: var(--blue);
+  color: #fff;
+  font-weight: 600;
+}
+
+.skip:focus {
+  top: var(--space-3);
+}
+
+/* ---------- Sidebar ---------- */
+
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  width: var(--w);
+  padding: var(--space-4) var(--space-3);
+  border-right: 1px solid var(--line);
+  background: rgba(8, 13, 34, 0.82);
+  backdrop-filter: blur(18px);
+  transition: width 0.25s ease;
+  overflow: hidden;
+}
+
+.sidebarTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 44px;
+  margin-bottom: var(--space-5);
+  padding: 0 var(--space-2);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+  font-family: var(--font-display), serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.logo {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  border-radius: 9px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.55), transparent 45%),
+    linear-gradient(135deg, var(--cyan), var(--blue) 50%, var(--violet));
+  box-shadow: 0 0 18px rgba(73, 216, 255, 0.4);
+}
+
+.nav {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.nav ul {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navLink {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  height: 44px;
+  padding: 0 0.85rem;
+  border-radius: 12px;
+  color: var(--text-soft);
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.navLink svg,
+.collapseButton svg {
+  width: 20px;
+  height: 20px;
+  flex: none;
+}
+
+.navLink:hover {
+  color: var(--text);
+  background: var(--glass);
+}
+
+.navActive {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(47, 107, 255, 0.3), rgba(139, 92, 246, 0.22));
+  box-shadow: inset 0 0 0 1px rgba(73, 216, 255, 0.25);
+}
+
+.navActive svg {
+  color: var(--cyan);
+}
+
+.collapseButton {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  height: 44px;
+  padding: 0 0.85rem;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-faint);
+  cursor: pointer;
+}
+
+.collapseButton:hover {
+  color: var(--text);
+  background: var(--glass);
+}
+
+.collapsed .collapseButton svg {
+  transform: rotate(180deg);
+}
+
+.collapsed .navLabel,
+.collapsed .brandText {
+  display: none;
+}
+
+.collapsed .navLink,
+.collapsed .collapseButton {
+  justify-content: center;
+  padding: 0;
+}
+
+/* Two classes so it beats .iconButton's display regardless of order. */
+.sidebarTop .drawerClose {
+  display: none;
+}
+
+.scrim {
+  display: none;
+}
+
+/* ---------- Main column ---------- */
+
+.column {
+  min-width: 0;
+  margin-left: var(--w);
+  transition: margin-left 0.25s ease;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  height: var(--topbar-h);
+  padding: 0 clamp(1rem, 3vw, 2rem);
+  border-bottom: 1px solid var(--line);
+  background: rgba(6, 11, 30, 0.72);
+  backdrop-filter: blur(16px);
+}
+
+.topActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.main {
+  max-width: 1280px;
+  padding: clamp(1.25rem, 3vw, 2rem) clamp(1rem, 3vw, 2rem) var(--space-7);
+  outline: none;
+}
+
+.iconButton {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--glass);
+  color: var(--text-soft);
+  cursor: pointer;
+}
+
+.iconButton:hover {
+  color: var(--text);
+  border-color: var(--line-strong);
+}
+
+.iconButton svg {
+  width: 19px;
+  height: 19px;
+}
+
+.burger {
+  display: none;
+}
+
+.dot {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  display: grid;
+  place-items: center;
+  min-width: 19px;
+  height: 19px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--gradient);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 700;
+  box-shadow: 0 0 0 2px var(--navy-950);
+}
+
+/* ---------- Search ---------- */
+
+.searchTrigger {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: min(360px, 100%);
+  height: 40px;
+  padding: 0 0.6rem 0 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--glass);
+  color: var(--text-faint);
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+.searchTrigger:hover {
+  border-color: var(--line-strong);
+}
+
+.searchTrigger svg {
+  width: 17px;
+  height: 17px;
+  flex: none;
+}
+
+.searchText {
+  flex: 1;
+  text-align: left;
+}
+
+.kbd {
+  padding: 0.1rem 0.4rem;
+  border-radius: 6px;
+  border: 1px solid var(--line-strong);
+  font-family: inherit;
+  font-size: 0.72rem;
+}
+
+.searchInput {
+  width: 100%;
+  min-height: 46px;
+  padding: 0 0.9rem;
+  border-radius: 12px;
+  border: 1px solid var(--line-strong);
+  background: rgba(6, 11, 30, 0.6);
+  color: var(--text);
+  font-size: 1rem;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--cyan);
+}
+
+.searchResults {
+  display: grid;
+  gap: 0.2rem;
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.searchResults li {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 0.8rem;
+  border-radius: 10px;
+  color: var(--text-soft);
+  cursor: pointer;
+}
+
+.searchResults li svg {
+  width: 18px;
+  height: 18px;
+}
+
+.searchActive {
+  color: #fff !important;
+  background: rgba(47, 107, 255, 0.22);
+}
+
+.searchEmpty {
+  cursor: default !important;
+  color: var(--text-faint) !important;
+}
+
+/* ---------- Popovers ---------- */
+
+.popoverRoot {
+  position: relative;
+}
+
+.popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  width: 260px;
+  padding: var(--space-2);
+  border-radius: var(--radius);
+  border: 1px solid var(--line-strong);
+  background: #0e1738;
+  box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.85);
+}
+
+.popoverWide {
+  width: min(360px, calc(100vw - 2rem));
+}
+
+.popoverHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3) var(--space-3);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: var(--space-2);
+}
+
+.textButton {
+  border: 0;
+  background: none;
+  color: var(--cyan);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.notifList {
+  display: grid;
+  max-height: 360px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.notifList li {
+  padding: 0.7rem var(--space-3);
+  border-radius: 10px;
+}
+
+.notifUnread {
+  background: rgba(47, 107, 255, 0.1);
+}
+
+.notifTitle {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.notifBody {
+  margin-top: 0.15rem;
+  color: var(--text-soft);
+  font-size: 0.85rem;
+}
+
+.notifTime {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--text-faint);
+  font-size: 0.75rem;
+}
+
+.userButton {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  height: 44px;
+  padding: 0 0.6rem 0 0.25rem;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.userButton:hover {
+  border-color: var(--line);
+  background: var(--glass);
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: 12px;
+  background: var(--gradient);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.userText {
+  display: grid;
+  text-align: left;
+  line-height: 1.2;
+}
+
+.userName {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.userRole {
+  color: var(--text-faint);
+  font-size: 0.75rem;
+}
+
+.userEmail {
+  display: block;
+  color: var(--text-faint);
+  font-size: 0.8rem;
+  overflow-wrap: anywhere;
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  width: 100%;
+  padding: 0.65rem var(--space-3);
+  border: 0;
+  border-radius: 10px;
+  background: none;
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menuItem:hover {
+  color: var(--text);
+  background: var(--glass);
+}
+
+.menuItem svg {
+  width: 18px;
+  height: 18px;
+}
+
+.menuLang {
+  padding: var(--space-1) var(--space-3) var(--space-2);
+}
+
+/* ---------- Language ---------- */
+
+.lang {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--glass);
+}
+
+.lang button {
+  min-width: 36px;
+  height: 30px;
+  padding: 0 0.55rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--text-faint);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+}
+
+.lang button[aria-pressed="true"] {
+  color: #fff;
+  background: rgba(47, 107, 255, 0.35);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1024px) {
+  .userText {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .sidebar {
+    width: min(300px, 86vw);
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+    box-shadow: 30px 0 80px -20px rgba(0, 0, 0, 0.9);
+  }
+
+  .sidebarOpen {
+    transform: none;
+  }
+
+  /* The collapsed desktop preference never applies to the drawer. */
+  .collapsed .navLabel,
+  .collapsed .brandText {
+    display: inline;
+  }
+
+  .collapsed .navLink {
+    justify-content: flex-start;
+    padding: 0 0.85rem;
+  }
+
+  .collapseButton {
+    display: none;
+  }
+
+  .sidebarTop .drawerClose {
+    display: grid;
+  }
+
+  .scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 35;
+    display: block;
+    background: rgba(3, 6, 18, 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .scrimOpen {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .column {
+    margin-left: 0;
+  }
+
+  .burger {
+    display: grid;
+  }
+}
+
+@media (max-width: 640px) {
+  .searchText,
+  .kbd {
+    display: none;
+  }
+
+  .searchTrigger {
+    width: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .topLang {
+    display: none;
+  }
+}

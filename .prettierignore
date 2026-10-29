@@ -1,0 +1,9 @@
+legacy/
+.next/
+out/
+build/
+coverage/
+node_modules/
+pnpm-lock.yaml
+next-env.d.ts
+PRATONNA_AUDIT.md

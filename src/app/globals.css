@@ -1,0 +1,195 @@
+/* ---------- Pratonna design tokens (shared with the marketing site) ---------- */
+
+:root {
+  --navy-950: #060b1e;
+  --navy-900: #0b1330;
+  --navy-850: #0e1838;
+  --navy-800: #121d44;
+  --blue: #2f6bff;
+  --violet: #8b5cf6;
+  --cyan: #49d8ff;
+  --green: #6ee7b7;
+  --amber: #fbbf24;
+  --red: #ff7a8a;
+
+  --text: #f5f7ff;
+  --text-soft: rgba(214, 222, 255, 0.78);
+  --text-faint: rgba(214, 222, 255, 0.55);
+  --line: rgba(255, 255, 255, 0.1);
+  --line-strong: rgba(255, 255, 255, 0.18);
+  --glass: rgba(255, 255, 255, 0.05);
+  --glass-strong: rgba(255, 255, 255, 0.08);
+  --surface: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.025));
+  --gradient: linear-gradient(135deg, var(--blue) 0%, #5a5cff 55%, var(--violet) 100%);
+  --gradient-text: linear-gradient(90deg, var(--cyan), var(--blue) 45%, var(--violet));
+
+  --radius-sm: 10px;
+  --radius: 14px;
+  --radius-lg: 20px;
+  --shadow: 0 24px 60px -28px rgba(0, 0, 0, 0.8);
+  --shadow-glow: 0 12px 32px -8px rgba(47, 107, 255, 0.65);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+
+  --sidebar-w: 260px;
+  --sidebar-w-collapsed: 76px;
+  --topbar-h: 64px;
+
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--text);
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(900px 600px at 100% -10%, rgba(139, 92, 246, 0.12), transparent 60%),
+    radial-gradient(900px 600px at -10% 10%, rgba(47, 107, 255, 0.12), transparent 60%),
+    var(--navy-950);
+  background-attachment: fixed;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  line-height: 1.15;
+}
+
+h1,
+h2 {
+  font-family: var(--font-display), Georgia, serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: rgba(73, 216, 255, 0.3);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Page header used by every app page */
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.page-header h1 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+}
+
+.page-header p {
+  margin-top: var(--space-1);
+  color: var(--text-soft);
+}
+
+.stack {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.grid-kpi {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-4);
+}
+
+.form-grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.form-grid--2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 640px) {
+  .form-grid--2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: var(--space-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

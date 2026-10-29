@@ -1,0 +1,622 @@
+{
+  "common": {
+    "appName": "Pratonna",
+    "save": "Save",
+    "saving": "Saving…",
+    "saved": "Changes saved.",
+    "cancel": "Cancel",
+    "close": "Close",
+    "loading": "Loading…",
+    "error": "Something went wrong. Please try again.",
+    "back": "Back",
+    "optional": "optional",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "roles": {
+    "client": "Client",
+    "technician": "Technician",
+    "manager": "Manager",
+    "director": "Director",
+    "accountant": "Accountant",
+    "admin": "Administrator"
+  },
+  "templates": {
+    "btp": "Construction",
+    "immobilier": "Real estate",
+    "barber": "Barber / hair salon",
+    "entrepreneur": "Entrepreneur"
+  },
+  "validation": {
+    "required": "Required field.",
+    "email": "Invalid email address.",
+    "passwordLength": "At least 8 characters.",
+    "passwordStrength": "At least one letter and one digit.",
+    "passwordMismatch": "Passwords do not match.",
+    "tooLong": "Text is too long.",
+    "siret": "A SIRET number has 14 digits.",
+    "phone": "Invalid phone number."
+  },
+  "auth": {
+    "visualTitle": "Your 6th team member, 100% AI",
+    "visualText": "Cases, quotes, follow-ups and jobs: Pratonna prepares, you approve.",
+    "login": {
+      "title": "Welcome back",
+      "sub": "Sign in to your Pratonna workspace.",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign in",
+      "forgot": "Forgot your password?",
+      "noAccount": "No account yet?",
+      "signupLink": "Create an account",
+      "invalid": "Incorrect email or password.",
+      "unconfirmed": "Please confirm your email address first, using the link sent at sign-up.",
+      "noProfile": "This account is not linked to any Pratonna company.",
+      "linkError": "This link is invalid or has expired.",
+      "signedOut": "You are signed out."
+    },
+    "signup": {
+      "title": "Create your workspace",
+      "sub": "Your company and your director account, in a minute.",
+      "fullName": "Full name",
+      "company": "Company name",
+      "email": "Work email",
+      "password": "Password",
+      "passwordHint": "At least 8 characters, including a letter and a digit.",
+      "submit": "Create my account",
+      "hasAccount": "Already have an account?",
+      "loginLink": "Sign in",
+      "exists": "An account already exists with this email.",
+      "emailFailed": "The confirmation email could not be sent. Try again later or contact support."
+    },
+    "checkEmail": {
+      "title": "Check your inbox",
+      "body": "We sent a confirmation link to {email}. Click it to activate your account.",
+      "back": "Back to sign in"
+    },
+    "forgot": {
+      "title": "Forgot password",
+      "sub": "Enter your email and we will send you a reset link.",
+      "email": "Email",
+      "submit": "Send the link",
+      "sent": "If an account exists for this address, a reset link has just been sent.",
+      "back": "Back to sign in",
+      "failed": "The email could not be sent right now. Please try again in a few minutes."
+    },
+    "reset": {
+      "title": "New password",
+      "sub": "Choose a new password for your account.",
+      "password": "New password",
+      "confirm": "Confirm password",
+      "submit": "Update",
+      "expired": "This link has expired or was already used. Request a new one.",
+      "requestNew": "Request a new link",
+      "samePassword": "Choose a password different from your current one."
+    }
+  },
+  "shell": {
+    "skip": "Skip to content",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "collapse": "Collapse menu",
+    "expand": "Expand menu",
+    "mainNav": "Main navigation",
+    "search": "Search…",
+    "searchTitle": "Search a page",
+    "searchShortcut": "Ctrl K",
+    "noResults": "No results.",
+    "notifications": "Notifications",
+    "unread": "{count, plural, =0 {None unread} one {# unread} other {# unread}}",
+    "noNotifications": "No notifications.",
+    "markAllRead": "Mark all as read",
+    "language": "Language",
+    "userMenu": "User menu",
+    "signOut": "Sign out",
+    "signOutTitle": "Sign out?",
+    "signOutText": "You will need to sign in again to access your workspace."
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "profile": "My profile",
+    "company": "Company"
+  },
+  "dashboard": {
+    "welcome": "Hello {name}",
+    "sub": "Your {company} workspace",
+    "kpi": {
+      "team": "Team members",
+      "teamHint": "Active accounts",
+      "unread": "Unread notifications",
+      "unreadHint": "To review",
+      "threshold": "Approval threshold",
+      "thresholdHint": "Quotes above it need the director",
+      "template": "Business template",
+      "templateHint": "Workspace configuration"
+    },
+    "activityTitle": "Recent activity",
+    "activityEmpty": "No activity yet.",
+    "activityEmptyText": "Your company’s cases, quotes and invoices will appear here."
+  },
+  "profile": {
+    "title": "My profile",
+    "sub": "Your personal details and security.",
+    "tabs": {
+      "info": "Details",
+      "security": "Security"
+    },
+    "displayName": "Display name",
+    "phone": "Phone",
+    "locale": "Interface language",
+    "email": "Email (login)",
+    "role": "Role",
+    "company": "Company",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "updatePassword": "Change password",
+    "passwordUpdated": "Password updated."
+  },
+  "company": {
+    "title": "Company",
+    "sub": "Legal details and team.",
+    "infoTitle": "Company details",
+    "name": "Legal name",
+    "legalForm": "Legal form",
+    "siret": "SIRET",
+    "vat": "EU VAT number",
+    "address": "Address",
+    "postalCode": "Postal code",
+    "city": "City",
+    "country": "Country",
+    "phone": "Phone",
+    "email": "Contact email",
+    "teamTitle": "Team",
+    "teamCount": "{count, plural, one {# member} other {# members}}",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "role": "Role",
+      "status": "Status"
+    },
+    "active": "Active",
+    "inactive": "Inactive",
+    "you": "you"
+  },
+  "errors": {
+    "notFoundTitle": "Page not found",
+    "notFoundText": "This page does not exist or you do not have access to it.",
+    "backHome": "Back to dashboard"
+  },
+  "client": {
+    "portal": "Client portal",
+    "welcome": "Hello, {name}",
+    "subtitle": "Your building cases, quotes, and payments in one place.",
+    "logout": "Log out",
+    "nav": {
+      "overview": "Overview",
+      "report": "Report a problem",
+      "track": "Track cases",
+      "quotations": "Quotations",
+      "invoices": "Invoices",
+      "support": "Support",
+      "profile": "My profile"
+    },
+    "kpi": {
+      "open": "Open cases",
+      "openHint": "Active reports in progress",
+      "assigned": "Technicians assigned",
+      "assignedHint": "Cases with a field pro",
+      "quotes": "Quotes to review",
+      "quotesHint": "Approved by manager",
+      "unpaid": "Unpaid invoices",
+      "unpaidHint": "Upload payment proof"
+    },
+    "overview": {
+      "recent": "Recent cases",
+      "recentSub": "Latest reports and their status.",
+      "reportCta": "New report",
+      "attention": "Needs attention",
+      "attentionSub": "Quotations and invoices waiting on you.",
+      "allClear": "Nothing pending — you are all clear."
+    },
+    "report": {
+      "title": "Report a building problem",
+      "sub": "Take a live photo or upload from your gallery, then add the building address.",
+      "cameraPlaceholder": "Live camera preview will appear here",
+      "openCamera": "Open live camera",
+      "capture": "Capture photo",
+      "closeCamera": "Close camera",
+      "gallery": "Upload from gallery",
+      "remove": "Remove photo",
+      "issueTitle": "Issue title",
+      "issuePlaceholder": "e.g. Water leak in bathroom",
+      "defaultTitle": "Building repair request",
+      "building": "Building address",
+      "buildingPlaceholder": "Street, building number, floor…",
+      "city": "City",
+      "urgency": "Urgency",
+      "urgencyLow": "Low",
+      "urgencyMedium": "Medium",
+      "urgencyHigh": "High",
+      "submit": "Submit report",
+      "hint": "Our AI will open your case and send it to our team right away.",
+      "cameraError": "Camera access denied. Use gallery upload instead.",
+      "needPhoto": "Please add at least one photo.",
+      "needAddress": "Please enter the building address."
+    },
+    "track": {
+      "title": "Track your reports",
+      "sub": "See assignment status, technician profile, and chat when assigned.",
+      "noTech": "No technician yet",
+      "back": "All cases",
+      "notFound": "Case not found.",
+      "techTitle": "Technician",
+      "techSub": "Assigned professional for this case.",
+      "waitingTech": "Technician not assigned yet. You will see their profile and chat here as soon as a manager assigns someone.",
+      "rating": "Rating",
+      "jobs": "Jobs done",
+      "chatTitle": "Case chat",
+      "chatSub": "Message your technician directly.",
+      "chatLocked": "Chat unlocks when a technician is assigned.",
+      "chatPlaceholder": "Write a message…",
+      "noMessages": "No messages yet.",
+      "send": "Send"
+    },
+    "quotes": {
+      "title": "Quotations (devis)",
+      "sub": "Quotes arrive here after director preparation and manager approval.",
+      "caseRef": "Case",
+      "fromDirector": "From director",
+      "managerOk": "Manager approved",
+      "accept": "Accept quote",
+      "reject": "Decline"
+    },
+    "invoices": {
+      "title": "Invoices",
+      "sub": "Pay and upload a screenshot of your payment receipt.",
+      "caseRef": "Case",
+      "due": "Due",
+      "receipt": "Payment receipt",
+      "uploadReceipt": "Upload payment screenshot",
+      "replaceReceipt": "Replace screenshot",
+      "paidNote": "Payment confirmed. Thank you."
+    },
+    "support": {
+      "title": "Support & feedback",
+      "sub": "Tell us how we did — quality, speed, and service.",
+      "topic": "Topic",
+      "topics": {
+        "service": "Overall service",
+        "technician": "Technician",
+        "billing": "Billing",
+        "app": "App experience"
+      },
+      "rating": "Rating",
+      "message": "Your feedback",
+      "submit": "Send feedback",
+      "thanks": "Thank you — your feedback was sent.",
+      "history": "Your feedback",
+      "historySub": "Messages you already shared.",
+      "empty": "No feedback yet."
+    },
+    "profile": {
+      "title": "My profile",
+      "sub": "Your account details used for case reporting."
+    }
+  },
+  "manager": {
+    "portal": "Manager",
+    "welcome": "Hello, {name}",
+    "subtitle": "AI incidents → hire techs → approve devis → plan interventions.",
+    "logout": "Log out",
+    "nav": {
+      "overview": "Overview",
+      "incidents": "Incidents",
+      "technicians": "Technicians map",
+      "approvals": "Devis approvals",
+      "calendar": "Calendar",
+      "invoices": "Invoices & reminders",
+      "chats": "Task groups"
+    },
+    "kpi": {
+      "open": "Open incidents",
+      "openHint": "Active building cases",
+      "assign": "Need assignment",
+      "assignHint": "Set urgency & hire techs",
+      "devis": "Devis to approve",
+      "devisHint": "Under director threshold",
+      "planned": "Interventions planned",
+      "plannedHint": "After client signature",
+      "unpaid": "Unpaid invoices",
+      "unpaidHint": "Reminder queue"
+    },
+    "overview": {
+      "alerts": "New AI alerts",
+      "alertsSub": "Complaints from WhatsApp, email, phone — auto-filed.",
+      "actions": "Needs your action",
+      "actionsSub": "Assignments, manager-level devis, reminders.",
+      "open": "Open incident"
+    },
+    "incidents": {
+      "title": "Incident inbox",
+      "sub": "AI creates the file and matches building/unit. You set urgency and hire technicians.",
+      "channels": {
+        "whatsapp": "WhatsApp",
+        "email": "Email",
+        "phone": "Phone"
+      },
+      "statuses": {
+        "new": "New",
+        "awaiting_assignment": "Awaiting assignment",
+        "site_visit": "Site visit",
+        "devis_pending_manager": "Devis → manager",
+        "devis_pending_director": "Devis → director",
+        "sent_to_client": "Sent to client",
+        "client_signed": "Client signed",
+        "intervention_planned": "Intervention planned",
+        "in_progress": "In progress",
+        "invoiced": "Invoiced",
+        "closed": "Closed"
+      }
+    },
+    "detail": {
+      "back": "All incidents",
+      "notFound": "Incident not found.",
+      "aiFile": "AI incident file",
+      "urgency": "Set urgency",
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High",
+      "saveUrgency": "Save urgency",
+      "hireTitle": "Hire technicians on map",
+      "hireSub": "Select profiles with photo. Hired techs join one task group automatically.",
+      "available": "Available",
+      "busy": "Busy",
+      "hire": "Hire selected & create group",
+      "hired": "Hired team",
+      "chat": "Group chat",
+      "chatPh": "Message the task group…",
+      "send": "Send",
+      "report": "AI report from site",
+      "devis": "Devis",
+      "threshold": "Director threshold",
+      "approve": "Approve & send to client",
+      "reject": "Reject devis",
+      "directorNote": "Amount over threshold — waiting for director approval.",
+      "plan": "Plan intervention",
+      "planHint": "Client signed. Schedule the intervention for the hired team.",
+      "markProgress": "Mark in progress",
+      "completeInvoice": "Complete & generate invoice",
+      "sentClient": "Devis sent to client for e-signature."
+    },
+    "techs": {
+      "title": "Technicians directory",
+      "sub": "Live profiles with photo and location — hire from an incident for map-based selection.",
+      "openMap": "Open on incident to hire"
+    },
+    "approvals": {
+      "title": "Devis approvals",
+      "sub": "Under threshold → you approve. Over threshold → director. Then devis goes to client for signature.",
+      "managerQueue": "Manager queue",
+      "directorQueue": "Routed to director",
+      "empty": "No devis waiting."
+    },
+    "calendar": {
+      "title": "Intervention calendar",
+      "sub": "Planned after client e-signature. Hired technicians are notified.",
+      "empty": "No interventions planned yet."
+    },
+    "invoices": {
+      "title": "Invoices & reminders",
+      "sub": "Auto invoice after work complete. Reminders at day 7 and day 15 if unpaid.",
+      "unpaid": "Unpaid",
+      "paid": "Paid",
+      "send7": "Send 7-day reminder",
+      "send15": "Send 15-day reminder",
+      "reminders": "Reminders sent"
+    },
+    "chats": {
+      "title": "Task group chats",
+      "sub": "Auto-created when you hire technicians for an incident.",
+      "empty": "No groups yet.",
+      "open": "Open incident"
+    }
+  },
+  "technician": {
+    "portal": "Technician",
+    "welcome": "Hello, {name}",
+    "subtitle": "Site visits, AI reports, group chats, and assigned interventions.",
+    "logout": "Log out",
+    "nav": {
+      "overview": "Overview",
+      "tasks": "My tasks",
+      "notifications": "Notifications",
+      "profile": "My profile",
+      "directory": "Manager directory"
+    },
+    "kpi": {
+      "active": "Active tasks",
+      "activeHint": "Site visits & interventions",
+      "reports": "Reports sent",
+      "reportsHint": "AI devis to manager/director",
+      "hired": "Hire status",
+      "hiredHint": "Visible on manager map",
+      "unread": "Unread alerts",
+      "unreadHint": "Hires & assignments"
+    },
+    "overview": {
+      "next": "Next actions",
+      "nextSub": "What needs you on site today.",
+      "alerts": "Latest alerts",
+      "alertsSub": "Hires, client signatures, assignments.",
+      "openTasks": "Open tasks",
+      "viewAll": "View all"
+    },
+    "directory": {
+      "title": "Sent to manager directory",
+      "sub": "Managers see your photo and live pin on the map. They hire technicians for a task — hired techs join one group automatically.",
+      "visible": "Visible on map",
+      "coords": "Coordinates",
+      "flowTitle": "How hiring works",
+      "steps": [
+        "You create a profile with photo + live location.",
+        "Manager opens a task and sees technicians on the map.",
+        "Manager selects technicians → group chat is created automatically.",
+        "You do the site visit (photos + notes) → AI builds report + devis.",
+        "After approval & client signature, you get the intervention assignment."
+      ]
+    },
+    "tasks": {
+      "title": "My tasks",
+      "sub": "Hired task groups, site visits, and interventions after client signature.",
+      "empty": "No tasks yet. When a manager hires you, it appears here.",
+      "stages": {
+        "site_visit": "Site visit required",
+        "report_sent": "AI report sent",
+        "awaiting_approval": "Awaiting approval",
+        "awaiting_client_sign": "Awaiting client signature",
+        "intervention_assigned": "Intervention assigned",
+        "in_progress": "Work in progress",
+        "completed": "Completed"
+      },
+      "group": "Task group",
+      "members": "Hired technicians",
+      "open": "Open task"
+    },
+    "task": {
+      "back": "All tasks",
+      "notFound": "Task not found.",
+      "siteTitle": "Site visit — photos & constat",
+      "siteSub": "Capture damage on site, write a short note. AI builds the report + devis for approval.",
+      "openCamera": "Open camera",
+      "capture": "Capture photo",
+      "closeCamera": "Close camera",
+      "gallery": "From gallery",
+      "notes": "Constat / notes",
+      "notesPh": "Short on-site constat…",
+      "generate": "Generate AI report + devis",
+      "generating": "AI is writing report…",
+      "cameraError": "Camera unavailable. Use gallery.",
+      "needPhoto": "Add at least one on-site photo.",
+      "needNotes": "Write a short constat note.",
+      "reportTitle": "AI report & devis",
+      "amount": "Estimated devis",
+      "routeManager": "Routes to manager (under threshold)",
+      "routeDirector": "Routes to director (over threshold)",
+      "threshold": "Director threshold",
+      "sent": "Sent for approval",
+      "chatTitle": "Task group chat",
+      "chatSub": "Auto-created when manager hired this team for the task.",
+      "chatPh": "Message the group…",
+      "send": "Send",
+      "intervention": "Intervention",
+      "startWork": "Start work",
+      "completeWork": "Mark work complete",
+      "completeHint": "Completing generates the invoice to the client automatically.",
+      "assignedBanner": "Client signed the devis. This intervention is assigned to your group from your earlier site photos.",
+      "awaitingBanner": "Report sent. Waiting for manager/director approval, then client signature."
+    },
+    "notifications": {
+      "title": "Notifications",
+      "sub": "Hires from the manager map and intervention assignments after client signature.",
+      "empty": "No notifications.",
+      "markRead": "Mark all read"
+    },
+    "profile": {
+      "title": "My technician profile",
+      "sub": "Managers hire from this profile on the map.",
+      "save": "Save profile",
+      "saved": "Profile updated and synced to manager directory.",
+      "refreshLocation": "Refresh live location"
+    }
+  },
+  "director": {
+    "portal": "Director",
+    "welcome": "Hello, {name}",
+    "subtitle": "Real-time command center — cases, interventions, cash, reminders.",
+    "logout": "Log out",
+    "nav": {
+      "overview": "Overview",
+      "approvals": "Devis approvals",
+      "cases": "All cases",
+      "interventions": "Interventions",
+      "finance": "Finance & reminders",
+      "settings": "Settings"
+    },
+    "kpi": {
+      "cases": "Ongoing cases",
+      "casesHint": "Active building dossiers",
+      "interventions": "Interventions planned",
+      "interventionsHint": "After client signature",
+      "unpaid": "Unpaid invoices",
+      "unpaidHint": "Cash still outstanding",
+      "reminders": "Reminders due",
+      "remindersHint": "Day 7 / day 15 queue",
+      "pending": "Director approvals",
+      "pendingHint": "Over your threshold",
+      "exposure": "Pending exposure",
+      "exposureHint": "Sum of devis awaiting you"
+    },
+    "overview": {
+      "live": "Live snapshot",
+      "liveSub": "What needs attention right now.",
+      "queue": "Director approval queue",
+      "queueSub": "Amounts at or above your threshold.",
+      "unpaid": "Who is not paying",
+      "unpaidSub": "Unpaid invoices and reminder status.",
+      "open": "Open"
+    },
+    "approvals": {
+      "title": "High-value devis approvals",
+      "sub": "Manager validated the process. Amounts over your threshold land here. Approve → devis goes to client for e-signature.",
+      "empty": "No devis waiting for director approval.",
+      "approve": "Approve & send to client",
+      "reject": "Reject / send back",
+      "threshold": "Your threshold",
+      "team": "Hired technicians",
+      "manager": "Manager"
+    },
+    "cases": {
+      "title": "All cases",
+      "sub": "Company-wide view of building incidents and their stage.",
+      "statuses": {
+        "devis_pending_director": "Awaiting director",
+        "site_visit": "Site visit",
+        "sent_to_client": "Sent to client",
+        "intervention_planned": "Intervention planned",
+        "in_progress": "In progress",
+        "invoiced": "Invoiced",
+        "closed": "Closed",
+        "approved_sent": "Approved → client"
+      }
+    },
+    "interventions": {
+      "title": "Planned interventions",
+      "sub": "Calendar of interventions after client e-signature.",
+      "empty": "No interventions planned.",
+      "scheduled": "Scheduled"
+    },
+    "finance": {
+      "title": "Finance & reminders",
+      "sub": "Invoices after work complete. Automatic reminders at day 7 and day 15.",
+      "unpaid": "Unpaid",
+      "paid": "Paid",
+      "send7": "Send day-7 reminder",
+      "send15": "Send day-15 reminder",
+      "reminders": "Reminders",
+      "totalUnpaid": "Total unpaid",
+      "totalPaid": "Collected (sample)"
+    },
+    "settings": {
+      "title": "Director settings",
+      "sub": "Set approval thresholds and reminder policy for the whole company.",
+      "threshold": "Approval threshold (EUR)",
+      "thresholdHint": "Below this amount → manager can approve. At/above → you approve.",
+      "rem1": "First reminder (days)",
+      "rem2": "Second reminder (days)",
+      "company": "Company name",
+      "aiNote": "AI pricing note",
+      "save": "Save settings",
+      "saved": "Settings saved. Manager & AI routing will use the new threshold."
+    }
+  }
+}

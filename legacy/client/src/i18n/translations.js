@@ -78,7 +78,7 @@ const landingFr = {
         points: [
           'Reconnaissance vocale en français',
           'Commandes vocales, sans clavier',
-          'Voix naturelle propulsée par ElevenLabs',
+          'Voix naturelle et expressive en français',
         ],
       },
       {
@@ -535,7 +535,7 @@ const landingEn = {
         points: [
           'Speech recognition in French and English',
           'Voice commands, hands-free',
-          'Natural voice powered by ElevenLabs',
+          'Natural, expressive voice',
         ],
       },
       {

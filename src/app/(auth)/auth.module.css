@@ -1,0 +1,135 @@
+.page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 560px);
+  min-height: 100dvh;
+}
+
+/* ---------- Visual side ---------- */
+
+.visual {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  padding: clamp(2rem, 5vw, 4rem);
+  background:
+    radial-gradient(700px 500px at 20% 10%, rgba(47, 107, 255, 0.35), transparent 60%),
+    radial-gradient(600px 500px at 90% 80%, rgba(139, 92, 246, 0.3), transparent 60%),
+    linear-gradient(160deg, #0a1440, var(--navy-950));
+  border-right: 1px solid var(--line);
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  background-size: 52px 52px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 40%, #000, transparent 80%);
+}
+
+.orb {
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+  animation: drift 24s ease-in-out infinite alternate;
+}
+
+.orbBlue {
+  width: 380px;
+  height: 380px;
+  top: 10%;
+  left: 15%;
+  background: var(--blue);
+}
+
+.orbViolet {
+  width: 320px;
+  height: 320px;
+  bottom: 10%;
+  right: 5%;
+  background: var(--violet);
+  animation-delay: -10s;
+}
+
+.visualInner {
+  max-width: 34rem;
+}
+
+.visualTitle {
+  font-family: var(--font-display), serif;
+  font-size: clamp(2.2rem, 3.6vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.visualText {
+  margin-top: var(--space-4);
+  color: var(--text-soft);
+  font-size: 1.1rem;
+  font-weight: 300;
+  line-height: 1.6;
+}
+
+/* ---------- Form side ---------- */
+
+.main {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-5) clamp(1rem, 4vw, 3rem) var(--space-6);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: auto;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--font-display), serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.logo {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.55), transparent 45%),
+    linear-gradient(135deg, var(--cyan), var(--blue) 50%, var(--violet));
+  box-shadow: 0 0 18px rgba(73, 216, 255, 0.45);
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  margin: var(--space-6) auto auto;
+}
+
+@keyframes drift {
+  to {
+    transform: translate3d(60px, -40px, 0) scale(1.08);
+  }
+}
+
+@media (max-width: 960px) {
+  .page {
+    grid-template-columns: 1fr;
+  }
+
+  .visual {
+    display: none;
+  }
+}
