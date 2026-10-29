@@ -1,6 +1,6 @@
 .lp-features__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1.1rem;
   margin: 0;
   padding: 0;
@@ -51,6 +51,23 @@
   opacity: 1;
 }
 
+.lp-feature__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+/* Planned modules read as such: quieter, dashed. */
+.lp-feature.is-soon {
+  border-style: dashed;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.lp-feature.is-soon .lp-icon-tile {
+  opacity: 0.7;
+}
+
 .lp-feature h3 {
   margin: 0;
   font-size: 1.12rem;
@@ -68,7 +85,7 @@
   }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 640px) {
   .lp-features__grid {
     grid-template-columns: 1fr;
   }

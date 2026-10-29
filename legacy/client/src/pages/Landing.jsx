@@ -6,12 +6,13 @@ import TrustStrip from '../components/landing/TrustStrip'
 import ProblemSolution from '../components/landing/ProblemSolution'
 import HowItWorks from '../components/landing/HowItWorks'
 import Features from '../components/landing/Features'
+import Integrations from '../components/landing/Integrations'
 import UseCases from '../components/landing/UseCases'
 import Industries from '../components/landing/Industries'
-import DashboardPreview from '../components/landing/DashboardPreview'
+import ProductScreens from '../components/landing/ProductScreens'
 import Security from '../components/landing/Security'
 import Pricing from '../components/landing/Pricing'
-import Testimonials from '../components/landing/Testimonials'
+import Pilot from '../components/landing/Pilot'
 import Faq from '../components/landing/Faq'
 import DemoContact from '../components/landing/DemoContact'
 import FinalCta from '../components/landing/FinalCta'
@@ -41,12 +42,13 @@ export default function Landing() {
         <ProblemSolution />
         <HowItWorks />
         <Features />
+        <Integrations />
         <UseCases />
         <Industries />
-        <DashboardPreview />
+        <ProductScreens />
         <Security />
         <Pricing />
-        <Testimonials />
+        <Pilot />
         <Faq />
         <DemoContact />
         <FinalCta />

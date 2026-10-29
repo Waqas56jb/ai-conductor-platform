@@ -1,0 +1,104 @@
+/* One screenshot at a time, in a browser frame. */
+.lp-screens__track > li {
+  width: 100%;
+}
+
+.lp-device {
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: var(--ai-navy-900);
+  box-shadow:
+    0 40px 100px -40px rgba(47, 107, 255, 0.6),
+    0 0 0 1px rgba(0, 0, 0, 0.4);
+}
+
+.lp-device__chrome {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.65rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.lp-device__dots {
+  display: flex;
+  gap: 6px;
+}
+
+.lp-device__dots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.lp-device__url {
+  flex: 1;
+  max-width: 340px;
+  margin-inline: auto;
+  padding: 0.25rem 0.8rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--ai-text-faint);
+  font-size: 0.75rem;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lp-device img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  object-position: top;
+  background: var(--ai-navy-950);
+}
+
+.lp-device figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.3rem 0.75rem;
+  padding: 1rem 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.lp-device figcaption strong {
+  font-weight: 600;
+}
+
+.lp-device figcaption span {
+  color: var(--ai-text-faint);
+  font-size: 0.92rem;
+}
+
+.lp-screens__cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+@media (max-width: 560px) {
+  .lp-device {
+    border-radius: 12px;
+  }
+
+  .lp-device__chrome {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .lp-device__url {
+    display: none;
+  }
+
+  .lp-device figcaption {
+    flex-direction: column;
+  }
+}

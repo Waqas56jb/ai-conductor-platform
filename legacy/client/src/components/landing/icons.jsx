@@ -158,6 +158,14 @@ const paths = {
     </>
   ),
   xsocial: <path d="M4 4l16 16M20 4 4 20" />,
+  sign: <path d="M4 20h16M6 16l9.5-9.5a2.1 2.1 0 0 1 3 3L9 19H6zM14 8l3 3" />,
+  calendar: (
+    <>
+      <rect x="3.5" y="5" width="17" height="15" rx="2.5" />
+      <path d="M3.5 10h17M8 3v4M16 3v4" />
+    </>
+  ),
+  ruler: <path d="M3 17 17 3l4 4L7 21zM7 13l2 2M10 10l2 2M13 7l2 2" />,
 }
 
 export default function Icon({ name, className = '' }) {

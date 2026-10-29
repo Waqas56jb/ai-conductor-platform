@@ -15,7 +15,8 @@
     "db:migrate": "node --env-file=.env scripts/db/migrate.mjs migrate",
     "db:status": "node --env-file=.env scripts/db/migrate.mjs status",
     "test:e2e": "playwright test",
-    "db:seed": "node --env-file=.env scripts/db/seed.mjs"
+    "db:seed": "node --env-file=.env scripts/db/seed.mjs",
+    "brand:avatar": "node scripts/brand/avatar.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.7",
@@ -42,6 +43,7 @@
     "eslint-config-next": "15.5.28",
     "pg": "^8.23.1",
     "prettier": "^3.9.10",
+    "sharp": "0.35.5",
     "typescript": "^5",
     "vitest": "^5.0.5"
   }

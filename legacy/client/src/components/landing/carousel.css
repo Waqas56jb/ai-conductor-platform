@@ -1,0 +1,142 @@
+/* ---------- Horizontal snap carousel (industries, product screens) ---------- */
+
+.lp-carousel__track {
+  display: flex;
+  gap: 1.1rem;
+  margin: 0;
+  padding: 0.5rem 0.25rem 1.25rem;
+  list-style: none;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  /* Snap to the slides, not to the track's padding. */
+  scroll-padding-inline: 0.25rem;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  cursor: grab;
+  touch-action: pan-x pan-y;
+}
+
+.lp-carousel__track::-webkit-scrollbar {
+  display: none;
+}
+
+.lp-carousel__track > li {
+  display: flex;
+  flex: none;
+  scroll-snap-align: start;
+}
+
+.lp-carousel__track.is-dragging {
+  scroll-snap-type: none;
+  scroll-behavior: auto;
+  cursor: grabbing;
+  user-select: none;
+}
+
+.lp-carousel__track img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.lp-carousel__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.lp-carousel__arrow {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.lp-carousel__arrow:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.lp-carousel__arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.lp-carousel__arrow--prev .lp-icon {
+  transform: rotate(180deg);
+}
+
+.lp-carousel__dots {
+  display: flex;
+  gap: 0.25rem;
+}
+
+/* 24px hit area around an 8px dot. */
+.lp-carousel__dots button {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.lp-carousel__dots button::after {
+  content: '';
+  position: absolute;
+  inset: 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.28);
+  transition:
+    background 0.2s ease,
+    inset 0.2s ease;
+}
+
+.lp-carousel__dots button.is-active::after {
+  inset: 8px 2px;
+  background: var(--ai-cyan);
+}
+
+/* Status chips: "available" today or "coming soon". */
+.lp-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: fit-content;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.lp-chip::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.lp-chip--available {
+  background: rgba(110, 231, 183, 0.12);
+  border: 1px solid rgba(110, 231, 183, 0.35);
+  color: #6ee7b7;
+}
+
+.lp-chip--soon {
+  background: rgba(251, 191, 36, 0.1);
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  color: #fcd34d;
+}
