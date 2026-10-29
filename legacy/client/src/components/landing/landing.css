@@ -5,7 +5,7 @@ body.lp-body {
 }
 
 .lp {
-  /* Same tokens as the hero, so .ai-btn and friends work in every section. */
+  /* Design tokens shared by the hero and every section. */
   --ai-navy-950: #060b1e;
   --ai-navy-900: #0b1330;
   --ai-navy-850: #0e1838;
@@ -124,7 +124,6 @@ body.lp-body {
   background: var(--lp-card-bg);
   border: 1px solid var(--lp-card-line);
   backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
 }
 
 /* Gradient hairline border, drawn with a masked pseudo-element. */
@@ -195,7 +194,62 @@ body.lp-body {
   color: var(--ai-cyan);
 }
 
-/* ---------- Buttons (extend .ai-btn from hero.css) ---------- */
+/* ---------- Buttons (shared by every section) ---------- */
+
+.ai-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.95rem 1.65rem;
+  border: 0;
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.ai-btn svg {
+  transition: transform 0.25s ease;
+}
+
+.ai-btn--primary {
+  color: #fff;
+  background: var(--lp-gradient);
+  box-shadow:
+    0 12px 32px -8px rgba(47, 107, 255, 0.75),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.ai-btn--primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 18px 44px -8px rgba(47, 107, 255, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.ai-btn--primary:hover svg {
+  transform: translateX(3px);
+}
+
+.ai-btn--ghost {
+  color: var(--ai-text);
+  background: var(--ai-glass);
+  border: 1px solid var(--ai-glass-line);
+  backdrop-filter: blur(12px);
+}
+
+.ai-btn--ghost:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.24);
+}
 
 .ai-btn--sm {
   padding: 0.62rem 1.15rem;
@@ -209,6 +263,16 @@ body.lp-body {
 .ai-btn svg {
   width: 18px;
   height: 18px;
+}
+
+/* Visually hidden, still read by screen readers. */
+.lp-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* ---------- Scroll reveal ---------- */

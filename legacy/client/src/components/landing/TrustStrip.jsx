@@ -10,7 +10,7 @@ export default function TrustStrip() {
   const s = t.landing.trust
 
   return (
-    <section className="lp-trust" aria-labelledby="lp-trust-title">
+    <section id="secteurs" className="lp-trust" aria-labelledby="lp-trust-title">
       <div className="lp-container">
         <Reveal as="p" className="lp-trust__title" id="lp-trust-title">
           {s.title}

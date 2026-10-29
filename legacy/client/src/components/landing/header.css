@@ -14,7 +14,6 @@
   background: rgba(6, 11, 30, 0.72);
   border-bottom-color: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
 }
 
 .lp-header__bar {
@@ -181,7 +180,6 @@
   background: #080d22;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
   transform: translateY(-12px);
   opacity: 0;
   transition:
@@ -239,7 +237,7 @@
 }
 
 @media (max-width: 900px) {
-  /* Two classes deep so it beats .ai-btn's display, whatever the CSS load order. */
+  /* Two classes deep so it beats .ai-btn's display (defined in landing.css). */
   .lp-header__bar .lp-header__nav,
   .lp-header__actions > .lp-lang,
   .lp-header__actions .lp-header__login {
