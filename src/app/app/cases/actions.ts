@@ -6,25 +6,20 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { draftDevis, type DevisDraft } from "@/lib/ai/devis";
 import { audit } from "@/lib/audit";
-import { requireProfile, type Profile } from "@/lib/auth/session";
-import type { IncidentRow, PhotoRef, Urgency } from "@/lib/db/types";
+import { requireProfile } from "@/lib/auth/session";
+import type { PhotoRef, Urgency } from "@/lib/db/types";
 import { geocode } from "@/lib/geo";
 import { notify, usersWithRoles } from "@/lib/notify";
 import { filesFrom, PHOTO_BUCKET, RECEIPT_BUCKET, signedUrls, uploadFile } from "@/lib/storage";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { computeTotals, devisSchema, type DevisInput } from "@/lib/workflows/devis";
-import {
-  nextStatus,
-  type IncidentAction,
-  type IncidentStatus,
-  type TransitionContext,
-} from "@/lib/workflows/incident";
+import { nextStatus, type TransitionContext } from "@/lib/workflows/incident";
+import { office, OFFICE_ROLES, transition } from "@/lib/cases/transition";
 
 /** Result of a case action; `error` is a message key. */
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
-const OFFICE_ROLES = ["manager", "director", "admin"] as const;
 const MAX_PHOTOS = 6;
 const PAYMENT_TERMS_DAYS = 30;
 
@@ -66,49 +61,6 @@ async function loadCase(id: string) {
   };
   return { profile, incident, ctx };
 }
-
-/**
- * Applies a state-machine transition. The update is guarded on the current
- * status, so two people acting at once cannot both succeed.
- */
-async function transition(
-  profile: Profile,
-  incident: IncidentRow,
-  action: IncidentAction,
-  ctx: TransitionContext,
-  patch: Partial<IncidentRow> = {},
-): Promise<{ ok: true; status: IncidentStatus } | { ok: false; error: string }> {
-  const result = nextStatus(incident.status, action, ctx);
-  if (!result.ok) {
-    console.warn(
-      `transition refused: ${action} from ${incident.status} (${ctx.role}): ${result.reason}`,
-    );
-    return { ok: false, error: `cases.errors.${result.reason}` };
-  }
-
-  const { data } = await createAdminClient()
-    .from("ai_conductor_incidents")
-    .update({
-      ...patch,
-      status: result.status,
-      ...(result.status === "closed" ? { closed_at: new Date().toISOString() } : {}),
-    })
-    .eq("id", incident.id)
-    .eq("status", incident.status)
-    .select("id")
-    .maybeSingle();
-  if (!data) return { ok: false, error: "cases.errors.conflict" };
-
-  await audit(
-    profile,
-    `incident.${action}`,
-    { type: "incident", id: incident.id },
-    { from: incident.status, to: result.status },
-  );
-  return { ok: true, status: result.status };
-}
-
-const office = (companyId: string) => usersWithRoles(companyId, OFFICE_ROLES);
 
 // ---------- report ----------
 
@@ -482,30 +434,26 @@ export async function decideDevis(id: string, approve: boolean): Promise<ActionR
   return { ok: true };
 }
 
-export async function clientDecision(id: string, accept: boolean): Promise<ActionResult> {
+/**
+ * The client declines a quote sent to them (confirmed in the UI). Accepting
+ * is signing it with DocuSign: see lib/esign/signatures.ts.
+ */
+export async function declineQuote(id: string): Promise<ActionResult> {
   const c = await loadCase(id);
   if (!c?.incident.quotation_id) return fail("cases.errors.notFound");
-  const r = await transition(
-    c.profile,
-    c.incident,
-    accept ? "client_accept" : "client_decline",
-    c.ctx,
-  );
+  const r = await transition(c.profile, c.incident, "client_decline", c.ctx);
   if (!r.ok) return r;
   const { data: quote } = await createAdminClient()
     .from("ai_conductor_quotations")
-    .update(
-      accept ? { status: "accepted", signed_at: new Date().toISOString() } : { status: "rejected" },
-    )
+    .update({ status: "rejected" })
     .eq("id", c.incident.quotation_id)
     .select("reference")
     .single();
-  const ref = quote?.reference ?? "";
   await notify({
     companyId: c.profile.company_id,
     userIds: [...(await office(c.profile.company_id)), ...c.incident.hired_tech_ids],
     type: "quotation",
-    title: accept ? `Devis ${ref} accepté par le client` : `Devis ${ref} refusé par le client`,
+    title: `Devis ${quote?.reference ?? ""} refusé par le client`,
     body: c.incident.title,
     incidentId: id,
     quotationId: c.incident.quotation_id,

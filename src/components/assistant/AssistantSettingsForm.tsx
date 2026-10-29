@@ -8,7 +8,7 @@ import {
   updateAssistantSettings,
   type AssistantSettingsPatch,
 } from "@/app/app/settings/assistant/actions";
-import { Button, Card, Input, Select, useToast } from "@/components/ui";
+import { Button, Card, Input, Modal, Select, useToast } from "@/components/ui";
 import { THEME_PRESETS, type AssistantSettings } from "@/lib/assistant/defaults";
 import { ASSISTANT_TONES, ASSISTANT_VOICES, AVATAR_TYPES, THEME_COLORS } from "@/lib/db/types";
 import { AssistantAvatar } from "./AssistantAvatar";
@@ -27,7 +27,9 @@ export function AssistantSettingsForm({ canSetCompanyTheme }: { canSetCompanyThe
   const [name, setName] = useState(settings.display_name);
   // The header already shows the name being typed: compare with what is stored.
   const savedName = useRef(settings.display_name);
-  const [, startTransition] = useTransition();
+  const [pending, startTransition] = useTransition();
+  // Changing everyone's colour is a company setting: confirmed first.
+  const [confirmCompany, setConfirmCompany] = useState(false);
 
   function save(patch: AssistantSettingsPatch, previous?: Partial<AssistantSettings>) {
     const before: Partial<AssistantSettings> = { ...previous };
@@ -216,7 +218,7 @@ export function AssistantSettingsForm({ canSetCompanyTheme }: { canSetCompanyThe
               variant="secondary"
               size="sm"
               disabled={companyTheme === effective}
-              onClick={() => applyToCompany(effective)}
+              onClick={() => setConfirmCompany(true)}
             >
               <Building2 aria-hidden="true" />
               {t("theme.company")}
@@ -224,6 +226,30 @@ export function AssistantSettingsForm({ canSetCompanyTheme }: { canSetCompanyThe
           </div>
         ) : null}
       </Card>
+      <Modal
+        open={confirmCompany}
+        onClose={() => setConfirmCompany(false)}
+        title={t("theme.company")}
+        closeLabel={tAll("common.close")}
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setConfirmCompany(false)}>
+              {tAll("common.cancel")}
+            </Button>
+            <Button
+              loading={pending}
+              onClick={() => {
+                setConfirmCompany(false);
+                applyToCompany(effective);
+              }}
+            >
+              {t("theme.company")}
+            </Button>
+          </>
+        }
+      >
+        {t("theme.companyConfirm", { color: t(`theme.colors.${effective}`) })}
+      </Modal>
     </>
   );
 }

@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 
 vi.mock("server-only", () => ({}));
 vi.mock("@/app/app/cases/actions", () => ({}));
+vi.mock("@/app/app/reminders/actions", () => ({}));
 
 const { TOOLS, openAiTools, toolsForRole } = await import("./tools");
 const { toChatHistory } = await import("./run");
@@ -17,21 +18,33 @@ describe("assistant tools", () => {
       "get_case",
       "list_invoices",
       "suggest_memory",
-      "client_decision",
+      "decline_quote",
+      "create_reminder",
+      "suggest_priority_rule",
       "send_case_message",
     ]);
-    expect(names("technician")).toEqual(["list_cases", "get_case", "suggest_memory"]);
+    expect(names("technician")).toEqual([
+      "list_cases",
+      "get_case",
+      "suggest_memory",
+      "create_reminder",
+      "suggest_priority_rule",
+    ]);
     expect(names("accountant")).toEqual([
       "list_cases",
       "get_case",
       "list_invoices",
       "suggest_memory",
+      "create_reminder",
+      "suggest_priority_rule",
       "send_invoice_reminder",
     ]);
     for (const office of ["manager", "director", "admin"] as const) {
       expect(names(office)).toContain("decide_devis");
-      expect(names(office)).not.toContain("client_decision");
+      expect(names(office)).not.toContain("decline_quote");
     }
+    // No tool can accept or sign a quote: that is DocuSign, by the client.
+    expect(Object.keys(TOOLS).filter((n) => /accept|^sign|_sign/.test(n))).toEqual([]);
   });
 
   it("marks every state-changing tool as a write that needs approval", () => {
@@ -44,7 +57,8 @@ describe("assistant tools", () => {
       "decide_devis",
       "schedule_intervention",
       "cancel_case",
-      "client_decision",
+      "decline_quote",
+      "create_reminder",
       "send_case_message",
       "send_invoice_reminder",
     ]);

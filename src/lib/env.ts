@@ -14,6 +14,8 @@ export const clientSchema = z.object({
   NEXT_PUBLIC_APP_URL: withDefault("http://localhost:3000").pipe(z.url()),
   /** Marketing site (legacy/client); signed-out visitors of "/" are sent there. */
   NEXT_PUBLIC_SITE_URL: optional(z.url()),
+  /** Web push (VAPID) public key; push stays off without it. */
+  NEXT_PUBLIC_VAPID_PUBLIC_KEY: optional(z.string().min(20)),
 });
 
 export const serverSchema = z.object({
@@ -25,6 +27,22 @@ export const serverSchema = z.object({
   OPENAI_TEXT_MODEL: withDefault("gpt-4.1"),
   OPENAI_REALTIME_MODEL: withDefault("gpt-realtime"),
   ENCRYPTION_KEY: required(z.string().min(32, "ENCRYPTION_KEY must be at least 32 characters")),
+  // DocuSign eSignature (JWT grant). All optional: without them, signing is
+  // shown as "not configured" and disabled.
+  DOCUSIGN_INTEGRATION_KEY: optional(z.string().min(1)),
+  DOCUSIGN_USER_ID: optional(z.string().min(1)),
+  DOCUSIGN_ACCOUNT_ID: optional(z.string().min(1)),
+  /** RSA private key (PEM; "
+" escapes accepted). */
+  DOCUSIGN_PRIVATE_KEY: optional(z.string().min(1)),
+  /** REST base URL: the demo sandbox unless set. */
+  DOCUSIGN_BASE_URL: withDefault("https://demo.docusign.net/restapi").pipe(z.url()),
+  /** Connect HMAC key, to verify webhooks. */
+  DOCUSIGN_WEBHOOK_SECRET: optional(z.string().min(1)),
+  VAPID_PRIVATE_KEY: optional(z.string().min(20)),
+  VAPID_SUBJECT: withDefault("mailto:contact@pratonna.com"),
+  /** Bearer token Vercel Cron sends to /api/cron/*. */
+  CRON_SECRET: optional(z.string().min(16)),
 });
 
 export type ClientEnv = z.infer<typeof clientSchema>;
@@ -68,6 +86,7 @@ const runtimeEnv: Source = {
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
+  NEXT_PUBLIC_VAPID_PUBLIC_KEY: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY,
   SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   DATABASE_URL: process.env.DATABASE_URL,
   DIRECT_URL: process.env.DIRECT_URL,
@@ -75,6 +94,15 @@ const runtimeEnv: Source = {
   OPENAI_TEXT_MODEL: process.env.OPENAI_TEXT_MODEL,
   OPENAI_REALTIME_MODEL: process.env.OPENAI_REALTIME_MODEL,
   ENCRYPTION_KEY: process.env.ENCRYPTION_KEY,
+  DOCUSIGN_INTEGRATION_KEY: process.env.DOCUSIGN_INTEGRATION_KEY,
+  DOCUSIGN_USER_ID: process.env.DOCUSIGN_USER_ID,
+  DOCUSIGN_ACCOUNT_ID: process.env.DOCUSIGN_ACCOUNT_ID,
+  DOCUSIGN_PRIVATE_KEY: process.env.DOCUSIGN_PRIVATE_KEY,
+  DOCUSIGN_BASE_URL: process.env.DOCUSIGN_BASE_URL,
+  DOCUSIGN_WEBHOOK_SECRET: process.env.DOCUSIGN_WEBHOOK_SECRET,
+  VAPID_PRIVATE_KEY: process.env.VAPID_PRIVATE_KEY,
+  VAPID_SUBJECT: process.env.VAPID_SUBJECT,
+  CRON_SECRET: process.env.CRON_SECRET,
 };
 
 // Set SKIP_ENV_VALIDATION=1 for builds/CI/tests that run without real secrets.

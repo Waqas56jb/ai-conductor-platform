@@ -19,6 +19,7 @@ const MENUS = {
     "Devis",
     "Factures",
     "Notifications",
+    "Rappels",
     "Support",
     "Mon profil",
   ],
@@ -30,6 +31,7 @@ const MENUS = {
     "Discussions",
     "Annuaire",
     "Notifications",
+    "Rappels",
     "Mon profil",
   ],
   manager: [
@@ -43,6 +45,7 @@ const MENUS = {
     "Discussions",
     "Annuaire",
     "Notifications",
+    "Rappels",
     "Mon profil",
   ],
   director: [
@@ -56,6 +59,7 @@ const MENUS = {
     "Discussions",
     "Annuaire",
     "Notifications",
+    "Rappels",
     "Entreprise",
     "Mon profil",
   ],
@@ -66,6 +70,7 @@ const MENUS = {
     "Finance",
     "Annuaire",
     "Notifications",
+    "Rappels",
     "Mon profil",
   ],
   admin: [
@@ -79,6 +84,7 @@ const MENUS = {
     "Discussions",
     "Annuaire",
     "Notifications",
+    "Rappels",
     "Entreprise",
     "Mon profil",
   ],

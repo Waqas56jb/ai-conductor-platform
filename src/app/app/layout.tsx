@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { LiveRefresh } from "@/components/cases/LiveRefresh";
+import { PwaRegister } from "@/components/notifications/PwaRegister";
 import { AppShell } from "@/components/shell/AppShell";
 import { getAssistantSettings } from "@/lib/ai/assistant/session";
 import { themeVariables } from "@/lib/assistant/defaults";
@@ -64,6 +65,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       assistant={{ role: profile.role, settings, companyTheme: companyColor }}
     >
       <style>{`:root{${theme}}`}</style>
+      <PwaRegister />
       {/* Bell and unread count update live. */}
       <LiveRefresh
         channel="my-notifications"

@@ -1,4 +1,5 @@
 import {
+  AlarmClock,
   Bell,
   BookUser,
   Building2,
@@ -31,6 +32,7 @@ export const NAV_ICONS: Record<NavIcon, LucideIcon> = {
   chats: MessagesSquare,
   support: CircleHelp,
   notifications: Bell,
+  reminders: AlarmClock,
   directory: BookUser,
   profile: UserRound,
   company: Building2,

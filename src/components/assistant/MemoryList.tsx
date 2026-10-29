@@ -29,6 +29,7 @@ export function MemoryList({ memories }: { memories: Memory[] }) {
   const [draft, setDraft] = useState("");
   const [editing, setEditing] = useState<{ id: string; text: string } | null>(null);
   const [confirmClear, setConfirmClear] = useState(false);
+  const [removing, setRemoving] = useState<Memory | null>(null);
 
   const run = (action: () => Promise<Result>, done: string, after?: () => void) =>
     startTransition(async () => {
@@ -147,7 +148,7 @@ export function MemoryList({ memories }: { memories: Memory[] }) {
                   size="sm"
                   variant="ghost"
                   disabled={pending}
-                  onClick={() => run(() => deleteMemory(m.id), t("deleted"))}
+                  onClick={() => setRemoving(m)}
                   aria-label={`${t("delete")} : ${m.content}`}
                 >
                   <Trash2 aria-hidden="true" />
@@ -168,6 +169,36 @@ export function MemoryList({ memories }: { memories: Memory[] }) {
           </Button>
         </div>
       ) : null}
+
+      <Modal
+        open={removing !== null}
+        onClose={() => setRemoving(null)}
+        title={t("delete")}
+        closeLabel={tAll("common.close")}
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setRemoving(null)}>
+              {tAll("common.cancel")}
+            </Button>
+            <Button
+              variant="danger"
+              loading={pending}
+              onClick={() =>
+                removing &&
+                run(
+                  () => deleteMemory(removing.id),
+                  t("deleted"),
+                  () => setRemoving(null),
+                )
+              }
+            >
+              {t("delete")}
+            </Button>
+          </>
+        }
+      >
+        {removing ? t("deleteConfirm", { content: removing.content }) : null}
+      </Modal>
 
       <Modal
         open={confirmClear}

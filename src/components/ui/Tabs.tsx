@@ -6,8 +6,16 @@ import styles from "./Tabs.module.css";
 export type TabItem = { id: string; label: string; content: ReactNode };
 
 /** WAI-ARIA tabs with arrow / Home / End navigation (automatic activation). */
-export function Tabs({ items, label }: { items: readonly TabItem[]; label: string }) {
-  const [active, setActive] = useState(0);
+export function Tabs({
+  items,
+  label,
+  defaultIndex = 0,
+}: {
+  items: readonly TabItem[];
+  label: string;
+  defaultIndex?: number;
+}) {
+  const [active, setActive] = useState(defaultIndex);
   const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const baseId = useId();
 

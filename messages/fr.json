@@ -147,7 +147,8 @@
     "support": "Support",
     "notifications": "Notifications",
     "directory": "Annuaire",
-    "assistantSettings": "Réglages de l’assistante"
+    "assistantSettings": "Réglages de l’assistante",
+    "reminders": "Rappels"
   },
   "dashboard": {
     "kpi": {
@@ -768,9 +769,7 @@
       "reject": "Refuser — à revoir",
       "waitingDirector": "En attente de la validation du dirigeant.",
       "clientTitle": "Votre devis",
-      "accept": "Accepter le devis",
       "decline": "Refuser",
-      "acceptConfirm": "En acceptant, vous donnez votre accord pour la réalisation des travaux au prix indiqué.",
       "scheduleTitle": "Planifier l’intervention",
       "scheduleAt": "Date et heure",
       "scheduleNotes": "Consignes (facultatif)",
@@ -817,7 +816,9 @@
         "paid": "Payée",
         "overdue": "En retard",
         "cancelled": "Annulée"
-      }
+      },
+      "markPaidConfirm": "Le paiement sera enregistré et le dossier clôturé. Confirmer ?",
+      "remindConfirm": "Un rappel de paiement sera envoyé au client. Confirmer l’envoi ?"
     },
     "chat": {
       "caseTitle": "Échanges avec le client",
@@ -838,7 +839,8 @@
       "pickTechnician": "Choisissez au moins un technicien.",
       "notesTooShort": "Décrivez votre constat (10 caractères minimum).",
       "aiFailed": "L’IA n’a pas pu rédiger le devis. Réessayez ou saisissez-le manuellement.",
-      "badDate": "Choisissez une date à venir."
+      "badDate": "Choisissez une date à venir.",
+      "signatureRequired": "Un devis s’accepte en le signant avec DocuSign, depuis « Mes devis »."
     }
   },
   "approvals": {
@@ -849,9 +851,31 @@
   },
   "quotes": {
     "title": "Mes devis",
-    "sub": "Les devis validés par notre équipe, en attente de votre accord.",
+    "sub": "Les devis validés par notre équipe : signez-les en ligne ou refusez-les.",
     "empty": "Aucun devis pour le moment.",
-    "open": "Voir le dossier"
+    "open": "Voir le dossier",
+    "sign": {
+      "sign": "Signer le devis",
+      "notConfigured": "Signature électronique non configurée",
+      "download": "Télécharger le PDF",
+      "downloadSigned": "Télécharger le devis signé",
+      "modalTitle": "Signature électronique (DocuSign)",
+      "completed": "Devis signé : merci !",
+      "closed": "Signature interrompue : vous pourrez la reprendre.",
+      "returning": "Retour à Pratonna…",
+      "declineTitle": "Refuser le devis",
+      "declineConfirm": "Le devis sera renvoyé à l’équipe pour une nouvelle proposition. Confirmez-vous le refus ?",
+      "status": {
+        "sent": "Signature en attente",
+        "delivered": "Signature ouverte",
+        "completed": "Signé",
+        "declined": "Signature refusée",
+        "voided": "Annulée"
+      },
+      "notFound": "Devis introuvable.",
+      "notSignable": "Ce devis n’attend plus de signature.",
+      "failed": "La signature n’a pas pu démarrer. Réessayez."
+    }
   },
   "invoices": {
     "title": "Factures",
@@ -922,8 +946,65 @@
   },
   "notificationsPage": {
     "title": "Notifications",
-    "sub": "Tout ce qui s’est passé sur vos dossiers.",
-    "open": "Ouvrir le dossier"
+    "sub": "Votre boîte intelligente : l’urgent d’abord, l’important ensuite, le reste en résumé.",
+    "open": "Ouvrir le dossier",
+    "tabsLabel": "Priorité",
+    "tabs": {
+      "urgent": "Urgent",
+      "important": "Important",
+      "digest": "Résumé"
+    },
+    "empty": {
+      "urgent": "Rien d’urgent pour le moment.",
+      "important": "Rien d’important en attente.",
+      "digest": "Rien dans le résumé."
+    },
+    "digestToday": "Aujourd’hui",
+    "digestEarlier": "Plus tôt",
+    "digestGroup": "{count, plural, one {# notification} other {# notifications}} · {kind}",
+    "kinds": {
+      "quotation": "devis",
+      "invoice": "factures",
+      "intervention": "interventions",
+      "incident": "dossiers",
+      "assignment": "affectations",
+      "reminder": "rappels",
+      "message": "messages"
+    },
+    "source": {
+      "email": "E-mail",
+      "call": "Appel",
+      "meeting": "Rendez-vous",
+      "file": "Fichier",
+      "task": "Tâche",
+      "system": "Pratonna"
+    },
+    "moveLabel": "Priorité de « {title} »",
+    "moved": "Notification déplacée.",
+    "rules": {
+      "suggested": "Suggestion :",
+      "accept": "Accepter",
+      "refuse": "Refuser",
+      "accepted": "Règle activée.",
+      "refused": "Suggestion refusée.",
+      "active": "{count, plural, one {# règle active} other {# règles actives}}",
+      "delete": "Supprimer la règle",
+      "deleteConfirm": "Supprimer la règle « {label} » ?",
+      "deleted": "Règle supprimée."
+    },
+    "errors": {
+      "notFound": "Élément introuvable."
+    },
+    "push": {
+      "enable": "Activer les notifications push",
+      "disable": "Désactiver les notifications push",
+      "enabled": "Notifications push activées sur cet appareil.",
+      "disabled": "Notifications push désactivées.",
+      "failed": "Impossible d’activer les notifications push.",
+      "unsupported": "Ce navigateur ne gère pas les notifications push.",
+      "unconfigured": "Notifications push non configurées.",
+      "denied": "Notifications bloquées dans les réglages du navigateur."
+    }
   },
   "directory": {
     "title": "Annuaire",
@@ -1020,7 +1101,8 @@
       "get_case": "détail du dossier",
       "list_technicians": "techniciens",
       "list_invoices": "factures",
-      "suggest_memory": "mémoire proposée, à valider dans vos réglages"
+      "suggest_memory": "mémoire proposée, à valider dans vos réglages",
+      "suggest_priority_rule": "règle de priorité proposée, à accepter dans vos notifications"
     },
     "proposal": {
       "title": "Action proposée",
@@ -1054,11 +1136,11 @@
       "rejectDevis": "Refuser le devis du dossier {case} (retour au technicien)",
       "schedule": "Planifier l’intervention du dossier {case} le {date}",
       "cancel": "Annuler le dossier {case}",
-      "acceptQuote": "Accepter et signer le devis du dossier {case}",
       "declineQuote": "Refuser le devis du dossier {case}",
       "message": "Envoyer sur le dossier {case} : « {text} »",
       "reminder": "Envoyer une relance pour la facture {invoice}",
-      "tooManySteps": "Je n’ai pas pu terminer cette demande. Pouvez-vous la reformuler ?"
+      "tooManySteps": "Je n’ai pas pu terminer cette demande. Pouvez-vous la reformuler ?",
+      "createReminder": "Programmer un rappel « {title} » le {date}"
     },
     "errors": {
       "empty": "Écrivez un message.",
@@ -1143,7 +1225,8 @@
         "emerald": "Émeraude",
         "amber": "Ambre",
         "rose": "Rose"
-      }
+      },
+      "companyConfirm": "Appliquer la couleur {color} à tous les membres qui n’ont pas choisi la leur ?"
     },
     "memory": {
       "title": "Mémoire & règles",
@@ -1171,7 +1254,8 @@
       "clearAll": "Tout effacer",
       "clearConfirm": "Effacer toutes les mémoires et règles ? Cette action est définitive.",
       "clearConfirmButton": "Tout effacer",
-      "cleared": "Mémoire effacée."
+      "cleared": "Mémoire effacée.",
+      "deleteConfirm": "Supprimer « {content} » de la mémoire ?"
     }
   },
   "welcome": {
@@ -1190,6 +1274,45 @@
     "messages": {
       "label": "{count, plural, =0 {message sans réponse} one {message sans réponse} other {messages sans réponse}}",
       "prompt": "Quels messages de dossiers attendent ma réponse ? Aide-moi à y répondre."
+    }
+  },
+  "reminders": {
+    "title": "Rappels",
+    "sub": "Rendez-vous, appels, e-mails, tâches et relances : Pratonna vous prévient au bon moment.",
+    "add": "Nouveau rappel",
+    "kind": "Type",
+    "kinds": {
+      "meeting": "Rendez-vous",
+      "call": "Appel",
+      "email": "E-mail",
+      "task": "Tâche",
+      "follow_up": "Relance"
+    },
+    "titleLabel": "Intitulé",
+    "when": "Quand",
+    "notes": "Notes",
+    "create": "Programmer le rappel",
+    "created": "Rappel programmé.",
+    "upcoming": "À venir",
+    "past": "Récents",
+    "emptyUpcoming": "Aucun rappel programmé.",
+    "status": {
+      "scheduled": "Programmé",
+      "sent": "Envoyé",
+      "done": "Terminé",
+      "cancelled": "Annulé",
+      "failed": "Échec"
+    },
+    "done": "Terminé",
+    "doneToast": "Rappel terminé.",
+    "cancel": "Annuler le rappel",
+    "cancelTitle": "Annuler le rappel",
+    "cancelConfirm": "Annuler le rappel « {title} » ?",
+    "cancelled": "Rappel annulé.",
+    "errors": {
+      "past": "Choisissez une date à venir.",
+      "date": "Date invalide.",
+      "notFound": "Élément introuvable."
     }
   }
 }

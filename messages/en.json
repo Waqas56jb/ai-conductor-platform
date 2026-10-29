@@ -147,7 +147,8 @@
     "support": "Support",
     "notifications": "Notifications",
     "directory": "Directory",
-    "assistantSettings": "Assistant settings"
+    "assistantSettings": "Assistant settings",
+    "reminders": "Reminders"
   },
   "dashboard": {
     "kpi": {
@@ -768,9 +769,7 @@
       "reject": "Reject — revise",
       "waitingDirector": "Waiting for the director’s approval.",
       "clientTitle": "Your quote",
-      "accept": "Accept the quote",
       "decline": "Decline",
-      "acceptConfirm": "By accepting, you agree to the work being carried out at the stated price.",
       "scheduleTitle": "Schedule the job",
       "scheduleAt": "Date and time",
       "scheduleNotes": "Instructions (optional)",
@@ -817,7 +816,9 @@
         "paid": "Paid",
         "overdue": "Overdue",
         "cancelled": "Cancelled"
-      }
+      },
+      "markPaidConfirm": "The payment will be recorded and the case closed. Confirm?",
+      "remindConfirm": "A payment reminder will be sent to the client. Send it?"
     },
     "chat": {
       "caseTitle": "Conversation with the client",
@@ -838,7 +839,8 @@
       "pickTechnician": "Pick at least one technician.",
       "notesTooShort": "Describe your findings (at least 10 characters).",
       "aiFailed": "AI could not draft the quote. Try again or type it manually.",
-      "badDate": "Choose a future date."
+      "badDate": "Choose a future date.",
+      "signatureRequired": "A quote is accepted by signing it with DocuSign, from “My quotes”."
     }
   },
   "approvals": {
@@ -849,9 +851,31 @@
   },
   "quotes": {
     "title": "My quotes",
-    "sub": "Quotes approved by our team, waiting for your agreement.",
+    "sub": "Quotes approved by our team: sign them online or decline them.",
     "empty": "No quotes yet.",
-    "open": "View the case"
+    "open": "View the case",
+    "sign": {
+      "sign": "Sign the quote",
+      "notConfigured": "Electronic signature not configured",
+      "download": "Download PDF",
+      "downloadSigned": "Download the signed quote",
+      "modalTitle": "Electronic signature (DocuSign)",
+      "completed": "Quote signed: thank you!",
+      "closed": "Signing interrupted: you can resume it later.",
+      "returning": "Back to Pratonna…",
+      "declineTitle": "Decline the quote",
+      "declineConfirm": "The quote goes back to the team for a new proposal. Decline it?",
+      "status": {
+        "sent": "Waiting for signature",
+        "delivered": "Signature opened",
+        "completed": "Signed",
+        "declined": "Signature declined",
+        "voided": "Voided"
+      },
+      "notFound": "Quote not found.",
+      "notSignable": "This quote no longer waits for a signature.",
+      "failed": "Signing could not start. Try again."
+    }
   },
   "invoices": {
     "title": "Invoices",
@@ -922,8 +946,65 @@
   },
   "notificationsPage": {
     "title": "Notifications",
-    "sub": "Everything that happened on your cases.",
-    "open": "Open the case"
+    "sub": "Your smart inbox: urgent first, then important, the rest in a digest.",
+    "open": "Open the case",
+    "tabsLabel": "Priority",
+    "tabs": {
+      "urgent": "Urgent",
+      "important": "Important",
+      "digest": "Digest"
+    },
+    "empty": {
+      "urgent": "Nothing urgent right now.",
+      "important": "Nothing important waiting.",
+      "digest": "Nothing in the digest."
+    },
+    "digestToday": "Today",
+    "digestEarlier": "Earlier",
+    "digestGroup": "{count, plural, one {# notification} other {# notifications}} · {kind}",
+    "kinds": {
+      "quotation": "quotes",
+      "invoice": "invoices",
+      "intervention": "jobs",
+      "incident": "cases",
+      "assignment": "assignments",
+      "reminder": "reminders",
+      "message": "messages"
+    },
+    "source": {
+      "email": "Email",
+      "call": "Call",
+      "meeting": "Meeting",
+      "file": "File",
+      "task": "Task",
+      "system": "Pratonna"
+    },
+    "moveLabel": "Priority of “{title}”",
+    "moved": "Notification moved.",
+    "rules": {
+      "suggested": "Suggestion:",
+      "accept": "Accept",
+      "refuse": "Refuse",
+      "accepted": "Rule turned on.",
+      "refused": "Suggestion refused.",
+      "active": "{count, plural, one {# active rule} other {# active rules}}",
+      "delete": "Delete the rule",
+      "deleteConfirm": "Delete the rule “{label}”?",
+      "deleted": "Rule deleted."
+    },
+    "errors": {
+      "notFound": "Item not found."
+    },
+    "push": {
+      "enable": "Turn on push notifications",
+      "disable": "Turn off push notifications",
+      "enabled": "Push notifications on for this device.",
+      "disabled": "Push notifications off.",
+      "failed": "Push notifications could not be turned on.",
+      "unsupported": "This browser does not support push notifications.",
+      "unconfigured": "Push notifications not configured.",
+      "denied": "Notifications are blocked in the browser settings."
+    }
   },
   "directory": {
     "title": "Directory",
@@ -1020,7 +1101,8 @@
       "get_case": "case details",
       "list_technicians": "technicians",
       "list_invoices": "invoices",
-      "suggest_memory": "memory suggested, to approve in your settings"
+      "suggest_memory": "memory suggested, to approve in your settings",
+      "suggest_priority_rule": "priority rule suggested, to accept in your notifications"
     },
     "proposal": {
       "title": "Proposed action",
@@ -1054,11 +1136,11 @@
       "rejectDevis": "Reject the quote of case {case} (back to the technician)",
       "schedule": "Schedule the job for case {case} on {date}",
       "cancel": "Cancel case {case}",
-      "acceptQuote": "Accept and sign the quote of case {case}",
       "declineQuote": "Decline the quote of case {case}",
       "message": "Post on case {case}: “{text}”",
       "reminder": "Send a payment reminder for invoice {invoice}",
-      "tooManySteps": "I couldn’t finish this request. Could you rephrase it?"
+      "tooManySteps": "I couldn’t finish this request. Could you rephrase it?",
+      "createReminder": "Schedule a reminder “{title}” on {date}"
     },
     "errors": {
       "empty": "Write a message.",
@@ -1143,7 +1225,8 @@
         "emerald": "Emerald",
         "amber": "Amber",
         "rose": "Rose"
-      }
+      },
+      "companyConfirm": "Apply {color} to every member who has not picked their own colour?"
     },
     "memory": {
       "title": "Memory & rules",
@@ -1171,7 +1254,8 @@
       "clearAll": "Clear all",
       "clearConfirm": "Delete every memory and rule? This cannot be undone.",
       "clearConfirmButton": "Clear all",
-      "cleared": "Memory cleared."
+      "cleared": "Memory cleared.",
+      "deleteConfirm": "Delete “{content}” from memory?"
     }
   },
   "welcome": {
@@ -1190,6 +1274,45 @@
     "messages": {
       "label": "{count, plural, one {unanswered message} other {unanswered messages}}",
       "prompt": "Which case messages are waiting for my reply? Help me answer them."
+    }
+  },
+  "reminders": {
+    "title": "Reminders",
+    "sub": "Meetings, calls, emails, tasks and follow-ups: Pratonna reminds you at the right time.",
+    "add": "New reminder",
+    "kind": "Type",
+    "kinds": {
+      "meeting": "Meeting",
+      "call": "Call",
+      "email": "Email",
+      "task": "Task",
+      "follow_up": "Follow-up"
+    },
+    "titleLabel": "Title",
+    "when": "When",
+    "notes": "Notes",
+    "create": "Schedule the reminder",
+    "created": "Reminder scheduled.",
+    "upcoming": "Upcoming",
+    "past": "Recent",
+    "emptyUpcoming": "No reminder scheduled.",
+    "status": {
+      "scheduled": "Scheduled",
+      "sent": "Sent",
+      "done": "Done",
+      "cancelled": "Cancelled",
+      "failed": "Failed"
+    },
+    "done": "Done",
+    "doneToast": "Reminder done.",
+    "cancel": "Cancel the reminder",
+    "cancelTitle": "Cancel the reminder",
+    "cancelConfirm": "Cancel the reminder “{title}”?",
+    "cancelled": "Reminder cancelled.",
+    "errors": {
+      "past": "Pick a future date.",
+      "date": "Invalid date.",
+      "notFound": "Item not found."
     }
   }
 }

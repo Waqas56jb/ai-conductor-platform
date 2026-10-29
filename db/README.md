@@ -32,18 +32,21 @@ Rules:
 
 Applied history is stored in `ai_conductor_schema_migrations`.
 
-| Migration               | What it does                                                                                                                                                                    |
-| ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `0000_baseline`         | The 18 original tables as found on 2026-10-29 (no-op on the live DB, recreates them on a new one)                                                                               |
-| `0001_lockdown`         | RLS on and REST/GraphQL grants revoked: the tables were publicly readable and writable, including `password_hash`                                                               |
-| `0002_integrity`        | Allowed-value checks, missing foreign keys, indexes, `updated_at` triggers, `auth_user_id` link to Supabase Auth, `fr` default locale                                           |
-| `0003_platform`         | New tables: audit log, contacts, documents, payments, reminders, integrations, AI conversations / messages / approval-gated actions                                             |
-| `0004_tenancy`          | `ai_conductor_companies`, `company_id` on every business table (existing rows → "Pratonna Gestion"), `accountant` role, caller helpers, company isolation + Phase 1 policies    |
-| `0005_company_grants`   | Resets the default privileges Supabase gave the new companies table                                                                                                             |
-| `0006_workflow`         | Workflow helpers, per-company counters (`ai_conductor_next_number`), case / invoice / technician columns, per-role read policies, realtime publication, private storage buckets |
-| `0007_users_visibility` | Clients no longer see the other clients of their company                                                                                                                        |
-| `0008_case_reference`   | Per-company references (`INC-2026-0001`) separate from the random global ids; required and unique per company                                                                   |
-| `0009_ai_assistant`     | Per-user agent profile; users read only their own assistant conversations, messages and proposals                                                                               |
+| Migration                        | What it does                                                                                                                                                                    |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `0000_baseline`                  | The 18 original tables as found on 2026-10-29 (no-op on the live DB, recreates them on a new one)                                                                               |
+| `0001_lockdown`                  | RLS on and REST/GraphQL grants revoked: the tables were publicly readable and writable, including `password_hash`                                                               |
+| `0002_integrity`                 | Allowed-value checks, missing foreign keys, indexes, `updated_at` triggers, `auth_user_id` link to Supabase Auth, `fr` default locale                                           |
+| `0003_platform`                  | New tables: audit log, contacts, documents, payments, reminders, integrations, AI conversations / messages / approval-gated actions                                             |
+| `0004_tenancy`                   | `ai_conductor_companies`, `company_id` on every business table (existing rows → "Pratonna Gestion"), `accountant` role, caller helpers, company isolation + Phase 1 policies    |
+| `0005_company_grants`            | Resets the default privileges Supabase gave the new companies table                                                                                                             |
+| `0006_workflow`                  | Workflow helpers, per-company counters (`ai_conductor_next_number`), case / invoice / technician columns, per-role read policies, realtime publication, private storage buckets |
+| `0007_users_visibility`          | Clients no longer see the other clients of their company                                                                                                                        |
+| `0008_case_reference`            | Per-company references (`INC-2026-0001`) separate from the random global ids; required and unique per company                                                                   |
+| `0009_ai_assistant`              | Per-user agent profile; users read only their own assistant conversations, messages and proposals                                                                               |
+| `0010_assistant_personalization` | Agent profile → assistant profile (Maya, avatar, voice, tones, colour); memories (approved only reach the model); company colour                                                |
+| `0011_signature_requests`        | DocuSign envelopes per document (status, events, signed PDF in the private signatures bucket); signer and office read                                                           |
+| `0012_smart_notifications`       | Notification priority / source; priority rules (unapproved suggestions); reminders (scaffold table reused); web push subscriptions                                              |
 
 ## Connection
 

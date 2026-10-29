@@ -7,7 +7,8 @@ try {
   // CI provides the variables directly.
 }
 
-const PORT = 3000;
+/** Local port of the app under test (E2E_PORT when 3000 is taken). */
+const PORT = Number(process.env.E2E_PORT ?? 3000);
 /** Set E2E_BASE_URL to test a deployment instead of the local dev server. */
 const REMOTE = process.env.E2E_BASE_URL;
 
@@ -55,7 +56,7 @@ export default defineConfig({
   webServer: REMOTE
     ? undefined
     : {
-        command: "pnpm dev",
+        command: `pnpm dev --port ${PORT}`,
         url: `http://localhost:${PORT}/login`,
         reuseExistingServer: true,
         // Server-side errors show up in the test output.

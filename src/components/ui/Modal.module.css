@@ -90,3 +90,7 @@
     transform: translateY(8px) scale(0.98);
   }
 }
+
+.large {
+  width: min(980px, calc(100% - 1rem));
+}

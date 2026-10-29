@@ -14,6 +14,7 @@ export type NavIcon =
   | "chats"
   | "support"
   | "notifications"
+  | "reminders"
   | "directory"
   | "profile"
   | "company";
@@ -59,6 +60,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
   { href: "/app/chats", labelKey: "chats", icon: "chats", roles: [...OFFICE, "technician"] },
   { href: "/app/directory", labelKey: "directory", icon: "directory", roles: TEAM },
   { href: "/app/notifications", labelKey: "notifications", icon: "notifications", roles: ROLES },
+  { href: "/app/reminders", labelKey: "reminders", icon: "reminders", roles: ROLES },
   { href: "/app/support", labelKey: "support", icon: "support", roles: ["client"] },
   { href: "/app/company", labelKey: "company", icon: "company", roles: COMPANY_ADMIN_ROLES },
   { href: "/app/profile", labelKey: "profile", icon: "profile", roles: ROLES },

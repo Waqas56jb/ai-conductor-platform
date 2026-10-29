@@ -18,12 +18,12 @@ import {
 } from "@/app/app/cases/actions";
 import { Badge, Button, Card, Input, Modal, Select, useToast } from "@/components/ui";
 import type { TechnicianCard } from "@/lib/cases/queries";
-import type { Urgency } from "@/lib/db/types";
+import type { SignatureRequestRow, Urgency } from "@/lib/db/types";
 import { resizeImage } from "@/lib/images";
 import type { DevisInput } from "@/lib/workflows/devis";
 import type { IncidentAction } from "@/lib/workflows/incident";
 import { DevisEditor } from "./DevisEditor";
-import { QuoteDecision } from "./QuoteDecision";
+import { QuoteSignature } from "./QuoteSignature";
 import { TechnicianMapLazy } from "./TechnicianMapLazy";
 import styles from "./CaseActions.module.css";
 
@@ -35,6 +35,12 @@ type Props = {
   incidentPoint: { lat: number; lng: number } | null;
   technicians: TechnicianCard[];
   scheduledAt: string | null;
+  /** The quote the client may sign (DocuSign) or decline. */
+  signing: {
+    quoteId: string;
+    configured: boolean;
+    signature: { id: string; status: SignatureRequestRow["status"] } | null;
+  } | null;
 };
 
 type Confirm = {
@@ -288,9 +294,15 @@ export function CaseActions(props: Props) {
         </Card>
       ) : null}
 
-      {can("client_accept") ? (
+      {can("client_accept") && props.signing ? (
         <Card title={t("clientTitle")}>
-          <QuoteDecision incidentId={incidentId} />
+          <QuoteSignature
+            quoteId={props.signing.quoteId}
+            incidentId={incidentId}
+            configured={props.signing.configured}
+            signature={props.signing.signature}
+            signable
+          />
         </Card>
       ) : null}
 

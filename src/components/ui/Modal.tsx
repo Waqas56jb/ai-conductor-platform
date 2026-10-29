@@ -13,6 +13,8 @@ type Props = {
   footer?: ReactNode;
   /** "top" suits a command palette; "center" a confirmation. */
   position?: "center" | "top";
+  /** "large" fits an embedded page (e.g. DocuSign signing). */
+  size?: "default" | "large";
 };
 
 /** Native <dialog>: focus trap, Escape and top-layer stacking come for free. */
@@ -24,6 +26,7 @@ export function Modal({
   children,
   footer,
   position = "center",
+  size = "default",
 }: Props) {
   const ref = useRef<HTMLDialogElement>(null);
 
@@ -37,7 +40,7 @@ export function Modal({
   return (
     <dialog
       ref={ref}
-      className={`${styles.dialog} ${position === "top" ? styles.top : ""}`}
+      className={`${styles.dialog} ${position === "top" ? styles.top : ""} ${size === "large" ? styles.large : ""}`}
       aria-label={title}
       onClose={onClose}
       onClick={(e) => {

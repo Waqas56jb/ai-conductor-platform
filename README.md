@@ -9,6 +9,7 @@ Rebuild in progress, phase by phase (see [PRATONNA_AUDIT.md](PRATONNA_AUDIT.md))
 - **Phase 1 — done:** design system, French/English (French default), Supabase Auth (sign-up with company creation, login, password reset, email confirmation), roles, multi-company data isolation, app shell.
 - **Phase 2 — done:** the repair workflow end to end, one app for every role (client, technician, manager, director): report with photos, triage, technician map and assignment, AI-drafted devis, threshold-based approval, client signature, calendar, intervention, invoice, receipt, payment, reminders, realtime chats and notifications.
 - **Phase 3 — done:** AI text assistant (`/app/assistant`) for every role. It answers from real data through read tools that run as the user (RLS), and turns every change it suggests into a proposal the user approves or rejects; approved proposals run through the same workflow actions as the panels and are audited. Each user sets the assistant's name, tone, language and personal instructions.
+- **Feedback round 1 — done** (Martin's handoff): human-first landing with the assistant avatar, honest "Disponible / Bientôt" chips, industry and real-screens carousels, pilot programme; the assistant on every page (header button + slide-over, streamed replies) and a "priorités du jour" welcome card; assistant personalisation (`/app/settings/assistant`: avatar, name, voice, tone, context-aware tone, workspace colour, memory & rules); DocuSign e-signature for quotes; smart inbox (urgent / important / digest, rules only applied once accepted); reminders with a cron and web push; installable PWA; confirmations before payments, reminders and deletions. Video brief: [docs/video-brief.md](docs/video-brief.md).
 - `src/` is the Next.js app (the product, under `/app`).
 - `db/` holds the Postgres schema as versioned SQL migrations. Read [db/README.md](db/README.md) first: the Supabase project is shared with other applications.
 - `legacy/client` is the original prototype, still serving the live marketing site. The manager, technician and director prototypes were removed once ported.
@@ -46,7 +47,7 @@ Environment variables are validated in [src/lib/env.ts](src/lib/env.ts). Set `SK
 
 ### Browser tests
 
-`pnpm test:e2e` starts `pnpm dev`, creates an isolated test company with one account per role (email domain `pratonna-e2e.test`, created through the Admin API, so no emails are sent) and deletes it afterwards. The single real sign-up test (desktop only) uses an `e2e-*@example.com` address, which triggers one Supabase confirmation email to a domain with no mail server. Screenshots are written to `tests/screenshots/<phase>/`.
+`pnpm test:e2e` starts `pnpm dev`, creates an isolated test company with one account per role (email domain `pratonna-e2e.test`, created through the Admin API, so no emails are sent) and deletes it afterwards. The single real sign-up test (desktop only) uses an `e2e-*@example.com` address, which triggers one Supabase confirmation email to a domain with no mail server. Screenshots are written to `tests/screenshots/<phase>/` (`E2E_PHASE`). Set `E2E_PORT` when port 3000 is taken. The landing spec runs against `vite preview` on port 4173 (`LANDING_URL` to test another URL).
 
 ## Deployment
 
@@ -60,6 +61,9 @@ Two Vercel projects (team `us`), deployed with the Vercel CLI:
 - The app's functions run in `hnd1` (Tokyo), next to the Supabase project ([vercel.json](vercel.json)).
 - App environment: the variables of `.env.example` except `DATABASE_URL` / `DIRECT_URL` (only used by the migration and seed scripts). `NEXT_PUBLIC_SITE_URL` sends signed-out visitors of `/` to the landing.
 - Landing environment: `VITE_APP_URL`, the app URL used by its sign-in / sign-up buttons.
+- E-signature: `DOCUSIGN_*` (integration key, API user id, account id, RSA private key, base URL, Connect HMAC key). Without them, "Signer le devis" shows "Signature électronique non configurée" and is disabled. The Connect webhook is `/api/webhooks/docusign`; grant JWT consent once for the integration key.
+- Reminders: Vercel Cron calls `/api/cron/reminders` every 15 minutes with `CRON_SECRET`; web push uses the VAPID pair (`NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`).
+- Brand assets are generated: `pnpm brand:avatar` (assistant avatar heads, landing portrait) and `node scripts/brand/icons.mjs` (PWA icons).
 - To test a deployment instead of the local dev server: `E2E_BASE_URL=https://pratonna-app.vercel.app pnpm test:e2e`.
 
 ## Roles

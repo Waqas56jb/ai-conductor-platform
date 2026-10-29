@@ -3,7 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
+import { createClient } from "@/lib/supabase/server";
 import { CaseActions } from "@/components/cases/CaseActions";
+import { ReminderButton } from "@/components/reminders/ReminderForm";
+import { esignConfigured } from "@/lib/esign/signatures";
 import {
   CaseTimeline,
   InterventionCard,
@@ -55,6 +58,22 @@ export default async function CasePage({ params }: Params) {
   });
   const technicians: TechnicianCard[] = actions.includes("assign") ? await listTechnicians() : [];
   const name = (uid: string | null) => (uid ? (people.get(uid)?.display_name ?? "—") : "—");
+  // The client signs from here too: the latest signature request of the quote.
+  const signature =
+    quote && actions.includes("client_accept")
+      ? ((
+          await (
+            await createClient()
+          )
+            .from("ai_conductor_signature_requests")
+            .select("id, status")
+            .eq("document_type", "quotation")
+            .eq("document_id", quote.id)
+            .order("created_at", { ascending: false })
+            .limit(1)
+            .maybeSingle()
+        ).data ?? null)
+      : null;
   const reporter = incident.client_id
     ? name(incident.client_id)
     : (incident.complainant_name ?? "—");
@@ -94,6 +113,10 @@ export default async function CasePage({ params }: Params) {
           <div className={styles.badges}>
             <StatusBadge status={incident.status} />
             <UrgencyBadge urgency={incident.urgency} />
+            <ReminderButton
+              entity={{ type: "incident", id }}
+              defaultTitle={`${incident.reference} — ${incident.title}`}
+            />
           </div>
         </div>
       </div>
@@ -185,6 +208,7 @@ export default async function CasePage({ params }: Params) {
             }
             technicians={technicians}
             scheduledAt={intervention?.scheduled_at ?? null}
+            signing={quote ? { quoteId: quote.id, configured: esignConfigured(), signature } : null}
           />
           <Card title={t("detail.timeline")}>
             <CaseTimeline status={incident.status} />

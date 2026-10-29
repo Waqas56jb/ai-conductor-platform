@@ -109,3 +109,18 @@
   display: flex;
   justify-content: flex-end;
 }
+
+.note {
+  color: var(--text-faint);
+  font-size: 0.85rem;
+}
+
+/* DocuSign embedded signing. */
+.signingFrame {
+  display: block;
+  width: 100%;
+  height: min(78vh, 760px);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: #fff;
+}

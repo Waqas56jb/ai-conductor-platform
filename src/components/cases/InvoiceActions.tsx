@@ -9,7 +9,7 @@ import {
   uploadReceipt,
   type ActionResult,
 } from "@/app/app/cases/actions";
-import { Button, useToast } from "@/components/ui";
+import { Button, Modal, useToast } from "@/components/ui";
 import { resizeImage } from "@/lib/images";
 import styles from "./CaseActions.module.css";
 
@@ -28,6 +28,8 @@ export function InvoiceActions({
   const toast = useToast();
   const [file, setFile] = useState<File | null>(null);
   const [pending, startTransition] = useTransition();
+  // Payments and reminders to the client are confirmed before they happen.
+  const [confirm, setConfirm] = useState<"paid" | "remind" | null>(null);
 
   const run = (fn: () => Promise<ActionResult>, after?: () => void) =>
     startTransition(async () => {
@@ -78,7 +80,7 @@ export function InvoiceActions({
       ) : null}
       {canManage ? (
         <div className={styles.inline}>
-          <Button size="sm" loading={pending} onClick={() => run(() => markInvoicePaid(invoiceId))}>
+          <Button size="sm" loading={pending} onClick={() => setConfirm("paid")}>
             <CheckCheck aria-hidden="true" />
             {t("markPaid")}
           </Button>
@@ -86,13 +88,42 @@ export function InvoiceActions({
             variant="secondary"
             size="sm"
             loading={pending}
-            onClick={() => run(() => sendInvoiceReminder(invoiceId))}
+            onClick={() => setConfirm("remind")}
           >
             <BellRing aria-hidden="true" />
             {t("remind")}
           </Button>
         </div>
       ) : null}
+      <Modal
+        open={confirm !== null}
+        onClose={() => setConfirm(null)}
+        title={confirm === "paid" ? t("markPaid") : t("remind")}
+        closeLabel={tAll("common.close")}
+        footer={
+          <>
+            <Button variant="secondary" onClick={() => setConfirm(null)}>
+              {tAll("common.cancel")}
+            </Button>
+            <Button
+              loading={pending}
+              onClick={() =>
+                run(
+                  () =>
+                    confirm === "paid"
+                      ? markInvoicePaid(invoiceId)
+                      : sendInvoiceReminder(invoiceId),
+                  () => setConfirm(null),
+                )
+              }
+            >
+              {tAll("cases.actions.confirm")}
+            </Button>
+          </>
+        }
+      >
+        {confirm === "paid" ? t("markPaidConfirm") : t("remindConfirm")}
+      </Modal>
     </div>
   );
 }

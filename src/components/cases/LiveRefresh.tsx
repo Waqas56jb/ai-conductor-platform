@@ -8,6 +8,8 @@ export type LiveTable =
   | "ai_conductor_incidents"
   | "ai_conductor_incident_messages"
   | "ai_conductor_group_messages"
+  | "ai_conductor_reminders"
+  | "ai_conductor_signature_requests"
   | "ai_conductor_notifications"
   | "ai_conductor_quotations"
   | "ai_conductor_invoices";

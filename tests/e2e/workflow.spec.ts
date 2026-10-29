@@ -145,16 +145,49 @@ test("client → manager → technician (AI quote) → approval → signature �
   await manager.getByRole("button", { name: "Valider et envoyer au client" }).click();
   await status(manager, "Devis envoyé au client");
 
-  // 6. Client accepts from "Mes devis".
+  // 6. Client signs from "Mes devis" with DocuSign. Without DocuSign keys the
+  // button says so and is disabled; the signed envelope is then recorded the
+  // way the Connect webhook does (status, quote, request).
   await client.goto("/app/quotes");
   await expect(client.getByTestId("quote-total").first()).toHaveText(/360,00/);
   await screenshot(client, testInfo, "flow-04-client-quote");
-  await client.getByRole("button", { name: "Accepter le devis" }).first().click();
-  await client
-    .getByRole("dialog", { name: "Accepter le devis" })
-    .getByRole("button", { name: "Confirmer" })
-    .click();
-  await done(client);
+  const caseId = caseUrl.split("/").pop() as string;
+  if (process.env.DOCUSIGN_INTEGRATION_KEY) {
+    await expect(client.getByRole("button", { name: "Signer le devis" }).first()).toBeEnabled();
+  } else {
+    await expect(client.getByRole("button", { name: "Signer le devis" }).first()).toBeDisabled();
+    await expect(client.getByText("Signature électronique non configurée").first()).toBeVisible();
+  }
+  {
+    const admin = adminClient();
+    const { data: c } = await admin
+      .from("ai_conductor_incidents")
+      .select("quotation_id, company_id")
+      .eq("id", caseId)
+      .single();
+    const now = new Date().toISOString();
+    await admin.from("ai_conductor_signature_requests").insert({
+      company_id: c!.company_id,
+      document_type: "quotation",
+      document_id: c!.quotation_id!,
+      incident_id: caseId,
+      envelope_id: `e2e-${caseId}`,
+      signer_id: s.users.client.profileId,
+      signer_email: s.users.client.email,
+      status: "completed",
+      completed_at: now,
+      events: [{ status: "completed", at: now, source: "webhook" }],
+    });
+    await admin
+      .from("ai_conductor_quotations")
+      .update({ status: "accepted", signed_at: now })
+      .eq("id", c!.quotation_id!);
+    await admin
+      .from("ai_conductor_incidents")
+      .update({ status: "client_signed" })
+      .eq("id", caseId)
+      .eq("status", "sent_to_client");
+  }
   await client.goto(caseUrl);
   await status(client, "Devis signé");
 
@@ -191,6 +224,10 @@ test("client → manager → technician (AI quote) → approval → signature �
   await expect(accountant.getByRole("heading", { name: "Finance" })).toBeVisible();
   await screenshot(accountant, testInfo, "flow-06-accountant-finance");
   await accountant.getByRole("button", { name: "Confirmer le paiement" }).first().click();
+  await accountant
+    .getByRole("dialog", { name: "Confirmer le paiement" })
+    .getByRole("button", { name: "Confirmer" })
+    .click();
   await done(accountant);
   await manager.goto(caseUrl);
   await status(manager, "Clôturé");
@@ -211,7 +248,8 @@ test("client → manager → technician (AI quote) → approval → signature �
     "incident.assign",
     "incident.submit_devis",
     "incident.approve_devis",
-    "incident.client_accept",
+    // client_accept is written by the DocuSign webhook (simulated above without keys).
+    ...(process.env.DOCUSIGN_INTEGRATION_KEY ? ["incident.client_accept"] : []),
     "incident.schedule",
     "incident.start",
     "incident.complete",

@@ -4,10 +4,11 @@ import { FileText } from "lucide-react";
 import { getTranslations } from "next-intl/server";
 import { QuoteCard } from "@/components/cases/CaseSummaryCards";
 import { LiveRefresh } from "@/components/cases/LiveRefresh";
-import { QuoteDecision } from "@/components/cases/QuoteDecision";
+import { QuoteSignature } from "@/components/cases/QuoteSignature";
 import styles from "@/components/cases/cases.module.css";
 import { Card, EmptyState, buttonClass } from "@/components/ui";
 import { requireRole } from "@/lib/auth/session";
+import { esignConfigured } from "@/lib/esign/signatures";
 import { createClient } from "@/lib/supabase/server";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -26,10 +27,30 @@ export default async function QuotesPage() {
     .not("status", "in", "(pending_manager,pending_director)")
     .order("created_at", { ascending: false });
   const quotes = data ?? [];
+  // Latest signature request per quote (RLS: the signer's own).
+  const { data: requests } = quotes.length
+    ? await supabase
+        .from("ai_conductor_signature_requests")
+        .select("id, status, document_id")
+        .eq("document_type", "quotation")
+        .in(
+          "document_id",
+          quotes.map((q) => q.id),
+        )
+        .order("created_at", { ascending: false })
+    : { data: [] };
+  const signatureOf = (quoteId: string) => requests?.find((r) => r.document_id === quoteId) ?? null;
+  const configured = esignConfigured();
 
   return (
     <div className="stack">
-      <LiveRefresh channel="quotes" tables={[{ table: "ai_conductor_quotations" }]} />
+      <LiveRefresh
+        channel="quotes"
+        tables={[
+          { table: "ai_conductor_quotations" },
+          { table: "ai_conductor_signature_requests", filter: `signer_id=eq.${profile.id}` },
+        ]}
+      />
       <div className="page-header">
         <div>
           <h1>{t("title")}</h1>
@@ -38,11 +59,17 @@ export default async function QuotesPage() {
       </div>
       {quotes.length ? (
         quotes.map((quote) => (
-          <div key={quote.id} className={styles.stack}>
+          <div key={quote.id} className={styles.stack} data-quote={quote.reference}>
             <QuoteCard quote={quote} showDiagnosis={false} />
             <div className={styles.row}>
-              {quote.status === "sent_to_client" && quote.incident_id ? (
-                <QuoteDecision incidentId={quote.incident_id} />
+              {quote.incident_id ? (
+                <QuoteSignature
+                  quoteId={quote.id}
+                  incidentId={quote.incident_id}
+                  configured={configured}
+                  signable={quote.status === "sent_to_client"}
+                  signature={signatureOf(quote.id)}
+                />
               ) : null}
               {quote.incident_id ? (
                 <Link

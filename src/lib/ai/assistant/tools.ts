@@ -3,15 +3,18 @@ import { z } from "zod";
 import type { Role } from "@/lib/auth/roles";
 import type { Profile } from "@/lib/auth/session";
 import { getCaseDetail, listCases, listTechnicians } from "@/lib/cases/queries";
+import { createReminder } from "@/app/app/reminders/actions";
 import { MEMORY_KINDS } from "@/lib/db/types";
+import { PRIORITIES, ruleConditionSchema } from "@/lib/notifications/priority";
+import { REMINDER_KINDS } from "@/lib/reminders";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { INCIDENT_STATUSES } from "@/lib/workflows/incident";
 import {
   assignTechnicians,
   cancelCase,
-  clientDecision,
   decideDevis,
+  declineQuote,
   scheduleIntervention,
   sendCaseMessage,
   sendInvoiceReminder,
@@ -297,13 +300,78 @@ export const TOOLS: Record<string, AssistantTool> = {
     execute: (i) => withCase(i.case, (id) => cancelCase(id)),
   }),
 
-  client_decision: action({
+  // Accepting a quote is signing it with DocuSign (Quotes page), never a tool.
+  decline_quote: action({
     kind: "write",
-    description: "Client only: propose to accept (sign) or decline the quote sent for a case.",
+    description:
+      "Client only: propose to decline the quote sent for a case. To accept, the client signs it with DocuSign from the Quotes page.",
     roles: ["client"],
-    schema: z.object({ case: caseRef, accept: z.boolean() }),
-    describe: (i, t) => t(i.accept ? "acceptQuote" : "declineQuote", { case: i.case }),
-    execute: (i) => withCase(i.case, (id) => clientDecision(id, i.accept)),
+    schema: z.object({ case: caseRef }),
+    describe: (i, t) => t("declineQuote", { case: i.case }),
+    execute: (i) => withCase(i.case, (id) => declineQuote(id)),
+  }),
+
+  create_reminder: action({
+    kind: "write",
+    description:
+      "Propose a reminder for the user (meeting, call, email, task or follow-up), optionally about a case.",
+    roles: EVERYONE,
+    schema: z.object({
+      kind: z.enum(REMINDER_KINDS),
+      title: z.string().trim().min(1).max(200),
+      due_at: z.iso.datetime({ offset: true }).describe("ISO 8601 with offset, Europe/Paris"),
+      notes: z.string().max(1000).optional(),
+      case: caseRef.optional(),
+    }),
+    describe: (i, t) =>
+      t("createReminder", {
+        title: i.title,
+        date: new Date(i.due_at).toLocaleString("fr-FR", {
+          dateStyle: "full",
+          timeStyle: "short",
+          timeZone: "Europe/Paris",
+        }),
+      }),
+    execute: async (i) => {
+      const input = { kind: i.kind, title: i.title, notes: i.notes ?? "", dueAt: i.due_at };
+      if (!i.case) return createReminder(input, null, "assistant");
+      const found = await resolveCase(i.case);
+      return found
+        ? createReminder(input, { type: "incident", id: found.id }, "assistant")
+        : { ok: false, error: "cases.errors.notFound" };
+    },
+  }),
+
+  // Like suggest_memory: stored unapproved, applied only once the user accepts it.
+  suggest_priority_rule: tool({
+    kind: "read",
+    description:
+      "Suggest a notification priority rule when the user expresses one (e.g. “always mark contracts due today as urgent”). It appears as a suggestion to accept or refuse in their notifications; nothing changes before.",
+    roles: EVERYONE,
+    schema: z.object({
+      condition: ruleConditionSchema,
+      priority: z.enum(PRIORITIES),
+      label: z
+        .string()
+        .trim()
+        .min(5)
+        .max(300)
+        .describe("The rule as a question in French, e.g. « Toujours … ? »"),
+    }),
+    run: async ({ condition, priority, label }, profile) => {
+      const { error } = await createAdminClient().from("ai_conductor_priority_rules").insert({
+        user_id: profile.id,
+        company_id: profile.company_id,
+        condition,
+        priority,
+        label,
+        approved: false,
+        source: "assistant",
+      });
+      return error
+        ? { error: "Suggestion not saved" }
+        : { status: "suggested_pending_user_approval" };
+    },
   }),
 
   send_case_message: action({

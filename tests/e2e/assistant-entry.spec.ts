@@ -108,7 +108,8 @@ test.describe("assistant entry point", () => {
       (cases ?? []).filter((c) => c.status === "devis_pending_manager").length +
       (proposals?.length ?? 0);
     const latest = new Map<string, string | null>();
-    for (const m of messages ?? []) if (!latest.has(m.incident_id)) latest.set(m.incident_id, m.from_id);
+    for (const m of messages ?? [])
+      if (!latest.has(m.incident_id)) latest.set(m.incident_id, m.from_id);
     const unanswered = [...latest.values()].filter((f) => f !== users.manager.profileId).length;
     expect(Math.min(overdue, approvals, unanswered)).toBeGreaterThan(0);
 
@@ -143,8 +144,14 @@ test.describe("assistant personalisation", () => {
   const reset = async () => {
     const { users } = readState();
     const admin = adminClient();
-    await admin.from("ai_conductor_assistant_profiles").delete().eq("user_id", users.technician.profileId);
-    await admin.from("ai_conductor_assistant_memories").delete().eq("user_id", users.technician.profileId);
+    await admin
+      .from("ai_conductor_assistant_profiles")
+      .delete()
+      .eq("user_id", users.technician.profileId);
+    await admin
+      .from("ai_conductor_assistant_memories")
+      .delete()
+      .eq("user_id", users.technician.profileId);
   };
   test.beforeAll(reset);
   test.afterAll(reset);
@@ -242,6 +249,11 @@ test.describe("assistant personalisation", () => {
     await shot("assistant-memories");
 
     await page.getByRole("button", { name: "Supprimer : Toujours vouvoyer les clients." }).click();
+    // Deleting is confirmed first.
+    await page
+      .getByRole("dialog", { name: "Supprimer" })
+      .getByRole("button", { name: "Supprimer" })
+      .click();
     await expect(items).toHaveCount(1);
 
     await page.getByRole("button", { name: "Tout effacer" }).click();
@@ -275,7 +287,9 @@ test.describe("assistant personalisation", () => {
     await login(page, "technician");
     await button(page).click();
     const p = panel(page);
-    await p.getByLabel("Écrivez votre message…").fill("Combien de dossiers ai-je en cours ? Réponds en une phrase.");
+    await p
+      .getByLabel("Écrivez votre message…")
+      .fill("Combien de dossiers ai-je en cours ? Réponds en une phrase.");
     await p.getByRole("button", { name: "Envoyer" }).click();
     // The answer arrives in the panel, then is stored with its time.
     await expect(p.locator("time", { hasText: /·/ })).toHaveCount(1, { timeout: 120_000 });
