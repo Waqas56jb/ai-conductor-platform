@@ -28,7 +28,7 @@ test.beforeEach(async ({ page }) => {
   await page.evaluate(() => document.fonts.ready.then(() => undefined));
 });
 
-test("hero: the assistant sits beside the headline and greets once", async ({ page, shot }) => {
+test("hero: the assistant sits right of the headline and greets once", async ({ page, shot }) => {
   const title = page.getByRole("heading", { level: 1 });
   await expect(title).toHaveText("Moins d’administratif.Plus de temps pour l’essentiel.");
   await expect(page.getByText("100 % IA")).toHaveCount(0);
@@ -44,7 +44,9 @@ test("hero: the assistant sits beside the headline and greets once", async ({ pa
     await expect(page.locator(".ai-hero__head")).toBeHidden();
     const box = (await portrait.boundingBox())!;
     expect(box.height).toBeGreaterThanOrEqual(420);
-    expect(box.x + box.width).toBeLessThanOrEqual(titleBox.x + 4); // left column
+    // Right column: the portrait starts after the copy ends.
+    const copy = (await page.locator(".ai-hero__content").boundingBox())!;
+    expect(box.x).toBeGreaterThanOrEqual(copy.x + copy.width - 4);
     // The bubble types its line once, then stays.
     const bubble = page.locator(".ai-bubble > span[aria-hidden]");
     await expect(bubble).toHaveText(BUBBLE_FR, { timeout: 8_000 });
@@ -64,7 +66,10 @@ test("hero: the assistant sits beside the headline and greets once", async ({ pa
   await shot("landing-hero");
 });
 
-test("features: honest status chips, no testimonials, a pilot programme", async ({ page, shot }) => {
+test("features: honest status chips, no testimonials, a pilot programme", async ({
+  page,
+  shot,
+}) => {
   await scrollTo(page, "#fonctionnalites");
   const features = page.locator("#fonctionnalites");
   await expect(features.getByRole("heading", { level: 2 })).toHaveText(
@@ -72,7 +77,12 @@ test("features: honest status chips, no testimonials, a pilot programme", async 
   );
   await expect(features.locator(".lp-chip--available")).toHaveCount(5);
   await expect(features.locator(".lp-chip--soon")).toHaveCount(4);
-  for (const soon of ["Assistante vocale", "E-mails Gmail & Outlook", "Comptabilité", "Studio vidéo"])
+  for (const soon of [
+    "Assistante vocale",
+    "E-mails Gmail & Outlook",
+    "Comptabilité",
+    "Studio vidéo",
+  ])
     await expect(features.locator("article", { hasText: soon }).locator(".lp-chip")).toHaveText(
       "Bientôt",
     );
@@ -91,7 +101,9 @@ test("features: honest status chips, no testimonials, a pilot programme", async 
   await expect(page.getByRole("heading", { name: /Témoignages|Façonnez Pratonna/ })).toHaveCount(0);
   await expect(page.locator(".lp-quote")).toHaveCount(0);
   await scrollTo(page, "#programme-pilote");
-  await expect(page.getByRole("heading", { name: "Rejoignez les premières entreprises." })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Rejoignez les premières entreprises." }),
+  ).toBeVisible();
   await expectNoHorizontalScroll(page);
   await shot("landing-pilot");
 });
@@ -145,7 +157,9 @@ test("product screens: real screenshots load in the carousel", async ({ page, sh
   for (let i = 0; i < 4; i++) {
     if (i) await section.getByRole("button", { name: "Capture suivante" }).click();
     await expect
-      .poll(() => images.nth(i).evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth))
+      .poll(() =>
+        images.nth(i).evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth),
+      )
       .toBe(1440);
   }
   await expect(section.getByRole("link", { name: "Demander une démo" })).toBeVisible();
@@ -154,7 +168,11 @@ test("product screens: real screenshots load in the carousel", async ({ page, sh
 });
 
 test("FR/EN switches every new string", async ({ page, shot }) => {
-  await page.getByRole("button", { name: "Changer de langue" }).filter({ visible: true }).first().click();
+  await page
+    .getByRole("button", { name: "Changer de langue" })
+    .filter({ visible: true })
+    .first()
+    .click();
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Less admin.More time for what matters.",
@@ -165,14 +183,22 @@ test("FR/EN switches every new string", async ({ page, shot }) => {
     );
   await expect(page.locator("#fonctionnalites h2")).toHaveText("What Pratonna does for you");
   await expect(page.locator("#fonctionnalites .lp-chip--soon").first()).toHaveText("Coming soon");
-  await expect(page.locator("#fonctionnalites .lp-chip--available").first()).toHaveText("Available");
+  await expect(page.locator("#fonctionnalites .lp-chip--available").first()).toHaveText(
+    "Available",
+  );
   await expect(page.locator("#integrations h2")).toHaveText("What works today.");
   await expect(page.locator("#solutions h3").nth(1)).toHaveText("Lettings & property management");
   await expect(page.getByRole("button", { name: "Next sector" })).toHaveCount(1);
   await expect(page.locator("#interface h2")).toHaveText("See the interface.");
   await expect(page.locator("#programme-pilote h2")).toHaveText("Join the first companies.");
   // No French left in the new sections.
-  for (const id of ["#fonctionnalites", "#integrations", "#solutions", "#interface", "#programme-pilote"])
+  for (const id of [
+    "#fonctionnalites",
+    "#integrations",
+    "#solutions",
+    "#interface",
+    "#programme-pilote",
+  ])
     await expect(page.locator(id)).not.toContainText(/Bientôt|Disponible|Découvrez|Rejoignez/);
   await expectNoHorizontalScroll(page);
   await shot("landing-en");
