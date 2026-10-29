@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# 4K master of the hero video (659 MB) — the site uses public/final-web.mp4
+public/final.mp4

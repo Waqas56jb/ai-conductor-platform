@@ -178,89 +178,6 @@ img {
   color: var(--blue-600);
 }
 
-.hero {
-  position: relative;
-  min-height: calc(100vh - 72px);
-  display: grid;
-  align-items: stretch;
-  overflow: hidden;
-}
-
-.hero-media {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-.hero-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  animation: heroZoom 18s ease-in-out infinite alternate;
-}
-
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(105deg, rgba(6, 21, 38, 0.82) 0%, rgba(10, 37, 64, 0.55) 48%, rgba(10, 37, 64, 0.28) 100%),
-    linear-gradient(0deg, rgba(6, 21, 38, 0.45), transparent 42%);
-}
-
-.hero-content {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: clamp(3rem, 8vh, 5.5rem) 0 clamp(3.5rem, 9vh, 6rem);
-  color: var(--white);
-  animation: riseIn 0.9s ease both;
-}
-
-.hero-brand {
-  font-family: var(--font-display);
-  font-size: clamp(2.8rem, 7vw, 5.4rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 0.95;
-  margin: 0 0 1.1rem;
-}
-
-.hero-headline {
-  font-family: var(--font-display);
-  font-size: clamp(1.55rem, 3.2vw, 2.35rem);
-  font-weight: 500;
-  line-height: 1.2;
-  max-width: 16ch;
-  margin: 0 0 1rem;
-}
-
-.hero-sub {
-  max-width: 38rem;
-  margin: 0 0 1.75rem;
-  font-size: clamp(1rem, 1.5vw, 1.15rem);
-  line-height: 1.55;
-  color: rgba(255, 255, 255, 0.88);
-  font-weight: 300;
-}
-
-.hero-ctas {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-}
-
-.hero .btn-ghost {
-  background: rgba(255, 255, 255, 0.12);
-  color: var(--white);
-  border-color: rgba(255, 255, 255, 0.28);
-}
-
-.hero .btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
 .section {
   padding: clamp(4rem, 9vw, 6.5rem) 0;
 }
@@ -570,15 +487,6 @@ img {
   }
 }
 
-@keyframes heroZoom {
-  from {
-    transform: scale(1);
-  }
-  to {
-    transform: scale(1.06);
-  }
-}
-
 @media (max-width: 900px) {
   .nav-links {
     display: none;
@@ -598,11 +506,6 @@ img {
   .auth-visual {
     min-height: 220px;
   }
-
-  .hero-content {
-    justify-content: flex-end;
-    padding-top: 5rem;
-  }
 }
 
 @media (max-width: 560px) {
@@ -616,10 +519,5 @@ img {
 
   .nav-actions .btn-ghost {
     display: none;
-  }
-
-  .hero-ctas {
-    flex-direction: column;
-    align-items: stretch;
   }
 }

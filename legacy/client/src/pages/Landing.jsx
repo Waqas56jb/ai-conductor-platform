@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
+import Hero from '../components/hero/Hero'
 import { useLanguage } from '../context/LanguageContext'
 
-const HERO_IMG =
-  'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2000&q=80'
 const WHY_IMG =
   'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1400&q=80'
 
@@ -13,29 +12,11 @@ export default function Landing() {
 
   return (
     <>
-      <Navbar />
+      <Navbar variant="dark" />
 
-      <section className="hero">
-        <div className="hero-media" aria-hidden="true">
-          <img src={HERO_IMG} alt="" />
-          <div className="hero-overlay" />
-        </div>
-        <div className="container hero-content">
-          <p className="hero-brand">{t.hero.brand}</p>
-          <h1 className="hero-headline">{t.hero.headline}</h1>
-          <p className="hero-sub">{t.hero.sub}</p>
-          <div className="hero-ctas">
-            <Link to="/signup" className="btn btn-primary">
-              {t.hero.ctaPrimary}
-            </Link>
-            <a href="#how" className="btn btn-ghost">
-              {t.hero.ctaSecondary}
-            </a>
-          </div>
-        </div>
-      </section>
+      <Hero />
 
-      <section className="section" id="how">
+      <section className="section" id="fonctionnalites">
         <div className="container">
           <div className="section-head">
             <h2>{t.how.title}</h2>

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useLanguage } from '../context/LanguageContext'
 
-export default function Navbar() {
+export default function Navbar({ variant }) {
   const { t, lang, toggleLang } = useLanguage()
   const [scrolled, setScrolled] = useState(false)
 
@@ -14,14 +14,14 @@ export default function Navbar() {
   }, [])
 
   return (
-    <header className={`site-header${scrolled ? ' scrolled' : ''}`}>
+    <header className={`site-header${variant === 'dark' ? ' is-dark' : ''}${scrolled ? ' scrolled' : ''}`}>
       <div className="container nav">
         <Link to="/" className="brand">
           {t.brand}
         </Link>
 
         <nav className="nav-links" aria-label="Primary">
-          <a href="#how">{t.nav.how}</a>
+          <a href="#fonctionnalites">{t.nav.how}</a>
           <a href="#why">{t.nav.why}</a>
         </nav>
 
