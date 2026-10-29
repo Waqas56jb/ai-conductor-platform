@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { appLink } from '../../appUrl'
 import { useLanguage } from '../../context/LanguageContext'
 import Icon from './icons'
 import { Reveal } from './Reveal'
@@ -22,9 +22,9 @@ export default function FinalCta() {
               {s.demo}
               <Icon name="arrow" />
             </a>
-            <Link to="/signup" className="ai-btn ai-btn--ghost">
+            <a href={appLink('/signup')} className="ai-btn ai-btn--ghost">
               {s.signup}
-            </Link>
+            </a>
           </div>
         </Reveal>
       </div>

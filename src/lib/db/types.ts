@@ -222,6 +222,65 @@ export type FeedbackRow = {
   created_at: string;
 };
 
+export type AgentProfileRow = Timestamps & {
+  user_id: string;
+  company_id: string;
+  assistant_name: string;
+  tone: "professional" | "friendly" | "concise";
+  language: "fr" | "en";
+  instructions: string;
+};
+
+export type AiConversationRow = Timestamps & {
+  id: string;
+  company_id: string;
+  user_id: string;
+  title: string;
+  channel: "chat" | "voice" | "email" | "whatsapp";
+  model: string | null;
+  archived_at: string | null;
+};
+
+/** One chat-completions message, stored as sent to / received from the model. */
+export type AiMessageContent =
+  | { text: string }
+  | {
+      text: string;
+      tool_calls: { id: string; name: string; arguments: string }[];
+    }
+  | { tool_call_id: string; name: string; output: string };
+
+export type AiMessageRow = {
+  id: string;
+  company_id: string;
+  conversation_id: string;
+  role: "user" | "assistant" | "tool" | "system";
+  content: AiMessageContent;
+  input_tokens: number | null;
+  output_tokens: number | null;
+  created_at: string;
+};
+
+export type AiActionStatus =
+  "pending" | "approved" | "rejected" | "executed" | "failed" | "expired";
+
+export type AiActionRow = Timestamps & {
+  id: string;
+  company_id: string;
+  conversation_id: string | null;
+  user_id: string;
+  tool: string;
+  input: Record<string, unknown>;
+  summary: string;
+  status: AiActionStatus;
+  decided_by: string | null;
+  decided_at: string | null;
+  executed_at: string | null;
+  result: Record<string, unknown> | null;
+  error: string | null;
+  expires_at: string | null;
+};
+
 type Table<Row, Insert, Update = Partial<Insert>> = {
   Row: Row;
   Insert: Insert;
@@ -314,6 +373,23 @@ export type Database = {
       ai_conductor_feedback: Table<
         FeedbackRow,
         Partial<FeedbackRow> & Pick<FeedbackRow, "company_id">
+      >;
+      ai_conductor_agent_profiles: Table<
+        AgentProfileRow,
+        Partial<AgentProfileRow> & Pick<AgentProfileRow, "user_id" | "company_id">
+      >;
+      ai_conductor_ai_conversations: Table<
+        AiConversationRow,
+        Partial<AiConversationRow> & Pick<AiConversationRow, "company_id" | "user_id">
+      >;
+      ai_conductor_ai_messages: Table<
+        AiMessageRow,
+        Partial<AiMessageRow> &
+          Pick<AiMessageRow, "company_id" | "conversation_id" | "role" | "content">
+      >;
+      ai_conductor_ai_actions: Table<
+        AiActionRow,
+        Partial<AiActionRow> & Pick<AiActionRow, "company_id" | "user_id" | "tool">
       >;
     };
     Views: Record<never, never>;

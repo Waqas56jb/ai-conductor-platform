@@ -127,6 +127,7 @@
   },
   "nav": {
     "dashboard": "Dashboard",
+    "assistant": "AI assistant",
     "profile": "My profile",
     "company": "Company",
     "report": "Report a problem",
@@ -966,5 +967,122 @@
     "receivables": "To collect",
     "recent": "Recent cases",
     "viewAll": "View all"
+  },
+  "assistant": {
+    "title": "AI assistant",
+    "sub": "Ask about your cases, quotes and invoices. Every action it proposes waits for your approval.",
+    "newChat": "New conversation",
+    "history": "History",
+    "noHistory": "No conversations yet.",
+    "archive": "Archive conversation",
+    "placeholder": "Write your message…",
+    "send": "Send",
+    "thinking": "The assistant is thinking…",
+    "welcome": "Hello, I’m {name}. How can I help?",
+    "conversation": "Conversation with the assistant",
+    "suggestionsLabel": "Suggestions",
+    "suggestions": {
+      "client": {
+        "a": "Where are my cases at?",
+        "b": "Do I have a quote to approve?",
+        "c": "Which invoices do I need to pay?"
+      },
+      "technician": {
+        "a": "What are my current tasks?",
+        "b": "Which site visits do I have?",
+        "c": "Summarise my next case."
+      },
+      "manager": {
+        "a": "Which new cases need triage?",
+        "b": "Which quotes await my approval?",
+        "c": "Which invoices are unpaid?"
+      },
+      "director": {
+        "a": "Which quotes await my approval?",
+        "b": "Give me an update on open cases.",
+        "c": "Which invoices are unpaid?"
+      },
+      "accountant": {
+        "a": "Which invoices are unpaid?",
+        "b": "Which invoices have a receipt to check?",
+        "c": "Summarise this month’s payments."
+      },
+      "admin": {
+        "a": "Which new cases need triage?",
+        "b": "Which quotes await approval?",
+        "c": "Which invoices are unpaid?"
+      }
+    },
+    "readTool": "Looked up: {tool}",
+    "tools": {
+      "list_cases": "cases",
+      "get_case": "case details",
+      "list_technicians": "technicians",
+      "list_invoices": "invoices"
+    },
+    "proposal": {
+      "title": "Proposed action",
+      "approve": "Approve",
+      "reject": "Reject",
+      "executed": "Action done.",
+      "rejected": "Proposal rejected.",
+      "status": {
+        "pending": "Waiting for your approval",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "executed": "Done",
+        "failed": "Failed",
+        "expired": "Expired"
+      }
+    },
+    "notes": {
+      "executed": "✅ Action done: {summary}",
+      "rejected": "Proposal rejected: {summary}",
+      "failed": "⚠️ The action could not be completed: {summary}"
+    },
+    "proposals": {
+      "triage": "Triage case {case} — {urgency} urgency",
+      "urgency": {
+        "low": "low",
+        "medium": "medium",
+        "high": "high"
+      },
+      "assign": "Assign {names} to case {case}",
+      "approveDevis": "Approve the quote of case {case} and send it to the client",
+      "rejectDevis": "Reject the quote of case {case} (back to the technician)",
+      "schedule": "Schedule the job for case {case} on {date}",
+      "cancel": "Cancel case {case}",
+      "acceptQuote": "Accept and sign the quote of case {case}",
+      "declineQuote": "Decline the quote of case {case}",
+      "message": "Post on case {case}: “{text}”",
+      "reminder": "Send a payment reminder for invoice {invoice}",
+      "tooManySteps": "I couldn’t finish this request. Could you rephrase it?"
+    },
+    "errors": {
+      "empty": "Write a message.",
+      "rateLimited": "Too many messages in a short time. Try again in a few minutes.",
+      "notFound": "Conversation or proposal not found.",
+      "failed": "The assistant couldn’t answer. Please try again.",
+      "alreadyDecided": "This proposal has already been handled.",
+      "expired": "This proposal has expired."
+    },
+    "agent": {
+      "title": "Personalise my assistant",
+      "description": "These settings only apply to you.",
+      "name": "Assistant name",
+      "tone": "Tone",
+      "tones": {
+        "professional": "Professional",
+        "friendly": "Friendly",
+        "concise": "Concise"
+      },
+      "language": "Answer language",
+      "languages": {
+        "fr": "Français",
+        "en": "English"
+      },
+      "instructions": "Personal instructions",
+      "instructionsHint": "E.g. “Always start with urgent cases.”"
+    }
   }
 }

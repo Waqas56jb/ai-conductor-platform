@@ -28,3 +28,6 @@ public/final.mp4
 
 # Clean master export of the hero video (large) — the site uses the encoded final-web*.mp4 files
 public/final-clean.mp4
+
+.vercel
+.env*

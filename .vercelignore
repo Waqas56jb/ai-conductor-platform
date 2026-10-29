@@ -1,0 +1,7 @@
+/legacy
+/tests
+/test-results
+/playwright-report
+/scripts
+/db
+/.env*

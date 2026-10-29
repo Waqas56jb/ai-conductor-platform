@@ -1,0 +1,5 @@
+node_modules
+dist
+public/final.mp4
+public/final-clean.mp4
+.env*

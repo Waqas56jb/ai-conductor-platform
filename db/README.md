@@ -43,6 +43,7 @@ Applied history is stored in `ai_conductor_schema_migrations`.
 | `0006_workflow`         | Workflow helpers, per-company counters (`ai_conductor_next_number`), case / invoice / technician columns, per-role read policies, realtime publication, private storage buckets |
 | `0007_users_visibility` | Clients no longer see the other clients of their company                                                                                                                        |
 | `0008_case_reference`   | Per-company references (`INC-2026-0001`) separate from the random global ids; required and unique per company                                                                   |
+| `0009_ai_assistant`     | Per-user agent profile; users read only their own assistant conversations, messages and proposals                                                                               |
 
 ## Connection
 

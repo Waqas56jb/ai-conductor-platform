@@ -127,6 +127,7 @@
   },
   "nav": {
     "dashboard": "Tableau de bord",
+    "assistant": "Assistant IA",
     "profile": "Mon profil",
     "company": "Entreprise",
     "report": "Signaler un problème",
@@ -966,5 +967,122 @@
     "receivables": "À encaisser",
     "recent": "Dossiers récents",
     "viewAll": "Tout voir"
+  },
+  "assistant": {
+    "title": "Assistant IA",
+    "sub": "Posez vos questions sur vos dossiers, devis et factures. Toute action proposée attend votre validation.",
+    "newChat": "Nouvelle conversation",
+    "history": "Historique",
+    "noHistory": "Aucune conversation pour l’instant.",
+    "archive": "Archiver la conversation",
+    "placeholder": "Écrivez votre message…",
+    "send": "Envoyer",
+    "thinking": "L’assistant réfléchit…",
+    "welcome": "Bonjour, je suis {name}. Comment puis-je vous aider ?",
+    "conversation": "Conversation avec l’assistant",
+    "suggestionsLabel": "Suggestions",
+    "suggestions": {
+      "client": {
+        "a": "Où en sont mes dossiers ?",
+        "b": "Ai-je un devis à valider ?",
+        "c": "Quelles factures dois-je régler ?"
+      },
+      "technician": {
+        "a": "Quelles sont mes tâches en cours ?",
+        "b": "Quelles visites dois-je faire ?",
+        "c": "Résume mon prochain dossier."
+      },
+      "manager": {
+        "a": "Quels nouveaux dossiers faut-il trier ?",
+        "b": "Quels devis attendent ma validation ?",
+        "c": "Quelles factures sont impayées ?"
+      },
+      "director": {
+        "a": "Quels devis attendent ma validation ?",
+        "b": "Fais le point sur les dossiers en cours.",
+        "c": "Quelles factures sont impayées ?"
+      },
+      "accountant": {
+        "a": "Quelles factures sont impayées ?",
+        "b": "Quelles factures ont un justificatif à vérifier ?",
+        "c": "Résume les paiements du mois."
+      },
+      "admin": {
+        "a": "Quels nouveaux dossiers faut-il trier ?",
+        "b": "Quels devis attendent une validation ?",
+        "c": "Quelles factures sont impayées ?"
+      }
+    },
+    "readTool": "Consultation : {tool}",
+    "tools": {
+      "list_cases": "dossiers",
+      "get_case": "détail du dossier",
+      "list_technicians": "techniciens",
+      "list_invoices": "factures"
+    },
+    "proposal": {
+      "title": "Action proposée",
+      "approve": "Valider",
+      "reject": "Refuser",
+      "executed": "Action exécutée.",
+      "rejected": "Proposition refusée.",
+      "status": {
+        "pending": "En attente de votre validation",
+        "approved": "Validée",
+        "rejected": "Refusée",
+        "executed": "Exécutée",
+        "failed": "Échec",
+        "expired": "Expirée"
+      }
+    },
+    "notes": {
+      "executed": "✅ Action exécutée : {summary}",
+      "rejected": "Proposition refusée : {summary}",
+      "failed": "⚠️ L’action n’a pas pu être exécutée : {summary}"
+    },
+    "proposals": {
+      "triage": "Trier le dossier {case} — urgence {urgency}",
+      "urgency": {
+        "low": "faible",
+        "medium": "moyenne",
+        "high": "haute"
+      },
+      "assign": "Affecter {names} au dossier {case}",
+      "approveDevis": "Valider le devis du dossier {case} et l’envoyer au client",
+      "rejectDevis": "Refuser le devis du dossier {case} (retour au technicien)",
+      "schedule": "Planifier l’intervention du dossier {case} le {date}",
+      "cancel": "Annuler le dossier {case}",
+      "acceptQuote": "Accepter et signer le devis du dossier {case}",
+      "declineQuote": "Refuser le devis du dossier {case}",
+      "message": "Envoyer sur le dossier {case} : « {text} »",
+      "reminder": "Envoyer une relance pour la facture {invoice}",
+      "tooManySteps": "Je n’ai pas pu terminer cette demande. Pouvez-vous la reformuler ?"
+    },
+    "errors": {
+      "empty": "Écrivez un message.",
+      "rateLimited": "Trop de messages en peu de temps. Réessayez dans quelques minutes.",
+      "notFound": "Conversation ou proposition introuvable.",
+      "failed": "L’assistant n’a pas pu répondre. Réessayez.",
+      "alreadyDecided": "Cette proposition a déjà été traitée.",
+      "expired": "Cette proposition a expiré."
+    },
+    "agent": {
+      "title": "Personnaliser mon assistant",
+      "description": "Ces réglages ne concernent que vous.",
+      "name": "Nom de l’assistant",
+      "tone": "Ton",
+      "tones": {
+        "professional": "Professionnel",
+        "friendly": "Chaleureux",
+        "concise": "Concis"
+      },
+      "language": "Langue des réponses",
+      "languages": {
+        "fr": "Français",
+        "en": "English"
+      },
+      "instructions": "Consignes personnelles",
+      "instructionsHint": "Ex. : « Commence toujours par les dossiers urgents. »"
+    }
   }
 }

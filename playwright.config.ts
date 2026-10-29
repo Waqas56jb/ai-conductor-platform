@@ -8,6 +8,8 @@ try {
 }
 
 const PORT = 3000;
+/** Set E2E_BASE_URL to test a deployment instead of the local dev server. */
+const REMOTE = process.env.E2E_BASE_URL;
 
 export default defineConfig({
   testDir: "./tests/e2e",
@@ -22,7 +24,7 @@ export default defineConfig({
   expect: { timeout: 15_000 },
   reporter: [["list"]],
   use: {
-    baseURL: `http://localhost:${PORT}`,
+    baseURL: REMOTE ?? `http://localhost:${PORT}`,
     channel: "chrome",
     locale: "fr-FR",
     timezoneId: "Europe/Paris",
@@ -50,13 +52,15 @@ export default defineConfig({
     },
     { name: "1440", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } } },
   ],
-  webServer: {
-    command: "pnpm dev",
-    url: `http://localhost:${PORT}/login`,
-    reuseExistingServer: true,
-    // Server-side errors show up in the test output.
-    stdout: "pipe",
-    stderr: "pipe",
-    timeout: 180_000,
-  },
+  webServer: REMOTE
+    ? undefined
+    : {
+        command: "pnpm dev",
+        url: `http://localhost:${PORT}/login`,
+        reuseExistingServer: true,
+        // Server-side errors show up in the test output.
+        stdout: "pipe",
+        stderr: "pipe",
+        timeout: 180_000,
+      },
 });

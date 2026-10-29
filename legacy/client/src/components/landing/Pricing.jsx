@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { appLink } from '../../appUrl'
 import { useLanguage } from '../../context/LanguageContext'
 import Icon from './icons'
 import { Reveal } from './Reveal'
@@ -70,13 +70,13 @@ export default function Pricing() {
                     )}
                   </div>
 
-                  <Link
-                    to="/signup"
+                  <a
+                    href={appLink('/signup')}
                     className={`ai-btn ai-btn--block ${featured ? 'ai-btn--primary' : 'ai-btn--ghost'}`}
                   >
                     {plan.price === null ? s.ctaEnterprise : s.cta}
                     <Icon name="arrow" />
-                  </Link>
+                  </a>
 
                   <ul className="lp-checklist lp-plan__features">
                     {plan.features.map((feature) => (

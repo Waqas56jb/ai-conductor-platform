@@ -3,6 +3,7 @@ import { COMPANY_ADMIN_ROLES, ROLES, type Role } from "@/lib/auth/roles";
 /** Icon names are resolved to components on the client (functions can't cross the RSC boundary). */
 export type NavIcon =
   | "dashboard"
+  | "assistant"
   | "report"
   | "cases"
   | "approvals"
@@ -32,6 +33,7 @@ const TEAM: readonly Role[] = [...STAFF, "technician"];
 // Each phase adds its pages here; the sidebar and search follow automatically.
 export const NAV_ITEMS: readonly NavItem[] = [
   { href: "/app", labelKey: "dashboard", icon: "dashboard", roles: ROLES },
+  { href: "/app/assistant", labelKey: "assistant", icon: "assistant", roles: ROLES },
   { href: "/app/cases/new", labelKey: "report", icon: "report", roles: ["client"] },
   {
     href: "/app/cases",

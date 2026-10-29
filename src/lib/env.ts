@@ -12,6 +12,8 @@ export const clientSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: required(z.url()),
   NEXT_PUBLIC_SUPABASE_ANON_KEY: required(z.string().min(1)),
   NEXT_PUBLIC_APP_URL: withDefault("http://localhost:3000").pipe(z.url()),
+  /** Marketing site (legacy/client); signed-out visitors of "/" are sent there. */
+  NEXT_PUBLIC_SITE_URL: optional(z.url()),
 });
 
 export const serverSchema = z.object({
@@ -65,6 +67,7 @@ const runtimeEnv: Source = {
   NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
   NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
+  NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
   SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
   DATABASE_URL: process.env.DATABASE_URL,
   DIRECT_URL: process.env.DIRECT_URL,

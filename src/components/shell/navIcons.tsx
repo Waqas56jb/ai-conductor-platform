@@ -11,6 +11,7 @@ import {
   LayoutDashboard,
   MessagesSquare,
   Receipt,
+  Sparkles,
   TriangleAlert,
   UserRound,
   type LucideIcon,
@@ -19,6 +20,7 @@ import type { NavIcon } from "@/lib/navigation";
 
 export const NAV_ICONS: Record<NavIcon, LucideIcon> = {
   dashboard: LayoutDashboard,
+  assistant: Sparkles,
   report: TriangleAlert,
   cases: FolderKanban,
   approvals: ClipboardCheck,

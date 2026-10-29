@@ -13,6 +13,7 @@ import {
 const MENUS = {
   client: [
     "Tableau de bord",
+    "Assistant IA",
     "Signaler un problème",
     "Mes dossiers",
     "Devis",
@@ -23,6 +24,7 @@ const MENUS = {
   ],
   technician: [
     "Tableau de bord",
+    "Assistant IA",
     "Mes tâches",
     "Calendrier",
     "Discussions",
@@ -32,6 +34,7 @@ const MENUS = {
   ],
   manager: [
     "Tableau de bord",
+    "Assistant IA",
     "Dossiers",
     "Validations",
     "Factures",
@@ -44,6 +47,7 @@ const MENUS = {
   ],
   director: [
     "Tableau de bord",
+    "Assistant IA",
     "Dossiers",
     "Validations",
     "Finance",
@@ -55,9 +59,18 @@ const MENUS = {
     "Entreprise",
     "Mon profil",
   ],
-  accountant: ["Tableau de bord", "Dossiers", "Finance", "Annuaire", "Notifications", "Mon profil"],
+  accountant: [
+    "Tableau de bord",
+    "Assistant IA",
+    "Dossiers",
+    "Finance",
+    "Annuaire",
+    "Notifications",
+    "Mon profil",
+  ],
   admin: [
     "Tableau de bord",
+    "Assistant IA",
     "Dossiers",
     "Validations",
     "Factures",

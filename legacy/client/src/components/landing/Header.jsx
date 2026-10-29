@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../../context/LanguageContext'
+import { appLink } from '../../appUrl'
 import Icon from './icons'
 import './header.css'
 
@@ -97,12 +98,12 @@ export default function Header() {
 
           <div className="lp-header__actions">
             <LangToggle lang={lang} onToggle={toggleLang} label={n.switchLang} />
-            <Link to="/login" className="ai-btn ai-btn--ghost ai-btn--sm lp-header__login">
+            <a href={appLink('/login')} className="ai-btn ai-btn--ghost ai-btn--sm lp-header__login">
               {n.login}
-            </Link>
-            <Link to="/signup" className="ai-btn ai-btn--primary ai-btn--sm">
+            </a>
+            <a href={appLink('/signup')} className="ai-btn ai-btn--primary ai-btn--sm">
               {n.signup}
-            </Link>
+            </a>
             <button
               ref={burgerRef}
               type="button"
@@ -148,12 +149,12 @@ export default function Header() {
           </ul>
           <div className="lp-drawer__footer">
             <LangToggle lang={lang} onToggle={toggleLang} label={n.switchLang} />
-            <Link to="/login" className="ai-btn ai-btn--ghost ai-btn--block" onClick={() => setOpen(false)}>
+            <a href={appLink('/login')} className="ai-btn ai-btn--ghost ai-btn--block">
               {n.login}
-            </Link>
-            <Link to="/signup" className="ai-btn ai-btn--primary ai-btn--block" onClick={() => setOpen(false)}>
+            </a>
+            <a href={appLink('/signup')} className="ai-btn ai-btn--primary ai-btn--block">
               {n.signup}
-            </Link>
+            </a>
           </div>
         </div>
       </div>
