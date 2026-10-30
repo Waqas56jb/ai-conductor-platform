@@ -319,9 +319,7 @@ test.describe("E — installable app", () => {
     const scope = await page.evaluate(async () => (await navigator.serviceWorker.ready).scope);
     expect(scope).toMatch(/\/$/);
     await expect
-      .poll(() =>
-        page.evaluate(async () => (await navigator.serviceWorker.ready).active?.state),
-      )
+      .poll(() => page.evaluate(async () => (await navigator.serviceWorker.ready).active?.state))
       .toBe("activated");
 
     await page.goto("/app/notifications");
