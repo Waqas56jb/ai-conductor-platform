@@ -1,7 +1,21 @@
+import { createRequire } from "node:module";
+import { dirname, relative } from "node:path";
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
+
+// pdfkit (under @react-pdf) loads its standard fonts with a runtime require the
+// bundler cannot follow: find its real folder in the pnpm store.
+const require = createRequire(import.meta.url);
+const from = (pkg: string, base: string) =>
+  dirname(require.resolve(`${pkg}/package.json`, { paths: [base] }));
+const reactPdfFont = from("@react-pdf/font", from("@react-pdf/renderer", process.cwd()));
+// pdfkit exports no package.json: resolve its entry (js/pdfkit.js), two levels up.
+const pdfkit = relative(
+  process.cwd(),
+  dirname(dirname(require.resolve("pdfkit", { paths: [reactPdfFont] }))),
+).replaceAll("\\", "/");
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -17,14 +31,24 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return [{ source: "/favicon.ico", destination: "/icon.png" }];
   },
-  // The PDF reads the logo from disk: ship it with the functions that render it.
-  outputFileTracingIncludes: {
-    "/api/quotes/[id]/pdf": ["./public/brand/logo-color.png"],
-    "/app/quotes": ["./public/brand/logo-color.png"],
-    "/app/cases/[id]": ["./public/brand/logo-color.png"],
-    "/api/documents/[kind]/[id]": ["./public/brand/logo-color.png"],
-    "/app/contracts": ["./public/brand/logo-color.png"],
-  },
+  // PDFs read the logo and pdfkit's standard fonts from disk at run time:
+  // files the bundler cannot see, so ship them with every route that renders one.
+  outputFileTracingIncludes: Object.fromEntries(
+    [
+      "/api/quotes/[id]/pdf",
+      "/api/documents/[kind]/[id]",
+      "/app/quotes",
+      "/app/cases/[id]",
+      "/app/contracts",
+    ].map((route) => [
+      route,
+      [
+        "./public/brand/logo-color.png",
+        `./${pdfkit}/js/data/**`,
+        `./${pdfkit}/js/standard-fonts/**`,
+      ],
+    ]),
+  ),
 };
 
 export default withNextIntl(nextConfig);
