@@ -13,7 +13,9 @@ export type LiveTable =
   | "ai_conductor_team_tasks"
   | "ai_conductor_notifications"
   | "ai_conductor_quotations"
-  | "ai_conductor_invoices";
+  | "ai_conductor_invoices"
+  | "ai_conductor_payments"
+  | "ai_conductor_service_orders";
 
 type Props = {
   /** Unique per page instance, e.g. "case-INC-2026-0001". */

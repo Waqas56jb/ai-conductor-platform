@@ -22,6 +22,8 @@ export interface ESignProvider {
     documentName: string;
     subject: string;
     signer: Signer;
+    /** Receive the completed document by e-mail from DocuSign (e.g. a supplier). */
+    cc?: readonly { email: string; name: string }[];
     /** Anchor text printed (invisibly) in the PDF where the signature goes. */
     anchor: string;
     /** Per-envelope Connect webhook. */

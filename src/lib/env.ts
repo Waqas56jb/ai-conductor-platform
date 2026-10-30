@@ -51,6 +51,10 @@ export const serverSchema = z.object({
   MS_CLIENT_SECRET: optional(z.string().min(1)),
   /** "common" accepts work and personal Microsoft accounts. */
   MS_TENANT_ID: withDefault("common"),
+  // Accounting connectors (Pennylane, Qonto): declared, not implemented yet.
+  PENNYLANE_API_KEY: optional(z.string().min(1)),
+  QONTO_ORGANIZATION_SLUG: optional(z.string().min(1)),
+  QONTO_SECRET_KEY: optional(z.string().min(1)),
 });
 
 export type ClientEnv = z.infer<typeof clientSchema>;
@@ -116,6 +120,9 @@ const runtimeEnv: Source = {
   MS_CLIENT_ID: process.env.MS_CLIENT_ID,
   MS_CLIENT_SECRET: process.env.MS_CLIENT_SECRET,
   MS_TENANT_ID: process.env.MS_TENANT_ID,
+  PENNYLANE_API_KEY: process.env.PENNYLANE_API_KEY,
+  QONTO_ORGANIZATION_SLUG: process.env.QONTO_ORGANIZATION_SLUG,
+  QONTO_SECRET_KEY: process.env.QONTO_SECRET_KEY,
 };
 
 // Set SKIP_ENV_VALIDATION=1 for builds/CI/tests that run without real secrets.

@@ -7,7 +7,7 @@ import type { CompanyRow, QuoteLine } from "@/lib/db/types";
 /** Printed invisibly in the signature box: DocuSign anchors the signature on it. */
 export const SIGNATURE_ANCHOR = "\\s1\\";
 
-export type DocumentKind = "Devis" | "Facture" | "Contrat";
+export type DocumentKind = "Devis" | "Facture" | "Contrat" | "Ordre de service";
 
 /** Everything a devis, a facture or a contrat prints. */
 export type DocumentPdfInput = {
@@ -30,9 +30,15 @@ export type DocumentPdfInput = {
     "name" | "siret" | "vat_number" | "address" | "postal_code" | "city" | "email" | "phone"
   >;
   client: { name: string; email: string };
+  /** Heading of the other party's box ("Client" by default; "Prestataire" for a service order). */
+  partyLabel?: string;
+  /** Extra lines under the other party (e.g. its SIRET). */
+  partyLines?: readonly string[];
   site: string;
-  /** Signature box with the DocuSign anchor (quotes and contracts). */
+  /** Signature box with the DocuSign anchor (quotes, contracts, service orders). */
   signature: boolean;
+  /** Caption of the signature box. */
+  signatureLabel?: string;
 };
 
 // The built-in Helvetica covers French (WinAnsi), but not the narrow
@@ -81,7 +87,7 @@ const s = StyleSheet.create({
 let logo: Promise<Buffer> | null = null;
 const loadLogo = () => (logo ??= readFile(join(process.cwd(), "public/brand/logo-color.png")));
 
-/** A company document (devis, facture, contrat) as a PDF. */
+/** A company document (devis, facture, contrat, ordre de service) as a PDF. */
 export async function renderDocumentPdf(d: DocumentPdfInput): Promise<Buffer> {
   const { company } = d;
   const companyLines = [
@@ -118,9 +124,12 @@ export async function renderDocumentPdf(d: DocumentPdfInput): Promise<Buffer> {
 
         <View style={s.parties}>
           <View style={s.party}>
-            <Text style={s.label}>Client</Text>
+            <Text style={s.label}>{d.partyLabel ?? "Client"}</Text>
             <Text style={s.bold}>{d.client.name}</Text>
             <Text>{d.client.email}</Text>
+            {d.partyLines?.map((line) => (
+              <Text key={line}>{line}</Text>
+            ))}
           </View>
           <View style={s.party}>
             <Text style={s.label}>Objet</Text>
@@ -172,7 +181,9 @@ export async function renderDocumentPdf(d: DocumentPdfInput): Promise<Buffer> {
 
         {d.signature ? (
           <View style={s.sign} wrap={false}>
-            <Text style={s.label}>Bon pour accord — signature du client</Text>
+            <Text style={s.label}>
+              {d.signatureLabel ?? "Bon pour accord — signature du client"}
+            </Text>
             <Text style={s.anchor}>{SIGNATURE_ANCHOR}</Text>
           </View>
         ) : null}

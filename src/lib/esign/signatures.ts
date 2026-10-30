@@ -3,10 +3,12 @@ import { audit } from "@/lib/audit";
 import type { Profile } from "@/lib/auth/session";
 import { office, transition } from "@/lib/cases/transition";
 import { env } from "@/lib/env";
-import { notify } from "@/lib/notify";
+import { notify, usersWithRoles } from "@/lib/notify";
 import { SIGNATURE_ANCHOR } from "@/lib/pdf/document";
-import { contractPdf, quotePdf } from "@/lib/pdf/documents";
+import { contractPdf, quotePdf, serviceOrderPdf } from "@/lib/pdf/documents";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { decide } from "@/lib/workflows/approval-chain";
+import { SERVICE_ORDER_CHAIN } from "@/lib/workflows/service-order";
 import { docusign } from "./docusign";
 import type { SignatureStatus } from "./provider";
 
@@ -19,16 +21,20 @@ export const esignConfigured = () => esign() !== null;
 const PROFILE_COLUMNS = "id, email, role, display_name, phone, photo_url, locale, company_id";
 
 export type SignableDocument = {
-  type: "quotation" | "contract";
+  type: "quotation" | "contract" | "service_order";
   id: string;
   incident_id: string | null;
+  /** Gets the signed document by e-mail once signed (a service order's supplier). */
+  cc?: { email: string; name: string };
 };
 
-/** Sends a quote or a contract to DocuSign for the signer; returns the request id. */
+const PDF_OF = { quotation: quotePdf, contract: contractPdf, service_order: serviceOrderPdf };
+
+/** Sends a document to DocuSign for the signer; returns the request id. */
 export async function sendForSignature(signer: Profile, doc: SignableDocument): Promise<string> {
   const provider = esign();
   if (!provider) throw new Error("e-signature not configured");
-  const file = doc.type === "quotation" ? await quotePdf(doc.id) : await contractPdf(doc.id);
+  const file = await PDF_OF[doc.type](doc.id);
   if (!file) throw new Error(`${doc.type} not found`);
   const { envelopeId } = await provider.createEnvelope({
     pdf: file.pdf,
@@ -39,6 +45,7 @@ export async function sendForSignature(signer: Profile, doc: SignableDocument): 
       name: signer.display_name || signer.email,
       clientUserId: signer.id,
     },
+    cc: doc.cc ? [doc.cc] : [],
     anchor: SIGNATURE_ANCHOR,
     webhookUrl: `${env.NEXT_PUBLIC_APP_URL}/api/webhooks/docusign`,
   });
@@ -177,6 +184,11 @@ export async function applyEnvelopeStatus(
     return;
   }
 
+  if (req.document_type === "service_order") {
+    if (signer) await serviceOrderSigned(signer, req.document_id, status, at);
+    return;
+  }
+
   if (req.document_type !== "quotation") return;
   const { data: quote } = await admin
     .from("ai_conductor_quotations")
@@ -226,4 +238,65 @@ export async function applyEnvelopeStatus(
       quotationId: quote.id,
     });
   }
+}
+
+/**
+ * The director's signature completes the chain: DocuSign e-mails the signed
+ * order to the supplier (copied on the envelope), so the order is "sent".
+ */
+async function serviceOrderSigned(
+  signer: Profile,
+  orderId: string,
+  status: SignatureStatus,
+  at: string,
+): Promise<void> {
+  if (status !== "completed" && status !== "declined") return;
+  const admin = createAdminClient();
+  const { data: order } = await admin
+    .from("ai_conductor_service_orders")
+    .select("id, reference, title, status, supplier_name, created_by")
+    .eq("id", orderId)
+    .single();
+  if (!order || order.status !== "esign") return;
+  const people = [
+    order.created_by,
+    ...(await usersWithRoles(signer.company_id, ["director", "admin", "accountant"])),
+  ];
+  if (status === "declined") {
+    await notify({
+      companyId: signer.company_id,
+      userIds: people,
+      type: "service_order",
+      title: `Signature de l’ordre de service ${order.reference} refusée`,
+      body: order.title,
+    });
+    return;
+  }
+  const next = decide(SERVICE_ORDER_CHAIN, order.status, "sign", { role: signer.role });
+  if (!next.ok) return;
+  const { data: moved } = await admin
+    .from("ai_conductor_service_orders")
+    .update({ status: next.status, signed_by: signer.id, signed_at: at, sent_at: at })
+    .eq("id", order.id)
+    .eq("status", "esign")
+    .select("id");
+  if (!moved?.length) return;
+  await admin.from("ai_conductor_approval_steps").insert({
+    company_id: signer.company_id,
+    entity_type: "service_order",
+    entity_id: order.id,
+    from_status: "esign",
+    to_status: next.status,
+    decision: "sign",
+    actor_id: signer.id,
+    actor_role: signer.role,
+  });
+  await audit(signer, "service_order.signed", { type: "service_order", id: order.id });
+  await notify({
+    companyId: signer.company_id,
+    userIds: people,
+    type: "service_order",
+    title: `Ordre de service ${order.reference} signé et envoyé`,
+    body: `${order.title} — envoyé à ${order.supplier_name}`,
+  });
 }

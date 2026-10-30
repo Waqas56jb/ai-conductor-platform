@@ -233,3 +233,16 @@ export async function getSettings() {
     aiPricingNote: data?.ai_pricing_note ?? "",
   };
 }
+
+/** Open cases, as options of a select (a service order can be attached to one). */
+export async function openCaseOptions() {
+  const { data } = await (
+    await createClient()
+  )
+    .from("ai_conductor_incidents")
+    .select("id, reference, title")
+    .not("status", "in", "(closed,cancelled)")
+    .order("created_at", { ascending: false })
+    .limit(100);
+  return (data ?? []).map((c) => ({ id: c.id, label: `${c.reference} · ${c.title}` }));
+}

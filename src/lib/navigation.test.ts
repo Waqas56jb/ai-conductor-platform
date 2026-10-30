@@ -21,6 +21,9 @@ describe("navForRole", () => {
     expect(withPage("/app/quotes")).toEqual(["client"]);
     expect(withPage("/app/technicians")).toEqual(["manager", "director", "admin"]);
     expect(withPage("/app/calendar")).toEqual(["technician", "manager", "director", "admin"]);
+    expect(withPage("/app/reports")).toEqual(["director", "accountant", "admin"]);
+    expect(withPage("/app/payments")).toEqual(["manager", "director", "accountant", "admin"]);
+    expect(withPage("/app/service-orders")).toEqual(["manager", "director", "accountant", "admin"]);
     expect(withPage("/app/invoices")).toEqual([
       "client",
       "manager",

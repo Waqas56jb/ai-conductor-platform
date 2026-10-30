@@ -14,6 +14,14 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 /** Smart inbox: urgent / important / digest, with rules the user approved. */
+/** Where a notification without a case leads. */
+const PAGE_OF: Record<string, string> = {
+  invoice: "/app/invoices",
+  contract: "/app/contracts",
+  service_order: "/app/service-orders",
+  task: "/app/tasks",
+};
+
 export default async function NotificationsPage() {
   const profile = await requireProfile();
   const [t, ts] = await Promise.all([
@@ -39,7 +47,7 @@ export default async function NotificationsPage() {
     title: n.title,
     body: n.body,
     read: n.read,
-    href: n.incident_id ? `/app/cases/${n.incident_id}` : null,
+    href: n.incident_id ? `/app/cases/${n.incident_id}` : (PAGE_OF[n.type ?? ""] ?? null),
     createdAt: n.created_at,
     priority: n.priority,
     source: n.source,

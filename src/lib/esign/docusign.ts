@@ -110,7 +110,7 @@ export function docusign(): ESignProvider | null {
   const c = config();
   if (!c) return null;
   return {
-    async createEnvelope({ pdf, documentName, subject, signer, anchor, webhookUrl }) {
+    async createEnvelope({ pdf, documentName, subject, signer, cc = [], anchor, webhookUrl }) {
       const anchorTab = (xOffset: string) => ({
         anchorString: anchor,
         anchorUnits: "pixels",
@@ -145,6 +145,13 @@ export function docusign(): ESignProvider | null {
                 },
               },
             ],
+            // Copied after the signature: DocuSign e-mails them the signed document.
+            carbonCopies: cc.map((r, i) => ({
+              email: r.email,
+              name: r.name,
+              recipientId: String(i + 2),
+              routingOrder: "2",
+            })),
           },
           eventNotification: {
             url: webhookUrl,

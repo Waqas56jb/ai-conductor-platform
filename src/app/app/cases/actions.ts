@@ -416,7 +416,11 @@ export async function decideDevis(id: string, approve: boolean): Promise<ActionR
   if (!r.ok) return r;
   const { data: quote } = await createAdminClient()
     .from("ai_conductor_quotations")
-    .update({ status: approve ? "sent_to_client" : "rejected" })
+    .update(
+      approve
+        ? { status: "sent_to_client", sent_at: new Date().toISOString() }
+        : { status: "rejected" },
+    )
     .eq("id", c.incident.quotation_id)
     .select("reference")
     .single();
@@ -445,7 +449,7 @@ export async function declineQuote(id: string): Promise<ActionResult> {
   if (!r.ok) return r;
   const { data: quote } = await createAdminClient()
     .from("ai_conductor_quotations")
-    .update({ status: "rejected" })
+    .update({ status: "rejected", client_declined_at: new Date().toISOString() })
     .eq("id", c.incident.quotation_id)
     .select("reference")
     .single();
@@ -654,37 +658,6 @@ export async function uploadReceipt(invoiceId: string, formData: FormData): Prom
     title: `Justificatif de paiement reçu — ${l.invoice.reference}`,
     body: l.invoice.title,
     incidentId: l.invoice.incident_id ?? undefined,
-    invoiceId,
-  });
-  refresh(l.invoice.incident_id ?? undefined);
-  return { ok: true };
-}
-
-/** Payment confirmed: invoice paid, then the case closes. */
-export async function markInvoicePaid(invoiceId: string): Promise<ActionResult> {
-  const l = await loadInvoice(invoiceId);
-  if (!l) return fail("cases.errors.notFound");
-  if (!["accountant", ...OFFICE_ROLES].includes(l.profile.role))
-    return fail("cases.errors.forbidden");
-  if (l.invoice.status === "paid") return fail("cases.errors.invalid_status");
-
-  const admin = createAdminClient();
-  await admin
-    .from("ai_conductor_invoices")
-    .update({ status: "paid", paid_at: new Date().toISOString() })
-    .eq("id", invoiceId);
-  await audit(l.profile, "invoice.paid", { type: "invoice", id: invoiceId });
-
-  if (l.invoice.incident_id) {
-    const c = await loadCase(l.invoice.incident_id);
-    if (c) await transition(c.profile, c.incident, "close", { ...c.ctx, invoicePaid: true });
-  }
-  await notify({
-    companyId: l.profile.company_id,
-    userIds: [l.invoice.client_id],
-    type: "invoice",
-    title: `Paiement reçu — ${l.invoice.reference}`,
-    body: "Merci, votre règlement a bien été enregistré.",
     invoiceId,
   });
   refresh(l.invoice.incident_id ?? undefined);

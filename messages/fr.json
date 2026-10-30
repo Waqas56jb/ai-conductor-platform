@@ -154,7 +154,10 @@
     "teamTasks": "À faire",
     "meetings": "Réunions",
     "emails": "E-mails",
-    "integrations": "Intégrations"
+    "integrations": "Intégrations",
+    "payments": "Encaissements",
+    "serviceOrders": "Ordres de service",
+    "reports": "Rapports"
   },
   "dashboard": {
     "kpi": {
@@ -823,9 +826,12 @@
         "overdue": "En retard",
         "cancelled": "Annulée"
       },
-      "markPaidConfirm": "Le paiement sera enregistré et le dossier clôturé. Confirmer ?",
       "remindConfirm": "Un rappel de paiement sera envoyé au client. Confirmer l’envoi ?",
-      "pdf": "Télécharger la facture"
+      "pdf": "Télécharger la facture",
+      "rejectReceipt": "Refuser le justificatif",
+      "rejectReason": "Motif du refus (transmis au client)",
+      "settled": "Réglé : {paid} sur {total}",
+      "receiptRefused": "Justificatif refusé : {reason}"
     },
     "chat": {
       "caseTitle": "Échanges avec le client",
@@ -903,7 +909,29 @@
       "amount": "Montant TTC",
       "due": "Échéance",
       "status": "Statut",
-      "actions": "Actions"
+      "actions": "Actions",
+      "remaining": "Reste dû"
+    },
+    "payment": {
+      "invalid": "Vérifiez le paiement saisi.",
+      "tooMuch": "Le montant dépasse ce qui reste à payer.",
+      "intro": "Reste à encaisser : {remaining} €. Un paiement partiel est possible.",
+      "fromReceipt": "Vérifiez le justificatif du client, puis enregistrez le montant effectivement reçu.",
+      "amount": "Montant reçu (€)",
+      "date": "Date du paiement",
+      "method": "Mode de paiement",
+      "reference": "Référence (virement, chèque…)",
+      "methods": {
+        "transfer": "Virement",
+        "sepa_debit": "Prélèvement SEPA",
+        "card": "Carte bancaire",
+        "cheque": "Chèque",
+        "cash": "Espèces",
+        "other": "Autre"
+      }
+    },
+    "receipt": {
+      "reasonRequired": "Indiquez le motif du refus (3 caractères minimum)."
     }
   },
   "calendar": {
@@ -1348,16 +1376,21 @@
     "sub": "Connectez votre messagerie : vos e-mails dans Pratonna, et l’assistante peut vous aider à y répondre.",
     "providers": {
       "google": "Gmail",
-      "microsoft": "Outlook"
+      "microsoft": "Outlook",
+      "pennylane": "Pennylane",
+      "qonto": "Qonto"
     },
     "descriptions": {
       "google": "Gmail et Google Workspace : lecture de la boîte de réception et envoi.",
-      "microsoft": "Outlook et Microsoft 365 : lecture de la boîte de réception et envoi."
+      "microsoft": "Outlook et Microsoft 365 : lecture de la boîte de réception et envoi.",
+      "pennylane": "Comptabilité : envoi des factures et des paiements.",
+      "qonto": "Banque : rapprochement des virements reçus avec les factures."
     },
     "status": {
       "connected": "Connecté",
       "available": "Disponible",
-      "notConfigured": "Connexion non configurée"
+      "notConfigured": "Connexion non configurée",
+      "soon": "Bientôt"
     },
     "accountStatus": {
       "expired": "Reconnexion nécessaire",
@@ -1378,6 +1411,12 @@
       "state": "La connexion a expiré ou n’a pas pu être vérifiée. Réessayez.",
       "failed": "La connexion a échoué. Réessayez.",
       "unknown": "Fournisseur inconnu."
+    },
+    "accounting": {
+      "title": "Comptabilité et banque",
+      "sub": "Connecteurs en préparation. En attendant, les exports FEC et CSV de la page Rapports couvrent les besoins de votre comptable.",
+      "notConfigured": "Connexion non configurée : connecteur bientôt disponible.",
+      "keysPresent": "Clés détectées : le connecteur sera activé dans une prochaine version."
     }
   },
   "emails": {
@@ -1576,6 +1615,180 @@
     "lateTask": {
       "text": "{count, plural, one {# de vos tâches est} other {# de vos tâches sont}} en retard ({example}).",
       "prompt": "Quelles sont mes tâches en retard ? Aide-moi à les replanifier."
+    }
+  },
+  "payments": {
+    "title": "Encaissements",
+    "sub": "Tous les paiements reçus, facture par facture.",
+    "export": "Exporter (CSV)",
+    "kpi": {
+      "month": "Encaissé ce mois-ci",
+      "year": "Encaissé cette année",
+      "count": "Paiements cette année",
+      "review": "Justificatifs à vérifier"
+    },
+    "reviewLink": "{count, plural, one {# justificatif attend votre vérification} other {# justificatifs attendent votre vérification}}",
+    "columns": {
+      "date": "Date",
+      "invoice": "Facture",
+      "method": "Mode",
+      "reference": "Référence",
+      "source": "Origine",
+      "amount": "Montant"
+    },
+    "sources": {
+      "manual": "Saisie",
+      "receipt": "Justificatif client",
+      "bank": "Banque"
+    },
+    "empty": "Aucun paiement enregistré pour le moment."
+  },
+  "serviceOrders": {
+    "title": "Ordres de service",
+    "sub": "Commandez des travaux à vos prestataires : vérification des fonds, revue comptable, signature DocuSign, envoi.",
+    "new": "Nouvel ordre de service",
+    "edit": "Modifier le brouillon",
+    "create": "Créer le brouillon",
+    "created": "Ordre de service créé.",
+    "updated": "Brouillon mis à jour.",
+    "fields": {
+      "title": "Intitulé des travaux",
+      "supplierName": "Prestataire",
+      "supplierEmail": "E-mail du prestataire",
+      "supplierEmailHint": "Il recevra l’ordre signé par e-mail (DocuSign).",
+      "supplierSiret": "SIRET du prestataire",
+      "case": "Dossier lié",
+      "noCase": "Aucun dossier",
+      "start": "Début des travaux",
+      "end": "Fin prévue",
+      "amount": "Montant HT (€)",
+      "tax": "TVA",
+      "description": "Description des travaux"
+    },
+    "from": "à partir du {start}",
+    "between": "du {start} au {end}",
+    "ttc": "TTC",
+    "ht": "HT",
+    "vat": "TVA {rate} %",
+    "waiting": "{count, plural, one {# ordre attend votre décision} other {# ordres attendent votre décision}}",
+    "others": "Autres ordres",
+    "all": "Tous les ordres",
+    "empty": "Aucun ordre de service.",
+    "emptyOffice": "Créez un ordre de service pour commander des travaux à un prestataire.",
+    "status": {
+      "label": "Étapes de validation",
+      "draft": "Brouillon",
+      "funds_check": "Vérification des fonds",
+      "accountant_review": "Revue comptable",
+      "esign": "Signature",
+      "sent": "Envoyé",
+      "cancelled": "Annulé"
+    },
+    "download": "PDF",
+    "downloadSigned": "PDF signé",
+    "submit": "Soumettre",
+    "approveFunds": "Fonds disponibles",
+    "approveAccounting": "Valider (comptabilité)",
+    "reject": "Renvoyer en brouillon",
+    "sign": "Signer l’ordre de service",
+    "cancel": "Annuler l’ordre",
+    "reason": "Motif (obligatoire)",
+    "comment": "Commentaire (facultatif)",
+    "confirm": {
+      "submit": "Soumettre l’ordre de service {reference} à la vérification des fonds ?",
+      "funds_check": "Confirmer que les fonds sont disponibles pour {reference} ? L’ordre passera en revue comptable.",
+      "accountant_review": "Valider {reference} pour la comptabilité ? Il sera prêt à signer.",
+      "reject": "Renvoyer {reference} en brouillon ? Le motif sera transmis à son auteur.",
+      "cancel": "Annuler l’ordre de service {reference} ? Il ne pourra plus être signé."
+    },
+    "done": {
+      "submit": "Ordre soumis.",
+      "approve": "Étape validée.",
+      "reject": "Ordre renvoyé en brouillon.",
+      "cancel": "Ordre annulé."
+    },
+    "funds": {
+      "title": "Vérification des fonds",
+      "sub": "Trésorerie {year} : encaissements vérifiés, moins les ordres déjà engagés.",
+      "collected": "Encaissé",
+      "committed": "Déjà engagé (autres ordres)",
+      "available": "Disponible",
+      "thisOrder": "Cet ordre (TTC)",
+      "after": "Reste après cet ordre",
+      "sufficient": "Fonds suffisants",
+      "insufficient": "Fonds insuffisants : à valider en connaissance de cause"
+    },
+    "details": "Détails",
+    "period": "Période",
+    "amounts": "Montant",
+    "sentOn": "Signé et envoyé le",
+    "history": "Historique",
+    "decisions": {
+      "created": "Brouillon créé",
+      "submit": "Brouillon soumis",
+      "approve": "{step} : validé",
+      "reject": "{step} : renvoyé en brouillon",
+      "sign": "Signé et envoyé au prestataire",
+      "cancel": "Annulé"
+    },
+    "someone": "Utilisateur supprimé",
+    "errors": {
+      "invalid": "Vérifiez les champs de l’ordre de service.",
+      "case": "Dossier introuvable.",
+      "notFound": "Ordre de service introuvable.",
+      "status": "Cet ordre a changé d’étape entre-temps. Rechargez la page.",
+      "invalid_status": "Cette décision n’est pas possible à cette étape.",
+      "forbidden": "Cette étape revient à un autre rôle.",
+      "note_required": "Indiquez le motif."
+    }
+  },
+  "reports": {
+    "title": "Rapports",
+    "sub": "Chiffre d’affaires, encaissements, créances et conversion des devis.",
+    "year": "Année",
+    "kpi": {
+      "invoiced": "Facturé en {year}",
+      "collected": "Encaissé en {year}",
+      "outstanding": "Reste à encaisser",
+      "conversion": "Devis acceptés en {year}"
+    },
+    "revenue": {
+      "title": "Facturé et encaissé — {year}",
+      "sub": "Montants TTC par mois : factures émises, paiements vérifiés.",
+      "invoiced": "Facturé",
+      "collected": "Encaissé"
+    },
+    "ageing": {
+      "title": "Balance âgée des créances",
+      "sub": "Ce que les clients doivent encore, selon le retard.",
+      "buckets": {
+        "notDue": "Non échu",
+        "d30": "1 à 30 jours de retard",
+        "d60": "31 à 60 jours",
+        "d90": "61 à 90 jours",
+        "d90plus": "Plus de 90 jours"
+      },
+      "count": "{count, plural, =0 {aucune facture} one {# facture} other {# factures}}"
+    },
+    "conversion": {
+      "title": "Devis — {year}",
+      "summary": "Envoyés aux clients : {sent} · acceptés : {accepted} · refusés : {declined} · en attente : {pending}",
+      "accepted": "Acceptés",
+      "declined": "Refusés",
+      "pending": "En attente",
+      "empty": "Aucun devis envoyé à un client cette année."
+    },
+    "chart": {
+      "table": "Voir les données",
+      "period": "Mois"
+    },
+    "exports": {
+      "title": "Exports comptables",
+      "sub": "Exercice {year} (année civile).",
+      "fec": "FEC (écritures comptables)",
+      "invoices": "Factures (CSV)",
+      "payments": "Paiements (CSV)",
+      "fecNote": "Le FEC suit l’article A47 A-1 du LPF : journaux Ventes et Banque, comptes 411, 706, 44571 et 512, lettrage des factures soldées. Faites-le valider par votre expert-comptable avant tout dépôt."
     }
   }
 }

@@ -40,6 +40,8 @@ const nextConfig: NextConfig = {
       "/app/quotes",
       "/app/cases/[id]",
       "/app/contracts",
+      "/app/service-orders",
+      "/app/service-orders/[id]",
     ].map((route) => [
       route,
       [

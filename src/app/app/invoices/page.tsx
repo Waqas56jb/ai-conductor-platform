@@ -7,6 +7,7 @@ import { InvoiceActions } from "@/components/cases/InvoiceActions";
 import { LiveRefresh } from "@/components/cases/LiveRefresh";
 import styles from "@/components/cases/cases.module.css";
 import { Badge, Card, EmptyState, KpiTile, Table, type Column } from "@/components/ui";
+import { cents, paidOf } from "@/lib/accounting/ledger";
 import { requireRole } from "@/lib/auth/session";
 import type { InvoiceRow } from "@/lib/db/types";
 import { RECEIPT_BUCKET, signedUrls } from "@/lib/storage";
@@ -77,7 +78,26 @@ export default async function InvoicesPage() {
     );
   }
 
-  const sum = (rows: InvoiceRow[]) => rows.reduce((s, i) => s + Number(i.amount), 0);
+  const { data: paymentRows } = await supabase
+    .from("ai_conductor_payments")
+    .select("invoice_id, amount, status")
+    .in(
+      "invoice_id",
+      invoices.map((i) => i.id),
+    );
+  const paidBy = new Map<string, number>();
+  for (const id of new Set((paymentRows ?? []).map((p) => p.invoice_id)))
+    paidBy.set(id, paidOf((paymentRows ?? []).filter((p) => p.invoice_id === id)));
+  const remaining = (i: InvoiceRow) =>
+    i.status === "paid" || i.status === "cancelled"
+      ? 0
+      : Math.max(0, cents(Number(i.amount) - (paidBy.get(i.id) ?? 0)));
+  const reviewing = invoices.filter((i) => i.status === "under_review" && i.receipt_url);
+  const receiptLinks = await signedUrls(
+    RECEIPT_BUCKET,
+    reviewing.map((i) => i.receipt_url as string),
+  );
+
   const open = invoices.filter((i) => i.status !== "paid" && i.status !== "cancelled");
   const columns: Column<InvoiceRow>[] = [
     {
@@ -98,6 +118,12 @@ export default async function InvoicesPage() {
       header: t("columns.amount"),
       align: "end",
       render: (i) => eur(Number(i.amount)),
+    },
+    {
+      key: "remaining",
+      header: t("columns.remaining"),
+      align: "end",
+      render: (i) => <span data-testid={`remaining-${i.reference}`}>{eur(remaining(i))}</span>,
     },
     {
       key: "due",
@@ -123,7 +149,25 @@ export default async function InvoicesPage() {
         i.status === "paid" || i.status === "cancelled" ? (
           <span className={styles.muted}>{ti("reminders", { count: i.reminders.length })}</span>
         ) : (
-          <InvoiceActions invoiceId={i.id} canUpload={false} canManage />
+          <div className="stack" style={{ gap: "0.5rem" }}>
+            {i.status === "under_review" && i.receipt_url && receiptLinks[i.receipt_url] ? (
+              <a
+                className={styles.caseLink}
+                href={receiptLinks[i.receipt_url]}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <strong>{ti("viewReceipt")}</strong>
+              </a>
+            ) : null}
+            <InvoiceActions
+              invoiceId={i.id}
+              canUpload={false}
+              canManage
+              remaining={remaining(i)}
+              underReview={i.status === "under_review"}
+            />
+          </div>
         ),
     },
   ];
@@ -142,7 +186,11 @@ export default async function InvoicesPage() {
         </div>
       </div>
       <div className="grid-kpi">
-        <KpiTile icon={<Wallet />} label={t("kpi.unpaid")} value={eur(sum(open))} />
+        <KpiTile
+          icon={<Wallet />}
+          label={t("kpi.unpaid")}
+          value={eur(open.reduce((s, i) => s + remaining(i), 0))}
+        />
         <KpiTile
           icon={<FileSearch />}
           tone="cyan"
@@ -159,7 +207,7 @@ export default async function InvoicesPage() {
           icon={<CircleCheck />}
           tone="green"
           label={t("kpi.paid")}
-          value={eur(sum(invoices.filter((i) => i.status === "paid")))}
+          value={eur(paidOf(paymentRows ?? []))}
         />
       </div>
       <Card flush>

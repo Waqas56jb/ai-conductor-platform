@@ -1,4 +1,6 @@
+import { PAYMENT_ROLES, REPORT_ROLES } from "@/lib/accounting/access";
 import { COMPANY_ADMIN_ROLES, ROLES, type Role } from "@/lib/auth/roles";
+import { SERVICE_ORDER_ROLES } from "@/lib/workflows/service-order";
 
 /** Icon names are resolved to components on the client (functions can't cross the RSC boundary). */
 export type NavIcon =
@@ -16,6 +18,9 @@ export type NavIcon =
   | "notifications"
   | "reminders"
   | "contracts"
+  | "serviceOrders"
+  | "payments"
+  | "reports"
   | "tasks"
   | "meetings"
   | "emails"
@@ -55,6 +60,14 @@ export const NAV_ITEMS: readonly NavItem[] = [
     icon: "invoices",
     roles: ["client", ...STAFF],
   },
+  { href: "/app/payments", labelKey: "payments", icon: "payments", roles: PAYMENT_ROLES },
+  {
+    href: "/app/service-orders",
+    labelKey: "serviceOrders",
+    icon: "serviceOrders",
+    roles: SERVICE_ORDER_ROLES,
+  },
+  { href: "/app/reports", labelKey: "reports", icon: "reports", roles: REPORT_ROLES },
   {
     href: "/app/calendar",
     labelKey: { default: "calendar", director: "interventions" },

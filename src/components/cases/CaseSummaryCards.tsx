@@ -1,6 +1,8 @@
 import { getFormatter, getTranslations } from "next-intl/server";
 import { Badge, Card } from "@/components/ui";
+import { paidOf } from "@/lib/accounting/ledger";
 import type { InterventionRow, InvoiceRow, QuotationRow } from "@/lib/db/types";
+import { createClient } from "@/lib/supabase/server";
 import { INCIDENT_STATUSES, type IncidentStatus } from "@/lib/workflows/incident";
 import { InvoiceActions } from "./InvoiceActions";
 import styles from "./cases.module.css";
@@ -130,8 +132,17 @@ export async function InvoiceCard({
   canUpload: boolean;
   canManage: boolean;
 }) {
-  const [t, format] = await Promise.all([getTranslations("cases.invoice"), getFormatter()]);
+  const [t, format, { data: payments }] = await Promise.all([
+    getTranslations("cases.invoice"),
+    getFormatter(),
+    (await createClient())
+      .from("ai_conductor_payments")
+      .select("amount, status")
+      .eq("invoice_id", invoice.id),
+  ]);
   const paid = invoice.status === "paid";
+  const total = Number(invoice.amount);
+  const settled = paidOf(payments ?? []);
   return (
     <Card
       title={t("title", { reference: invoice.reference })}
@@ -155,13 +166,32 @@ export async function InvoiceCard({
           {" · "}
           {t("reminders", { count: invoice.reminders.length })}
         </p>
+        {!paid && settled > 0 ? (
+          <p data-testid="invoice-settled">
+            {t("settled", {
+              paid: format.number(settled, eurOpts),
+              total: format.number(total, eurOpts),
+            })}
+          </p>
+        ) : null}
+        {invoice.status === "unpaid" && invoice.receipt_note ? (
+          <p className={styles.refused} role="note">
+            {t("receiptRefused", { reason: invoice.receipt_note })}
+          </p>
+        ) : null}
         {receiptUrl ? (
           <a className={styles.caseLink} href={receiptUrl} target="_blank" rel="noreferrer">
             <strong>{t("viewReceipt")}</strong>
           </a>
         ) : null}
         {!paid ? (
-          <InvoiceActions invoiceId={invoice.id} canUpload={canUpload} canManage={canManage} />
+          <InvoiceActions
+            invoiceId={invoice.id}
+            canUpload={canUpload}
+            canManage={canManage}
+            remaining={Math.max(0, total - settled)}
+            underReview={invoice.status === "under_review"}
+          />
         ) : null}
       </div>
     </Card>

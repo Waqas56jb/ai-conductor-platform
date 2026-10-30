@@ -22,7 +22,9 @@ import { requireProfile } from "@/lib/auth/session";
 import { listCases } from "@/lib/cases/queries";
 import { recommend } from "@/lib/recommendations";
 import { createClient } from "@/lib/supabase/server";
+import { waitingFor } from "@/lib/workflows/approval-chain";
 import { FINAL_STATUSES, INCIDENT_STATUSES } from "@/lib/workflows/incident";
+import { SERVICE_ORDER_CHAIN } from "@/lib/workflows/service-order";
 
 export async function generateMetadata(): Promise<Metadata> {
   return { title: (await getTranslations("nav"))("dashboard") };
@@ -60,6 +62,7 @@ export default async function DashboardPage() {
     { data: messages },
     { data: quotes },
     { data: tasks },
+    { count: ordersToDecide },
   ] = await Promise.all([
     supabase.from("ai_conductor_companies").select("name").eq("id", profile.company_id).single(),
     listCases(),
@@ -93,6 +96,13 @@ export default async function DashboardPage() {
           .select("title, status, due_at, assignee_id")
           .eq("assignee_id", profile.id)
           .neq("status", "done"),
+    // Service orders at a step this role decides (RLS: office and accounting only).
+    waitingFor(SERVICE_ORDER_CHAIN, profile.role).length
+      ? supabase
+          .from("ai_conductor_service_orders")
+          .select("id", { count: "exact", head: true })
+          .in("status", waitingFor(SERVICE_ORDER_CHAIN, profile.role))
+      : Promise.resolve({ count: 0 }),
   ]);
 
   const count = (statuses: readonly string[]) =>
@@ -198,7 +208,10 @@ export default async function DashboardPage() {
   });
   const priorities: Priority[] = [
     { key: "overdue", count: overdue },
-    { key: "approvals", count: toDecide[profile.role] + (pendingProposals ?? 0) },
+    {
+      key: "approvals",
+      count: toDecide[profile.role] + (pendingProposals ?? 0) + (ordersToDecide ?? 0),
+    },
     { key: "messages", count: unanswered },
   ];
 

@@ -257,3 +257,13 @@
     font-size: 0.82rem;
   }
 }
+
+.refused {
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in srgb, var(--red) 40%, transparent);
+  background: color-mix(in srgb, var(--red) 10%, transparent);
+  color: var(--text);
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}

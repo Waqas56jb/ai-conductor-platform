@@ -27,6 +27,7 @@ const DEFAULT_PRIORITY: Record<string, Priority> = {
   reminder: "urgent",
   quotation: "important",
   invoice: "important",
+  service_order: "important",
   intervention: "important",
   incident: "important",
   assignment: "important",

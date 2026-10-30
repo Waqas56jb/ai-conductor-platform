@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { Plug } from "lucide-react";
 import { MailboxCard } from "@/components/email/MailboxCard";
+import { Badge, Button, Card } from "@/components/ui";
+import { ACCOUNTING, ACCOUNTING_PROVIDERS } from "@/lib/accounting/providers";
 import { requireRole } from "@/lib/auth/session";
 import { emailAccounts } from "@/lib/email/accounts";
 import { EMAIL_PROVIDERS, MAIL_PROVIDERS } from "@/lib/email/providers";
@@ -51,6 +54,39 @@ export default async function IntegrationsPage({
           />
         ))}
       </div>
+      {["director", "accountant", "admin"].includes(profile.role) ? (
+        <section className="stack" aria-labelledby="accounting-connectors">
+          <div>
+            <h2 id="accounting-connectors" className={styles.sectionTitle}>
+              {t("accounting.title")}
+            </h2>
+            <p className={styles.sectionSub}>{t("accounting.sub")}</p>
+          </div>
+          <div className={styles.providers}>
+            {ACCOUNTING_PROVIDERS.map((id) => (
+              <Card
+                key={id}
+                title={t(`providers.${id}`)}
+                description={t(`descriptions.${id}`)}
+                data-testid={`provider-${id}`}
+                actions={<Badge tone="neutral">{t("status.soon")}</Badge>}
+              >
+                <div className={styles.unconfigured} role="note">
+                  <Button variant="secondary" disabled>
+                    <Plug aria-hidden="true" />
+                    {t("connect")}
+                  </Button>
+                  <p>
+                    {ACCOUNTING[id].configured()
+                      ? t("accounting.keysPresent")
+                      : t("accounting.notConfigured")}
+                  </p>
+                </div>
+              </Card>
+            ))}
+          </div>
+        </section>
+      ) : null}
     </div>
   );
 }

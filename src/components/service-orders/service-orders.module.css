@@ -1,0 +1,262 @@
+.list {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+}
+
+.head a {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.head a:hover {
+  text-decoration: underline;
+}
+
+.meta {
+  margin-top: 0.25rem;
+  color: var(--text-soft);
+  font-size: 0.88rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.note {
+  color: var(--text-faint);
+  font-size: 0.85rem;
+}
+
+.confirm {
+  display: grid;
+  gap: var(--space-3);
+}
+
+/* ---------- form ---------- */
+
+.form {
+  display: grid;
+  gap: var(--space-3);
+}
+
+@media (min-width: 768px) {
+  .form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .form > :first-child,
+  .form > .textField,
+  .form > .submit {
+    grid-column: 1 / -1;
+  }
+}
+
+.textField {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.textField label {
+  color: var(--text-soft);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.textField textarea {
+  width: 100%;
+  padding: 0.7rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid var(--line-strong);
+  background: rgba(6, 11, 30, 0.55);
+  color: var(--text);
+  font: inherit;
+  resize: vertical;
+}
+
+/* ---------- approval chain ---------- */
+
+.chain {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chain li {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+  color: var(--text-faint);
+  font-size: 0.75rem;
+  line-height: 1.25;
+}
+
+.chain li::before {
+  content: "";
+  height: 4px;
+  border-radius: 999px;
+  background: var(--line-strong);
+}
+
+.chain li[data-state="done"]::before {
+  background: var(--green);
+}
+
+.chain li[data-state="current"] {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.chain li[data-state="current"]::before {
+  background: var(--cyan);
+}
+
+/* Labels only where they fit; the badge names the step on phones. */
+@media (max-width: 479px) {
+  .chain li span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* ---------- detail ---------- */
+
+.facts {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+}
+
+@media (min-width: 640px) {
+  .facts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.facts div {
+  display: grid;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.facts dt {
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+.facts dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.description {
+  margin-top: var(--space-3);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--text-soft);
+}
+
+.funds {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+}
+
+.funds div {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.funds dt {
+  color: var(--text-soft);
+}
+
+.funds dd {
+  margin: 0;
+  font-weight: 600;
+}
+
+.funds .total {
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--line);
+}
+
+.verdict {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: var(--space-3);
+  font-weight: 600;
+}
+
+.verdict svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+
+.verdict[data-ok="true"] svg {
+  color: var(--green);
+}
+
+.verdict[data-ok="false"] svg {
+  color: var(--amber);
+}
+
+.history {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.history li {
+  display: grid;
+  gap: 0.2rem;
+  padding-left: var(--space-3);
+  border-left: 2px solid var(--line-strong);
+}
+
+.history time {
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+.history q {
+  color: var(--text-soft);
+  font-style: italic;
+  overflow-wrap: anywhere;
+}
+
+.section {
+  font-size: 1.05rem;
+  font-weight: 600;
+}

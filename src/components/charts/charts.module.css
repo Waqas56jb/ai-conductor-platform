@@ -1,0 +1,230 @@
+/*
+ * Chart palette (validated for the dark surface with the dataviz checks):
+ * slot 1 blue, 2 aqua, 3 orange. Fixed per entity, never by rank.
+ * Text never wears a series colour.
+ */
+.figure,
+.bars {
+  --series-1: #3987e5;
+  --series-2: #199e70;
+  --series-3: #d95926;
+  --chart-grid: rgba(255, 255, 255, 0.07);
+  --chart-axis: rgba(255, 255, 255, 0.22);
+}
+
+.figure {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+  margin: 0;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-soft);
+  font-size: 0.85rem;
+}
+
+.legend li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.swatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  background: var(--series-1);
+}
+
+[data-slot="2"].swatch,
+[data-slot="2"].lineKey {
+  background: var(--series-2);
+}
+
+[data-slot="3"].swatch,
+[data-slot="3"].lineKey {
+  background: var(--series-3);
+}
+
+.plot {
+  position: relative;
+  min-width: 0;
+}
+
+.plot svg {
+  display: block;
+  overflow: visible;
+}
+
+.grid {
+  stroke: var(--chart-grid);
+  stroke-width: 1;
+}
+
+.baseline {
+  stroke: var(--chart-axis);
+  stroke-width: 1;
+}
+
+.tick {
+  fill: var(--text-faint);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.mark {
+  fill: var(--series-1);
+  transition: opacity 120ms ease;
+}
+
+.mark[data-slot="2"] {
+  fill: var(--series-2);
+}
+
+.mark[data-slot="3"] {
+  fill: var(--series-3);
+}
+
+/* The hovered category stays bright; the others recede a little. */
+.plot:has([data-active]) .category:not([data-active]) .mark {
+  opacity: 0.55;
+}
+
+.hit {
+  fill: transparent;
+  outline: none;
+  cursor: default;
+}
+
+.hit:focus-visible {
+  stroke: var(--cyan);
+  stroke-width: 1.5;
+}
+
+.tooltip {
+  position: absolute;
+  top: 0;
+  display: grid;
+  gap: 0.2rem;
+  min-width: 140px;
+  padding: 0.5rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line-strong);
+  background: #0d1430;
+  box-shadow: var(--shadow);
+  color: var(--text-soft);
+  font-size: 0.8rem;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.tipTitle {
+  color: var(--text-faint);
+  font-size: 0.75rem;
+}
+
+.tipRow {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+}
+
+.tipRow strong {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+.lineKey {
+  width: 12px;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--series-1);
+}
+
+.data summary {
+  width: fit-content;
+  color: var(--text-soft);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.data table {
+  width: 100%;
+  margin-top: var(--space-2);
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.data th,
+.data td {
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1px solid var(--line);
+  text-align: right;
+}
+
+.data th:first-child {
+  text-align: left;
+}
+
+/* ---------- horizontal bars ---------- */
+
+.bars {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bars li {
+  display: grid;
+  gap: 0.3rem;
+}
+
+@media (min-width: 640px) {
+  .bars li {
+    grid-template-columns: 170px minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-3);
+  }
+}
+
+.barLabel {
+  display: grid;
+  color: var(--text-soft);
+  font-size: 0.88rem;
+}
+
+.barDetail {
+  color: var(--text-faint);
+  font-size: 0.78rem;
+}
+
+.barTrack {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+
+.bar {
+  height: 14px;
+  border-radius: 0 4px 4px 0;
+  background: var(--series-1);
+}
+
+.barValue {
+  flex: none;
+  color: var(--text);
+  font-size: 0.88rem;
+  font-variant-numeric: tabular-nums;
+}

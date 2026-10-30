@@ -133,6 +133,9 @@ export type QuotationRow = Timestamps & {
     | "cancelled";
   threshold_used: number | null;
   signed_at: string | null;
+  /** When the quote reached the client (approved). */
+  sent_at: string | null;
+  client_declined_at: string | null;
 };
 
 export type InterventionRow = Timestamps & {
@@ -165,7 +168,36 @@ export type InvoiceRow = Timestamps & {
   reminders: { day: number; sent_at: string }[];
   receipt_url: string | null;
   receipt_uploaded_at: string | null;
+  /** Why the last receipt was refused. */
+  receipt_note: string;
   paid_at: string | null;
+};
+
+export const PAYMENT_METHODS = [
+  "transfer",
+  "sepa_debit",
+  "card",
+  "cheque",
+  "cash",
+  "other",
+] as const;
+export type PaymentMethod = (typeof PAYMENT_METHODS)[number];
+
+export type PaymentRow = Timestamps & {
+  id: string;
+  company_id: string;
+  invoice_id: string;
+  amount: number;
+  currency: string;
+  method: PaymentMethod;
+  status: "pending" | "verified" | "rejected";
+  reference: string | null;
+  paid_at: string | null;
+  source: "manual" | "receipt" | "bank";
+  verified_by: string | null;
+  verified_at: string | null;
+  notes: string;
+  created_by: string | null;
 };
 
 export type MessageRow = {
@@ -457,6 +489,42 @@ export type MeetingRow = Timestamps & {
   created_by: string | null;
 };
 
+export type ServiceOrderRow = Timestamps & {
+  id: string;
+  company_id: string;
+  reference: string;
+  incident_id: string | null;
+  title: string;
+  description: string;
+  supplier_name: string;
+  supplier_email: string;
+  supplier_siret: string | null;
+  start_date: string;
+  end_date: string | null;
+  amount_ht: number;
+  tax_rate: number;
+  total_ttc: number;
+  status: "draft" | "funds_check" | "accountant_review" | "esign" | "sent" | "cancelled";
+  signed_by: string | null;
+  signed_at: string | null;
+  sent_at: string | null;
+  created_by: string | null;
+};
+
+export type ApprovalStepRow = {
+  id: string;
+  company_id: string;
+  entity_type: "service_order";
+  entity_id: string;
+  from_status: string;
+  to_status: string;
+  decision: "submit" | "approve" | "reject" | "sign" | "cancel";
+  actor_id: string | null;
+  actor_role: string;
+  note: string;
+  created_at: string;
+};
+
 type Table<Row, Insert, Update = Partial<Insert>> = {
   Row: Row;
   Insert: Insert;
@@ -601,6 +669,40 @@ export type Database = {
             | "total_ttc"
           >
       >;
+      ai_conductor_payments: Table<
+        PaymentRow,
+        Partial<PaymentRow> & Pick<PaymentRow, "company_id" | "invoice_id" | "amount">
+      >;
+      ai_conductor_service_orders: Table<
+        ServiceOrderRow,
+        Partial<ServiceOrderRow> &
+          Pick<
+            ServiceOrderRow,
+            | "id"
+            | "company_id"
+            | "reference"
+            | "title"
+            | "supplier_name"
+            | "supplier_email"
+            | "start_date"
+            | "amount_ht"
+            | "total_ttc"
+          >
+      >;
+      ai_conductor_approval_steps: Table<
+        ApprovalStepRow,
+        Partial<ApprovalStepRow> &
+          Pick<
+            ApprovalStepRow,
+            | "company_id"
+            | "entity_type"
+            | "entity_id"
+            | "from_status"
+            | "to_status"
+            | "decision"
+            | "actor_role"
+          >
+      >;
       ai_conductor_team_tasks: Table<
         TeamTaskRow,
         Partial<TeamTaskRow> & Pick<TeamTaskRow, "company_id" | "title">
@@ -630,7 +732,10 @@ export type Database = {
     Views: Record<never, never>;
     Functions: {
       ai_conductor_next_number: {
-        Args: { company: string; counter_kind: "devis" | "facture" | "incident" | "contrat" };
+        Args: {
+          company: string;
+          counter_kind: "devis" | "facture" | "incident" | "contrat" | "ordre_service";
+        };
         Returns: number;
       };
     };

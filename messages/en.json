@@ -154,7 +154,10 @@
     "teamTasks": "To-dos",
     "meetings": "Meetings",
     "emails": "Email",
-    "integrations": "Integrations"
+    "integrations": "Integrations",
+    "payments": "Payments",
+    "serviceOrders": "Service orders",
+    "reports": "Reports"
   },
   "dashboard": {
     "kpi": {
@@ -823,9 +826,12 @@
         "overdue": "Overdue",
         "cancelled": "Cancelled"
       },
-      "markPaidConfirm": "The payment will be recorded and the case closed. Confirm?",
       "remindConfirm": "A payment reminder will be sent to the client. Send it?",
-      "pdf": "Download the invoice"
+      "pdf": "Download the invoice",
+      "rejectReceipt": "Refuse the receipt",
+      "rejectReason": "Reason (sent to the client)",
+      "settled": "Paid: {paid} of {total}",
+      "receiptRefused": "Receipt refused: {reason}"
     },
     "chat": {
       "caseTitle": "Conversation with the client",
@@ -903,7 +909,29 @@
       "amount": "Amount incl. VAT",
       "due": "Due",
       "status": "Status",
-      "actions": "Actions"
+      "actions": "Actions",
+      "remaining": "Balance due"
+    },
+    "payment": {
+      "invalid": "Check the payment details.",
+      "tooMuch": "The amount is more than what remains to be paid.",
+      "intro": "Left to collect: €{remaining}. Partial payments are allowed.",
+      "fromReceipt": "Check the client's receipt, then record the amount actually received.",
+      "amount": "Amount received (€)",
+      "date": "Payment date",
+      "method": "Payment method",
+      "reference": "Reference (transfer, cheque…)",
+      "methods": {
+        "transfer": "Bank transfer",
+        "sepa_debit": "SEPA direct debit",
+        "card": "Card",
+        "cheque": "Cheque",
+        "cash": "Cash",
+        "other": "Other"
+      }
+    },
+    "receipt": {
+      "reasonRequired": "Give the reason for the refusal (3 characters minimum)."
     }
   },
   "calendar": {
@@ -1348,16 +1376,21 @@
     "sub": "Connect your mailbox: your email in Pratonna, and the assistant can help you answer it.",
     "providers": {
       "google": "Gmail",
-      "microsoft": "Outlook"
+      "microsoft": "Outlook",
+      "pennylane": "Pennylane",
+      "qonto": "Qonto"
     },
     "descriptions": {
       "google": "Gmail and Google Workspace: read the inbox and send.",
-      "microsoft": "Outlook and Microsoft 365: read the inbox and send."
+      "microsoft": "Outlook and Microsoft 365: read the inbox and send.",
+      "pennylane": "Bookkeeping: invoices and payments pushed automatically.",
+      "qonto": "Bank: incoming transfers matched with invoices."
     },
     "status": {
       "connected": "Connected",
       "available": "Available",
-      "notConfigured": "Connection not configured"
+      "notConfigured": "Connection not configured",
+      "soon": "Soon"
     },
     "accountStatus": {
       "expired": "Reconnect needed",
@@ -1378,6 +1411,12 @@
       "state": "The connection expired or could not be verified. Try again.",
       "failed": "The connection failed. Try again.",
       "unknown": "Unknown provider."
+    },
+    "accounting": {
+      "title": "Accounting and bank",
+      "sub": "Connectors in preparation. Meanwhile, the FEC and CSV exports on the Reports page cover your accountant's needs.",
+      "notConfigured": "Connection not configured: connector coming soon.",
+      "keysPresent": "Keys found: the connector will be enabled in a coming release."
     }
   },
   "emails": {
@@ -1576,6 +1615,180 @@
     "lateTask": {
       "text": "{count, plural, one {# of your tasks is} other {# of your tasks are}} overdue ({example}).",
       "prompt": "Which of my tasks are overdue? Help me reschedule them."
+    }
+  },
+  "payments": {
+    "title": "Payments",
+    "sub": "Every payment received, invoice by invoice.",
+    "export": "Export (CSV)",
+    "kpi": {
+      "month": "Collected this month",
+      "year": "Collected this year",
+      "count": "Payments this year",
+      "review": "Receipts to check"
+    },
+    "reviewLink": "{count, plural, one {# receipt is waiting for your check} other {# receipts are waiting for your check}}",
+    "columns": {
+      "date": "Date",
+      "invoice": "Invoice",
+      "method": "Method",
+      "reference": "Reference",
+      "source": "Source",
+      "amount": "Amount"
+    },
+    "sources": {
+      "manual": "Entered",
+      "receipt": "Client receipt",
+      "bank": "Bank"
+    },
+    "empty": "No payment recorded yet."
+  },
+  "serviceOrders": {
+    "title": "Service orders",
+    "sub": "Order work from your suppliers: funds check, accounting review, DocuSign signature, sending.",
+    "new": "New service order",
+    "edit": "Edit the draft",
+    "create": "Create the draft",
+    "created": "Service order created.",
+    "updated": "Draft updated.",
+    "fields": {
+      "title": "Work",
+      "supplierName": "Supplier",
+      "supplierEmail": "Supplier e-mail",
+      "supplierEmailHint": "They will receive the signed order by e-mail (DocuSign).",
+      "supplierSiret": "Supplier SIRET",
+      "case": "Linked case",
+      "noCase": "No case",
+      "start": "Work starts",
+      "end": "Expected end",
+      "amount": "Amount excl. VAT (€)",
+      "tax": "VAT",
+      "description": "Description of the work"
+    },
+    "from": "from {start}",
+    "between": "from {start} to {end}",
+    "ttc": "incl. VAT",
+    "ht": "excl. VAT",
+    "vat": "VAT {rate}%",
+    "waiting": "{count, plural, one {# order is waiting for your decision} other {# orders are waiting for your decision}}",
+    "others": "Other orders",
+    "all": "All orders",
+    "empty": "No service order.",
+    "emptyOffice": "Create a service order to order work from a supplier.",
+    "status": {
+      "label": "Approval steps",
+      "draft": "Draft",
+      "funds_check": "Funds check",
+      "accountant_review": "Accounting review",
+      "esign": "Signature",
+      "sent": "Sent",
+      "cancelled": "Cancelled"
+    },
+    "download": "PDF",
+    "downloadSigned": "Signed PDF",
+    "submit": "Submit",
+    "approveFunds": "Funds available",
+    "approveAccounting": "Approve (accounting)",
+    "reject": "Send back to draft",
+    "sign": "Sign the service order",
+    "cancel": "Cancel the order",
+    "reason": "Reason (required)",
+    "comment": "Comment (optional)",
+    "confirm": {
+      "submit": "Submit service order {reference} for the funds check?",
+      "funds_check": "Confirm the funds are available for {reference}? It will go to the accounting review.",
+      "accountant_review": "Approve {reference} for accounting? It will be ready to sign.",
+      "reject": "Send {reference} back to draft? Its author will get the reason.",
+      "cancel": "Cancel service order {reference}? It can no longer be signed."
+    },
+    "done": {
+      "submit": "Order submitted.",
+      "approve": "Step approved.",
+      "reject": "Order sent back to draft.",
+      "cancel": "Order cancelled."
+    },
+    "funds": {
+      "title": "Funds check",
+      "sub": "{year} cash: verified payments, minus orders already committed.",
+      "collected": "Collected",
+      "committed": "Already committed (other orders)",
+      "available": "Available",
+      "thisOrder": "This order (incl. VAT)",
+      "after": "Left after this order",
+      "sufficient": "Enough funds",
+      "insufficient": "Not enough funds: approve only knowingly"
+    },
+    "details": "Details",
+    "period": "Period",
+    "amounts": "Amount",
+    "sentOn": "Signed and sent on",
+    "history": "History",
+    "decisions": {
+      "created": "Draft created",
+      "submit": "Draft submitted",
+      "approve": "{step}: approved",
+      "reject": "{step}: sent back to draft",
+      "sign": "Signed and sent to the supplier",
+      "cancel": "Cancelled"
+    },
+    "someone": "Deleted user",
+    "errors": {
+      "invalid": "Check the service order fields.",
+      "case": "Case not found.",
+      "notFound": "Service order not found.",
+      "status": "This order moved to another step meanwhile. Reload the page.",
+      "invalid_status": "This decision is not possible at this step.",
+      "forbidden": "This step belongs to another role.",
+      "note_required": "Give the reason."
+    }
+  },
+  "reports": {
+    "title": "Reports",
+    "sub": "Revenue, payments, receivables and quote conversion.",
+    "year": "Year",
+    "kpi": {
+      "invoiced": "Invoiced in {year}",
+      "collected": "Collected in {year}",
+      "outstanding": "Left to collect",
+      "conversion": "Quotes accepted in {year}"
+    },
+    "revenue": {
+      "title": "Invoiced and collected — {year}",
+      "sub": "Amounts incl. VAT per month: invoices issued, payments verified.",
+      "invoiced": "Invoiced",
+      "collected": "Collected"
+    },
+    "ageing": {
+      "title": "Receivables ageing",
+      "sub": "What clients still owe, by how late it is.",
+      "buckets": {
+        "notDue": "Not due",
+        "d30": "1–30 days late",
+        "d60": "31–60 days",
+        "d90": "61–90 days",
+        "d90plus": "Over 90 days"
+      },
+      "count": "{count, plural, =0 {no invoice} one {# invoice} other {# invoices}}"
+    },
+    "conversion": {
+      "title": "Quotes — {year}",
+      "summary": "Sent to clients: {sent} · accepted: {accepted} · declined: {declined} · pending: {pending}",
+      "accepted": "Accepted",
+      "declined": "Declined",
+      "pending": "Pending",
+      "empty": "No quote sent to a client this year."
+    },
+    "chart": {
+      "table": "Show the data",
+      "period": "Month"
+    },
+    "exports": {
+      "title": "Accounting exports",
+      "sub": "Financial year {year} (calendar year).",
+      "fec": "FEC (French accounting entries file)",
+      "invoices": "Invoices (CSV)",
+      "payments": "Payments (CSV)",
+      "fecNote": "The FEC follows article A47 A-1 of the LPF: sales and bank journals, accounts 411, 706, 44571 and 512, settled invoices lettered. Have your accountant validate it before filing."
     }
   }
 }

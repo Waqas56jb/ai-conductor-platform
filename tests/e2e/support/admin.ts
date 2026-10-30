@@ -79,9 +79,14 @@ export async function deleteE2ECompanies() {
     .select("id")
     .eq("name", E2E_COMPANY);
   for (const c of named ?? []) ids.add(c.id as string);
-  if (ids.size)
-    await admin
-      .from("ai_conductor_companies")
-      .delete()
-      .in("id", [...ids]);
+  if (!ids.size) return;
+  // Payments keep their invoice (on delete restrict): remove them first.
+  await admin
+    .from("ai_conductor_payments")
+    .delete()
+    .in("company_id", [...ids]);
+  await admin
+    .from("ai_conductor_companies")
+    .delete()
+    .in("id", [...ids]);
 }

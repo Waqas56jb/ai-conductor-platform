@@ -3,7 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { longDate, renderDocumentPdf, type DocumentPdfInput } from "./document";
 
 /**
- * Builds the PDF of a quote, an invoice or a contract from the database.
+ * Builds the PDF of a quote, an invoice, a contract or a service order from the database.
  * Callers check first that the user may see the document (RLS).
  */
 
@@ -146,4 +146,42 @@ export async function contractPdf(contractId: string): Promise<PdfDocument | nul
     signature: true,
   });
   return { pdf, reference: c.reference, kind: "Contrat" };
+}
+
+/** Issued by the company to a supplier; signed by the director. */
+export async function serviceOrderPdf(orderId: string): Promise<PdfDocument | null> {
+  const { data: o } = await createAdminClient()
+    .from("ai_conductor_service_orders")
+    .select("*")
+    .eq("id", orderId)
+    .maybeSingle();
+  if (!o) return null;
+  const { company, site } = await parties(o.company_id, null, o.incident_id);
+  if (!company) return null;
+  const period = o.end_date
+    ? `travaux du ${longDate(o.start_date)} au ${longDate(o.end_date)}`
+    : `travaux à partir du ${longDate(o.start_date)}`;
+  const pdf = await renderDocumentPdf({
+    kind: "Ordre de service",
+    reference: o.reference,
+    issuedAt: o.created_at,
+    subtitle: period,
+    title: o.title,
+    summary: o.description || null,
+    lines: [{ label: o.title, quantity: 1, unit_price_ht: Number(o.amount_ht) }],
+    taxRate: Number(o.tax_rate),
+    subtotal: Number(o.amount_ht),
+    tax: Math.round((Number(o.total_ttc) - Number(o.amount_ht)) * 100) / 100,
+    total: Number(o.total_ttc),
+    terms:
+      "Le prestataire est autorisé à exécuter les travaux décrits ci-dessus, dans les délais indiqués et pour le montant mentionné. Toute modification fera l’objet d’un ordre de service complémentaire.",
+    company,
+    client: { name: o.supplier_name, email: o.supplier_email },
+    partyLabel: "Prestataire",
+    partyLines: o.supplier_siret ? [`SIRET ${o.supplier_siret}`] : [],
+    site,
+    signature: true,
+    signatureLabel: "Bon pour exécution — signature du donneur d’ordre",
+  });
+  return { pdf, reference: o.reference, kind: "Ordre de service" };
 }
