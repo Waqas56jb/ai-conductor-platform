@@ -62,7 +62,7 @@ Two Vercel projects (team `us`), deployed with the Vercel CLI:
 - App environment: the variables of `.env.example` except `DATABASE_URL` / `DIRECT_URL` (only used by the migration and seed scripts). `NEXT_PUBLIC_SITE_URL` sends signed-out visitors of `/` to the landing.
 - Landing environment: `VITE_APP_URL`, the app URL used by its sign-in / sign-up buttons.
 - E-signature: `DOCUSIGN_*` (integration key, API user id, account id, RSA private key, base URL, Connect HMAC key). Without them, "Signer le devis" shows "Signature électronique non configurée" and is disabled. The Connect webhook is `/api/webhooks/docusign`; grant JWT consent once for the integration key.
-- Reminders: Vercel Cron calls `/api/cron/reminders` every 15 minutes with `CRON_SECRET`; web push uses the VAPID pair (`NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`).
+- Reminders: Vercel Cron calls `/api/cron/reminders` with `CRON_SECRET` (daily at 07:00 UTC on the Hobby plan; set `*/15 * * * *` in vercel.json on Pro); web push uses the VAPID pair (`NEXT_PUBLIC_VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`).
 - Brand assets are generated: `pnpm brand:avatar` (assistant avatar heads, landing portrait) and `node scripts/brand/icons.mjs` (PWA icons).
 - To test a deployment instead of the local dev server: `E2E_BASE_URL=https://pratonna-app.vercel.app pnpm test:e2e`.
 
