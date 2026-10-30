@@ -18,8 +18,12 @@ const landingFr = {
   },
   status: { available: 'Disponible', soon: 'Bientôt' },
   trust: {
-    title: 'Conçu pour les PME de l’immobilier, du syndic et du BTP',
+    title: 'Conçu pour tous les entrepreneurs, quel que soit votre métier',
     items: [
+      'Commerçant',
+      'Créateur de contenu',
+      'Indépendant & freelance',
+      'Profession libérale',
       'Agence immobilière',
       'Syndic de copropriété',
       'Promoteur',
@@ -208,6 +212,33 @@ const landingFr = {
     goTo: 'Aller au secteur',
     items: [
       {
+        title: 'Commerce',
+        tag: 'Clients · commandes',
+        points: [
+          'Demandes clients et commandes centralisées',
+          'Devis et factures préparés pour vous',
+          'Paiements suivis jusqu’à l’encaissement',
+        ],
+      },
+      {
+        title: 'Créateurs de contenu',
+        tag: 'Partenariats · contrats',
+        points: [
+          'Demandes de partenariat triées, réponses préparées',
+          'Devis et contrats signés en ligne',
+          'Factures suivies, relances au bon moment',
+        ],
+      },
+      {
+        title: 'Indépendants & professions libérales',
+        tag: 'Rendez-vous · relances',
+        points: [
+          'Agenda et rendez-vous organisés',
+          'Demandes clients classées par urgence',
+          'Factures et relances sans ressaisie',
+        ],
+      },
+      {
         title: 'Immobilier',
         tag: 'CRM · visites',
         points: [
@@ -364,7 +395,7 @@ const landingFr = {
     items: [
       {
         q: 'Qu’est-ce que Pratonna ?',
-        a: 'Pratonna est une collaboratrice numérique, propulsée par l’IA, pour les PME de l’immobilier, du syndic et du BTP. Elle centralise vos dossiers, vos devis et vos relances, et prend en charge les tâches répétitives pour que vous vous concentriez sur votre métier.',
+        a: 'Pratonna est une collaboratrice numérique, propulsée par l’IA, pour tous les entrepreneurs : commerçants, indépendants, créateurs de contenu et PME de l’immobilier, du BTP ou de tout autre secteur. Elle centralise vos dossiers, vos devis et vos relances, et prend en charge les tâches répétitives pour que vous vous concentriez sur votre métier.',
       },
       {
         q: 'Faut-il des compétences techniques ?',
@@ -412,6 +443,9 @@ const landingFr = {
       'Architecture',
       'Artisan',
       'Gestionnaire de patrimoine',
+      'Commerce',
+      'Créateur de contenu',
+      'Indépendant / profession libérale',
       'Autre',
     ],
     message: 'Message',
@@ -431,7 +465,7 @@ const landingFr = {
     signup: 'Créer un compte',
   },
   footer: {
-    tagline: 'La collaboratrice des PME de l’immobilier, du syndic et du BTP.',
+    tagline: 'La collaboratrice de tous les entrepreneurs, quel que soit leur métier.',
     columns: [
       {
         title: 'Produit',
@@ -445,10 +479,10 @@ const landingFr = {
       {
         title: 'Solutions',
         links: [
-          { label: 'Immobilier', href: '/#solutions' },
-          { label: 'Syndic', href: '/#solutions' },
-          { label: 'Construction', href: '/#solutions' },
-          { label: 'Artisans', href: '/#solutions' },
+          { label: 'Commerce', href: '/#solutions' },
+          { label: 'Créateurs de contenu', href: '/#solutions' },
+          { label: 'Immobilier & syndic', href: '/#solutions' },
+          { label: 'BTP & artisans', href: '/#solutions' },
         ],
       },
       {
@@ -502,8 +536,12 @@ const landingEn = {
   },
   status: { available: 'Available', soon: 'Coming soon' },
   trust: {
-    title: 'Built for SMEs in real estate, property management and construction',
+    title: 'Built for every entrepreneur, whatever your trade',
     items: [
+      'Shop owner',
+      'Content creator',
+      'Freelancer',
+      'Professional practice',
       'Real estate agency',
       'Property management',
       'Developer',
@@ -688,6 +726,33 @@ const landingEn = {
     goTo: 'Go to sector',
     items: [
       {
+        title: 'Retail',
+        tag: 'Customers · orders',
+        points: [
+          'Customer requests and orders in one place',
+          'Quotes and invoices prepared for you',
+          'Payments tracked until they arrive',
+        ],
+      },
+      {
+        title: 'Content creators',
+        tag: 'Partnerships · contracts',
+        points: [
+          'Partnership requests sorted, replies drafted',
+          'Quotes and contracts signed online',
+          'Invoices tracked, reminders at the right time',
+        ],
+      },
+      {
+        title: 'Freelancers & professionals',
+        tag: 'Appointments · follow-ups',
+        points: [
+          'Calendar and appointments organised',
+          'Client requests ranked by urgency',
+          'Invoices and reminders without re-typing',
+        ],
+      },
+      {
         title: 'Real estate',
         tag: 'CRM · viewings',
         points: [
@@ -834,7 +899,7 @@ const landingEn = {
     items: [
       {
         q: 'What is Pratonna?',
-        a: 'Pratonna is an AI-powered digital teammate for SMEs in real estate, property management and construction. She centralises your cases, quotes and follow-ups, and takes care of repetitive tasks so you can focus on your work.',
+        a: 'Pratonna is an AI-powered digital teammate for every entrepreneur: shop owners, freelancers, content creators and SMEs in real estate, construction or any other sector. She centralises your cases, quotes and follow-ups, and takes care of repetitive tasks so you can focus on your work.',
       },
       {
         q: 'Do I need technical skills?',
@@ -878,6 +943,9 @@ const landingEn = {
       'Architecture',
       'Tradesperson',
       'Asset manager',
+      'Retail',
+      'Content creator',
+      'Freelancer / professional practice',
       'Other',
     ],
     message: 'Message',
@@ -897,7 +965,7 @@ const landingEn = {
     signup: 'Create an account',
   },
   footer: {
-    tagline: 'The teammate for SMEs in real estate, property management and construction.',
+    tagline: 'The teammate for every entrepreneur, whatever the trade.',
     columns: [
       {
         title: 'Product',
@@ -911,10 +979,10 @@ const landingEn = {
       {
         title: 'Solutions',
         links: [
-          { label: 'Real estate', href: '/#solutions' },
-          { label: 'Property management', href: '/#solutions' },
-          { label: 'Construction', href: '/#solutions' },
-          { label: 'Trades', href: '/#solutions' },
+          { label: 'Retail', href: '/#solutions' },
+          { label: 'Content creators', href: '/#solutions' },
+          { label: 'Real estate & property', href: '/#solutions' },
+          { label: 'Construction & trades', href: '/#solutions' },
         ],
       },
       {
@@ -955,7 +1023,7 @@ export const translations = {
   en: {
     hero: {
       eyebrowTag: 'New',
-      eyebrow: 'Your teammate for real estate & construction',
+      eyebrow: 'The right hand of every entrepreneur',
       titleLine1: 'Less admin.',
       titleLine2: 'More time for what matters.',
       typed: ['Your emails, sorted.', 'Your quotes, ready.', 'Your reminders, sent.', 'Your cases, up to date.'],
@@ -963,15 +1031,24 @@ export const translations = {
       ctaDemo: 'Book a demo',
       ctaWatch: 'Watch the overview',
       micro: ['Free trial', 'No credit card', 'Secure hosting'],
+      // Same order as PERSONAS in Hero.jsx: the woman, then the man.
       avatar: {
-        alt: 'Pratonna’s assistant, wearing a headset',
-        bubble: 'Hello, I’m your AI teammate. I’ll take care of the rest.',
+        personas: [
+          {
+            alt: 'Pratonna’s assistant, wearing a headset',
+            bubble: 'Hello, I’m your AI teammate. I’ll take care of the rest.',
+          },
+          {
+            alt: 'Pratonna’s assistant, wearing a headset',
+            bubble: 'Hello, I’m your AI teammate. I’ll take care of the rest.',
+          },
+        ],
       },
       stats: [
         { value: 'Less admin time', label: '' },
         { value: '24/7', label: 'available' },
         { value: 'Human approval', label: 'before any action' },
-        { value: 'Real estate · Property · Construction', label: 'built for your trade' },
+        { value: 'Every trade', label: 'retail · creators · real estate · construction' },
       ],
       discover: 'Discover',
       video: {
@@ -990,7 +1067,7 @@ export const translations = {
   fr: {
     hero: {
       eyebrowTag: 'Nouveau',
-      eyebrow: 'Votre collaboratrice pour l’immobilier & le BTP',
+      eyebrow: 'Le bras droit de tous les entrepreneurs',
       titleLine1: 'Moins d’administratif.',
       titleLine2: 'Plus de temps pour l’essentiel.',
       typed: ['Vos e-mails, triés.', 'Vos devis, prêts.', 'Vos relances, envoyées.', 'Vos dossiers, à jour.'],
@@ -998,15 +1075,24 @@ export const translations = {
       ctaDemo: 'Demander une démo',
       ctaWatch: 'Voir la présentation',
       micro: ['Essai gratuit', 'Sans carte bancaire', 'Hébergement sécurisé'],
+      // Same order as PERSONAS in Hero.jsx: the woman, then the man.
       avatar: {
-        alt: 'L’assistante Pratonna, avec son casque',
-        bubble: 'Bonjour, je suis votre collaboratrice IA. Je m’occupe du reste.',
+        personas: [
+          {
+            alt: 'L’assistante Pratonna, avec son casque',
+            bubble: 'Bonjour, je suis votre collaboratrice IA. Je m’occupe du reste.',
+          },
+          {
+            alt: 'L’assistant Pratonna, avec son casque',
+            bubble: 'Bonjour, je suis votre collaborateur IA. Je m’occupe du reste.',
+          },
+        ],
       },
       stats: [
         { value: 'Moins de temps administratif', label: '' },
         { value: '24/7', label: 'disponible' },
         { value: 'Validation humaine', label: 'avant action' },
-        { value: 'Immobilier · Syndic · BTP', label: 'pensé pour vos métiers' },
+        { value: 'Tous les métiers', label: 'commerce · création · immobilier · BTP' },
       ],
       discover: 'Découvrir',
       video: {

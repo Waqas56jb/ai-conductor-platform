@@ -3,7 +3,18 @@ import Icon from './icons'
 import { Reveal } from './Reveal'
 import './trust-strip.css'
 
-const ICONS = ['home', 'building', 'landmark', 'crane', 'wrench', 'briefcase']
+const ICONS = [
+  'store',
+  'video',
+  'laptop',
+  'briefcase',
+  'home',
+  'building',
+  'landmark',
+  'crane',
+  'wrench',
+  'chart',
+]
 
 export default function TrustStrip() {
   const { t } = useLanguage()

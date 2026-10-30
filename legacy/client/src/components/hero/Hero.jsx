@@ -8,9 +8,13 @@ const VIDEO_SRC = '/final-web.mp4'
 const VIDEO_MOBILE_SRC = '/final-web-mobile.mp4'
 const VIDEO_AUDIO_SRC = '/final-web-audio.mp4'
 const POSTER_SRC = '/final-poster.jpg'
-// The assistant: a cut-out portrait on desktop, a round head on smaller screens.
-const PORTRAIT_SRC = '/avatar-portrait.webp'
-const HEAD_SRC = '/avatar-head.webp'
+// The assistant, as a woman then a man: a cut-out portrait on desktop, a round
+// head on smaller screens. Same order as hero.avatar.personas.
+const PERSONAS = [
+  { portrait: '/avatar-portrait.webp', head: '/avatar-head.webp' },
+  { portrait: '/avatar-man-portrait.webp', head: '/avatar-man-head.webp' },
+]
+const PERSONA_MS = 8000
 // Background files encoded without an audio track.
 const SILENT_SOURCES = [VIDEO_MOBILE_SRC]
 // Typewriter timing per line: type, hold, erase = 2.4 s in total.
@@ -84,7 +88,15 @@ export default function Hero() {
   const h = t.hero
   const [motion] = useState(() => !prefersReducedMotion())
   const typed = useTypewriter(h.typed, motion)
-  const bubble = useTypeOnce(h.avatar.bubble, motion)
+  const [persona, setPersona] = useState(0)
+  const speaker = h.avatar.personas[persona]
+  const bubble = useTypeOnce(speaker.bubble, motion)
+
+  useEffect(() => {
+    if (!motion) return
+    const timer = setInterval(() => setPersona((p) => (p + 1) % PERSONAS.length), PERSONA_MS)
+    return () => clearInterval(timer)
+  }, [motion])
 
   const bgRef = useRef(null)
   const dialogRef = useRef(null)
@@ -179,28 +191,36 @@ export default function Hero() {
       </div>
 
       <div className="ai-hero__inner">
-        <figure className="ai-avatar" aria-label={h.avatar.alt}>
+        <figure className="ai-avatar" aria-label={speaker.alt}>
           <span className="ai-avatar__glow" aria-hidden="true" />
           <span className="ai-avatar__ring" aria-hidden="true" />
-          <img
-            className="ai-avatar__portrait"
-            src={PORTRAIT_SRC}
-            alt={h.avatar.alt}
-            width="1075"
-            height="992"
-            fetchPriority="high"
-          />
+          {PERSONAS.map((p, i) => (
+            <img
+              key={p.portrait}
+              className={`ai-avatar__portrait${i === persona ? '' : ' is-away'}`}
+              src={p.portrait}
+              alt={i === persona ? speaker.alt : ''}
+              aria-hidden={i === persona ? undefined : 'true'}
+              width="1075"
+              height="992"
+              fetchPriority={i === 0 ? 'high' : 'low'}
+            />
+          ))}
           <figcaption className="ai-bubble">
             <span aria-hidden="true">
               {bubble}
-              {bubble.length < h.avatar.bubble.length ? <span className="ai-typed__cursor" /> : null}
+              {bubble.length < speaker.bubble.length ? <span className="ai-typed__cursor" /> : null}
             </span>
-            <span className="lp-sr-only">{h.avatar.bubble}</span>
+            <span className="lp-sr-only">{speaker.bubble}</span>
           </figcaption>
         </figure>
 
         <div className="ai-hero__content">
-          <img className="ai-hero__head" src={HEAD_SRC} alt="" width="160" height="160" />
+          <span className="ai-hero__head" aria-hidden="true">
+            {PERSONAS.map((p, i) => (
+              <img key={p.head} className={i === persona ? '' : 'is-away'} src={p.head} alt="" width="160" height="160" />
+            ))}
+          </span>
           <p className="ai-eyebrow ai-in" style={{ '--i': 0 }}>
             <span className="ai-pulse" aria-hidden="true" />
             <strong>{h.eyebrowTag}</strong>

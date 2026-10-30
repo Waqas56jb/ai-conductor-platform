@@ -166,6 +166,24 @@ const paths = {
     </>
   ),
   ruler: <path d="M3 17 17 3l4 4L7 21zM7 13l2 2M10 10l2 2M13 7l2 2" />,
+  store: (
+    <>
+      <path d="M4 9.5V20h16V9.5M3 5l1.5-2h15L21 5v2.5a2.5 2.5 0 0 1-4.5 1.5 2.5 2.5 0 0 1-4.5 0 2.5 2.5 0 0 1-4.5 0A2.5 2.5 0 0 1 3 7.5z" />
+      <path d="M10 20v-5h4v5" />
+    </>
+  ),
+  video: (
+    <>
+      <rect x="2.5" y="6" width="13" height="12" rx="2.5" />
+      <path d="m15.5 10.5 6-3.5v10l-6-3.5" />
+    </>
+  ),
+  laptop: (
+    <>
+      <rect x="4" y="4.5" width="16" height="11" rx="2" />
+      <path d="M2 19.5h20" />
+    </>
+  ),
 }
 
 export default function Icon({ name, className = '' }) {

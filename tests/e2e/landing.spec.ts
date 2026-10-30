@@ -6,6 +6,7 @@ test.use({ baseURL: process.env.LANDING_URL ?? "http://localhost:4173" });
 
 const isDesktop = (page: Page) => (page.viewportSize()?.width ?? 0) > 1024;
 const BUBBLE_FR = "Bonjour, je suis votre collaboratrice IA. Je m’occupe du reste.";
+const BUBBLE_FR_MAN = "Bonjour, je suis votre collaborateur IA. Je m’occupe du reste.";
 
 async function scrollTo(page: Page, selector: string) {
   await page.locator(selector).scrollIntoViewIfNeeded();
@@ -28,7 +29,10 @@ test.beforeEach(async ({ page }) => {
   await page.evaluate(() => document.fonts.ready.then(() => undefined));
 });
 
-test("hero: the assistant sits right of the headline and greets once", async ({ page, shot }) => {
+test("hero: the assistant sits right of the headline, greets, then hands over to his colleague", async ({
+  page,
+  shot,
+}) => {
   const title = page.getByRole("heading", { level: 1 });
   await expect(title).toHaveText("Moins d’administratif.Plus de temps pour l’essentiel.");
   await expect(page.getByText("100 % IA")).toHaveCount(0);
@@ -39,7 +43,8 @@ test("hero: the assistant sits right of the headline and greets once", async ({ 
 
   const titleBox = (await title.boundingBox())!;
   if (isDesktop(page)) {
-    const portrait = page.locator(".ai-avatar__portrait");
+    const portrait = page.locator(".ai-avatar__portrait:not(.is-away)");
+    await expect(portrait).toHaveAttribute("src", "/avatar-portrait.webp");
     await expect(portrait).toBeVisible();
     await expect(page.locator(".ai-hero__head")).toBeHidden();
     const box = (await portrait.boundingBox())!;
@@ -47,11 +52,17 @@ test("hero: the assistant sits right of the headline and greets once", async ({ 
     // Right column: the portrait starts after the copy ends.
     const copy = (await page.locator(".ai-hero__content").boundingBox())!;
     expect(box.x).toBeGreaterThanOrEqual(copy.x + copy.width - 4);
-    // The bubble types its line once, then stays.
+    // The bubble types its line once, then stays until the man takes over.
     const bubble = page.locator(".ai-bubble > span[aria-hidden]");
     await expect(bubble).toHaveText(BUBBLE_FR, { timeout: 8_000 });
-    await page.waitForTimeout(2_500);
+    await page.waitForTimeout(1_500);
     await expect(bubble).toHaveText(BUBBLE_FR);
+    await shot("landing-hero");
+    await expect(portrait).toHaveAttribute("src", "/avatar-man-portrait.webp", { timeout: 9_000 });
+    await expect(portrait).toHaveAttribute("alt", "L’assistant Pratonna, avec son casque");
+    await expect(bubble).toHaveText(BUBBLE_FR_MAN, { timeout: 8_000 });
+    await expect(page.locator(".ai-avatar__portrait.is-away")).toHaveCSS("opacity", "0");
+    await shot("landing-hero-man");
   } else {
     const head = page.locator(".ai-hero__head");
     await expect(head).toBeVisible();
@@ -61,9 +72,32 @@ test("hero: the assistant sits right of the headline and greets once", async ({ 
     const width = page.viewportSize()!.width;
     expect(Math.abs(box.x + box.width / 2 - width / 2)).toBeLessThan(3); // centred
     expect(box.y + box.height).toBeLessThanOrEqual(titleBox.y); // above, no overlap
+    const shown = head.locator("img:not(.is-away)");
+    await expect(shown).toHaveAttribute("src", "/avatar-head.webp");
+    await shot("landing-hero");
+    await expect(shown).toHaveAttribute("src", "/avatar-man-head.webp", { timeout: 9_000 });
+    await page.waitForTimeout(1_000); // cross-fade
+    await shot("landing-hero-man");
   }
   await expectNoHorizontalScroll(page);
-  await shot("landing-hero");
+});
+
+test("for every entrepreneur, with the interface right after the trades", async ({ page, shot }) => {
+  await expect(page.locator(".ai-eyebrow")).toContainText("Le bras droit de tous les entrepreneurs");
+  const trust = page.locator("#secteurs");
+  await expect(trust.locator(".lp-trust__title")).toHaveText(
+    "Conçu pour tous les entrepreneurs, quel que soit votre métier",
+  );
+  for (const trade of ["Commerçant", "Créateur de contenu", "Indépendant & freelance", "Agence immobilière", "Artisan"])
+    await expect(trust.getByText(trade, { exact: true })).toBeVisible();
+  // "Découvrez l’interface" is the first section after the trades strip.
+  const order = await page
+    .locator("main > section")
+    .evaluateAll((sections) => sections.map((s) => s.id));
+  expect(order.slice(0, 3)).toEqual(["", "secteurs", "interface"]);
+  await scrollTo(page, "#interface");
+  await expectNoHorizontalScroll(page);
+  await shot("landing-trades-interface");
 });
 
 test("features: honest status chips, no testimonials, a pilot programme", async ({
@@ -110,8 +144,11 @@ test("industries carousel: arrows, dots and drag", async ({ page, shot }) => {
   await scrollTo(page, "#solutions");
   const section = page.locator("#solutions");
   const slides = section.locator(".lp-carousel__track > li");
-  await expect(slides).toHaveCount(5);
+  await expect(slides).toHaveCount(8);
   await expect(section.getByRole("heading", { level: 3 })).toHaveText([
+    "Commerce",
+    "Créateurs de contenu",
+    "Indépendants & professions libérales",
     "Immobilier",
     "Gestion locative & syndic",
     "Construction",
@@ -128,7 +165,7 @@ test("industries carousel: arrows, dots and drag", async ({ page, shot }) => {
     "true",
   );
 
-  await section.getByRole("button", { name: "Aller au secteur 5" }).click();
+  await section.getByRole("button", { name: "Aller au secteur 8" }).click();
   await expect(section.getByRole("button", { name: "Secteur suivant" })).toBeDisabled();
   await shot("landing-industries");
 
@@ -185,7 +222,8 @@ test("FR/EN switches every new string", async ({ page, shot }) => {
     "Available",
   );
   await expect(page.locator("#integrations h2")).toHaveText("What works today.");
-  await expect(page.locator("#solutions h3").nth(1)).toHaveText("Lettings & property management");
+  await expect(page.locator("#solutions h3").nth(1)).toHaveText("Content creators");
+  await expect(page.locator(".ai-eyebrow")).toContainText("The right hand of every entrepreneur");
   await expect(page.getByRole("button", { name: "Next sector" })).toHaveCount(1);
   await expect(page.locator("#interface h2")).toHaveText("See the interface.");
   await expect(page.locator("#programme-pilote h2")).toHaveText("Join the first companies.");

@@ -7,7 +7,7 @@ import { useCarousel } from './useCarousel'
 import './carousel.css'
 import './industries.css'
 
-const ICONS = ['home', 'building', 'crane', 'ruler', 'wrench']
+const ICONS = ['store', 'video', 'laptop', 'home', 'building', 'crane', 'ruler', 'wrench']
 
 export default function Industries() {
   const { t } = useLanguage()

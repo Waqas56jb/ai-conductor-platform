@@ -263,6 +263,21 @@
   -webkit-mask-image: linear-gradient(180deg, #000 82%, transparent 100%);
   mask-image: linear-gradient(180deg, #000 82%, transparent 100%);
   animation: aiFloat 6s ease-in-out infinite;
+  transition: opacity 0.9s ease;
+}
+
+.ai-hero__head img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.9s ease;
+}
+
+/* The woman and the man take turns: the one not speaking fades out. */
+.ai-avatar__portrait.is-away,
+.ai-hero__head img.is-away {
+  opacity: 0;
 }
 
 .ai-bubble {
@@ -579,9 +594,11 @@
   /* Smaller screens: a round head, centred above the headline. */
   .ai-hero__head {
     display: block;
+    position: relative;
     width: 160px;
     height: 160px;
     margin: 0 auto 1.25rem;
+    overflow: hidden;
     border-radius: 50%;
     box-shadow:
       0 0 0 1px rgba(255, 255, 255, 0.22),

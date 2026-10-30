@@ -39,13 +39,13 @@ export default function Landing() {
       <main>
         <Hero />
         <TrustStrip />
+        <ProductScreens />
         <ProblemSolution />
         <HowItWorks />
         <Features />
         <Integrations />
         <UseCases />
         <Industries />
-        <ProductScreens />
         <Security />
         <Pricing />
         <Pilot />
