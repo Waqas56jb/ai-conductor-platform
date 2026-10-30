@@ -3,6 +3,8 @@ import { describe, expect, it, vi } from "vitest";
 vi.mock("server-only", () => ({}));
 vi.mock("@/app/app/cases/actions", () => ({}));
 vi.mock("@/app/app/reminders/actions", () => ({}));
+vi.mock("@/app/app/tasks/actions", () => ({}));
+vi.mock("@/app/app/emails/actions", () => ({}));
 
 const { TOOLS, openAiTools, toolsForRole } = await import("./tools");
 const { toChatHistory } = await import("./run");
@@ -23,20 +25,29 @@ describe("assistant tools", () => {
       "suggest_priority_rule",
       "send_case_message",
     ]);
+    // No mailbox or team tasks for clients.
     expect(names("technician")).toEqual([
       "list_cases",
       "get_case",
       "suggest_memory",
+      "list_emails",
+      "list_tasks",
       "create_reminder",
       "suggest_priority_rule",
+      "create_task",
+      "send_email",
     ]);
     expect(names("accountant")).toEqual([
       "list_cases",
       "get_case",
       "list_invoices",
       "suggest_memory",
+      "list_emails",
+      "list_tasks",
       "create_reminder",
       "suggest_priority_rule",
+      "create_task",
+      "send_email",
       "send_invoice_reminder",
     ]);
     for (const office of ["manager", "director", "admin"] as const) {
@@ -59,6 +70,8 @@ describe("assistant tools", () => {
       "cancel_case",
       "decline_quote",
       "create_reminder",
+      "create_task",
+      "send_email",
       "send_case_message",
       "send_invoice_reminder",
     ]);
@@ -178,5 +191,14 @@ describe("voice provider", () => {
     const { VOICE_NAMES } = await import("@/lib/voice/provider");
     expect(Object.keys(VOICE_NAMES).sort()).toEqual(["calm", "energetic", "neutral"]);
     for (const v of Object.values(VOICE_NAMES)) expect(v).toMatch(/^[a-z]+$/);
+  });
+
+  it("names uploads after their real format, so transcription can read them", async () => {
+    const { extensionOf } = await import("@/lib/voice/provider");
+    expect(extensionOf("audio/wav")).toBe("wav");
+    expect(extensionOf("audio/webm;codecs=opus")).toBe("webm");
+    expect(extensionOf("audio/mpeg")).toBe("mp3");
+    expect(extensionOf("audio/x-m4a")).toBe("m4a");
+    expect(extensionOf("audio/unknown")).toBe("webm");
   });
 });

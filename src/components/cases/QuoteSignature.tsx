@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
 import { Download, PenLine } from "lucide-react";
 import { declineQuote } from "@/app/app/cases/actions";
-import { startQuoteSigning, syncSignature } from "@/app/app/quotes/actions";
+import { startQuoteSigning } from "@/app/app/quotes/actions";
+import { useEmbeddedSigning } from "@/components/esign/useEmbeddedSigning";
 import { Badge, Button, Modal, buttonClass, useToast, type BadgeTone } from "@/components/ui";
 import type { SignatureRequestRow } from "@/lib/db/types";
 import styles from "./CaseActions.module.css";
@@ -42,34 +42,9 @@ export function QuoteSignature({
   const t = useTranslations("quotes.sign");
   const tAll = useTranslations();
   const toast = useToast();
-  const router = useRouter();
   const [pending, startTransition] = useTransition();
-  const [signing, setSigning] = useState<{ url: string; requestId: string } | null>(null);
   const [confirmDecline, setConfirmDecline] = useState(false);
-
-  // The DocuSign frame lands on /esign/return, which posts back here.
-  useEffect(() => {
-    if (!signing) return;
-    const onMessage = (e: MessageEvent) => {
-      if (e.origin !== window.location.origin || e.data?.type !== "pratonna:esign") return;
-      const done = e.data.event === "signing_complete";
-      setSigning(null);
-      startTransition(async () => {
-        await syncSignature(signing.requestId);
-        toast(done ? t("completed") : t("closed"));
-        router.refresh();
-      });
-    };
-    window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
-  }, [signing, router, t, toast]);
-
-  const sign = () =>
-    startTransition(async () => {
-      const r = await startQuoteSigning(quoteId);
-      if (r.ok) setSigning({ url: r.url, requestId: r.requestId });
-      else toast(tAll(r.error), "error");
-    });
+  const signing = useEmbeddedSigning(() => startQuoteSigning(quoteId));
 
   const decline = () =>
     startTransition(async () => {
@@ -84,7 +59,7 @@ export function QuoteSignature({
       <div className={styles.inline}>
         {signable ? (
           <>
-            <Button onClick={sign} loading={pending && !confirmDecline} disabled={!configured}>
+            <Button onClick={signing.open} loading={signing.pending} disabled={!configured}>
               <PenLine aria-hidden="true" />
               {t("sign")}
             </Button>
@@ -112,22 +87,7 @@ export function QuoteSignature({
         </p>
       ) : null}
 
-      <Modal
-        open={signing !== null}
-        onClose={() => setSigning(null)}
-        title={t("modalTitle")}
-        closeLabel={tAll("common.close")}
-        size="large"
-      >
-        {signing ? (
-          <iframe
-            src={signing.url}
-            title={t("modalTitle")}
-            className={styles.signingFrame}
-            allow="clipboard-write"
-          />
-        ) : null}
-      </Modal>
+      {signing.modal}
 
       <Modal
         open={confirmDecline}

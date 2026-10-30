@@ -69,6 +69,20 @@ test("realtime: she hears the question, reads the cases and answers out loud", a
   await expect(panel.locator("time", { hasText: /Maya ·/ }).first()).toBeVisible({
     timeout: VOICE_TIMEOUT,
   });
+  // Stored in speaking order: the question comes before the lookup it triggered.
+  const order = await panel
+    .locator("ol > li")
+    .evaluateAll((items) =>
+      items.map((li) =>
+        /Consultation/.test(li.textContent ?? "")
+          ? "read"
+          : /en cours/i.test(li.textContent ?? "")
+            ? "user"
+            : "",
+      ),
+    );
+  expect(order.indexOf("user")).toBeGreaterThanOrEqual(0);
+  expect(order.indexOf("user")).toBeLessThan(order.indexOf("read"));
   await shot("voice-realtime-answer");
 
   await panel.getByRole("button", { name: "Arrêter la voix" }).first().click();

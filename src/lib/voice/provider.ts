@@ -23,6 +23,24 @@ export const SPEECH_MODEL = "gpt-4o-mini-tts";
 /** A client secret only has to live until the browser has connected. */
 const SECRET_TTL_S = 60;
 
+const EXTENSIONS: Record<string, string> = {
+  "audio/wav": "wav",
+  "audio/x-wav": "wav",
+  "audio/wave": "wav",
+  "audio/mpeg": "mp3",
+  "audio/mp3": "mp3",
+  "audio/mp4": "m4a",
+  "audio/x-m4a": "m4a",
+  "audio/m4a": "m4a",
+  "audio/ogg": "ogg",
+  "audio/flac": "flac",
+  "audio/webm": "webm",
+};
+
+/** File extension for an audio MIME type ("audio/webm;codecs=opus" → "webm"). */
+export const extensionOf = (type: string) =>
+  EXTENSIONS[type.split(";")[0].trim().toLowerCase()] ?? "webm";
+
 export type RealtimeTool = {
   type: "function";
   name: string;
@@ -69,7 +87,9 @@ export function voiceProvider(): VoiceProvider {
     },
 
     async transcribe(audio, language) {
-      const file = await toFile(audio, "speech.webm", { type: audio.type || "audio/webm" });
+      // OpenAI reads the format from the file name: match it to the real type.
+      const type = audio.type || "audio/webm";
+      const file = await toFile(audio, `speech.${extensionOf(type)}`, { type });
       const result = await openai().audio.transcriptions.create({
         model: TRANSCRIBE_MODEL,
         file,

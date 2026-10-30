@@ -15,6 +15,10 @@ export type NavIcon =
   | "support"
   | "notifications"
   | "reminders"
+  | "contracts"
+  | "tasks"
+  | "meetings"
+  | "emails"
   | "directory"
   | "profile"
   | "company";
@@ -44,6 +48,7 @@ export const NAV_ITEMS: readonly NavItem[] = [
   },
   { href: "/app/approvals", labelKey: "approvals", icon: "approvals", roles: OFFICE },
   { href: "/app/quotes", labelKey: "quotes", icon: "quotes", roles: ["client"] },
+  { href: "/app/contracts", labelKey: "contracts", icon: "contracts", roles: ["client", ...STAFF] },
   {
     href: "/app/invoices",
     labelKey: { default: "invoices", director: "finance", accountant: "finance" },
@@ -57,6 +62,9 @@ export const NAV_ITEMS: readonly NavItem[] = [
     roles: [...OFFICE, "technician"],
   },
   { href: "/app/technicians", labelKey: "technicians", icon: "technicians", roles: OFFICE },
+  { href: "/app/tasks", labelKey: "teamTasks", icon: "tasks", roles: TEAM },
+  { href: "/app/meetings", labelKey: "meetings", icon: "meetings", roles: TEAM },
+  { href: "/app/emails", labelKey: "emails", icon: "emails", roles: TEAM },
   { href: "/app/chats", labelKey: "chats", icon: "chats", roles: [...OFFICE, "technician"] },
   { href: "/app/directory", labelKey: "directory", icon: "directory", roles: TEAM },
   { href: "/app/notifications", labelKey: "notifications", icon: "notifications", roles: ROLES },

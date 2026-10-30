@@ -1,0 +1,91 @@
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.filters {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.board {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+@media (min-width: 1024px) {
+  .board {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+.list {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.list > li {
+  display: grid;
+  gap: 0.35rem;
+  padding: 0.75rem 0.85rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--glass);
+}
+
+.taskHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.taskHead strong {
+  overflow-wrap: anywhere;
+}
+
+.description {
+  color: var(--text-soft);
+  font-size: 0.88rem;
+  overflow-wrap: anywhere;
+}
+
+.meta {
+  color: var(--text-faint);
+  font-size: 0.82rem;
+}
+
+.late {
+  color: var(--red);
+  font-weight: 600;
+}
+
+.taskActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.statusSelect select {
+  min-height: 34px;
+  padding: 0.3rem 0.55rem;
+  border-radius: 10px;
+  border: 1px solid var(--line-strong);
+  background: rgba(6, 11, 30, 0.55);
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.form {
+  display: grid;
+  gap: var(--space-3);
+}

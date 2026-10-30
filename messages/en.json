@@ -47,7 +47,8 @@
     "upload_too_large": "File too large (10 MB max).",
     "upload_bad_type": "Format not accepted.",
     "upload_failed": "Upload failed. Please try again.",
-    "reminderOrder": "The 2nd reminder must come after the 1st."
+    "reminderOrder": "The 2nd reminder must come after the 1st.",
+    "endBeforeStart": "The end must come after the start."
   },
   "auth": {
     "visualTitle": "Your 6th team member, 100% AI",
@@ -148,7 +149,12 @@
     "notifications": "Notifications",
     "directory": "Directory",
     "assistantSettings": "Assistant settings",
-    "reminders": "Reminders"
+    "reminders": "Reminders",
+    "contracts": "Contracts",
+    "teamTasks": "To-dos",
+    "meetings": "Meetings",
+    "emails": "Email",
+    "integrations": "Integrations"
   },
   "dashboard": {
     "kpi": {
@@ -818,7 +824,8 @@
         "cancelled": "Cancelled"
       },
       "markPaidConfirm": "The payment will be recorded and the case closed. Confirm?",
-      "remindConfirm": "A payment reminder will be sent to the client. Send it?"
+      "remindConfirm": "A payment reminder will be sent to the client. Send it?",
+      "pdf": "Download the invoice"
     },
     "chat": {
       "caseTitle": "Conversation with the client",
@@ -969,7 +976,9 @@
       "incident": "cases",
       "assignment": "assignments",
       "reminder": "reminders",
-      "message": "messages"
+      "message": "messages",
+      "task": "tasks",
+      "contract": "contracts"
     },
     "source": {
       "email": "Email",
@@ -1102,7 +1111,9 @@
       "list_technicians": "technicians",
       "list_invoices": "invoices",
       "suggest_memory": "memory suggested, to approve in your settings",
-      "suggest_priority_rule": "priority rule suggested, to accept in your notifications"
+      "suggest_priority_rule": "priority rule suggested, to accept in your notifications",
+      "list_emails": "email",
+      "list_tasks": "tasks"
     },
     "proposal": {
       "title": "Proposed action",
@@ -1140,7 +1151,9 @@
       "message": "Post on case {case}: “{text}”",
       "reminder": "Send a payment reminder for invoice {invoice}",
       "tooManySteps": "I couldn’t finish this request. Could you rephrase it?",
-      "createReminder": "Schedule a reminder “{title}” on {date}"
+      "createReminder": "Schedule a reminder “{title}” on {date}",
+      "createTask": "Create the task “{title}”",
+      "sendEmail": "Send the email “{subject}” to {to}"
     },
     "errors": {
       "empty": "Write a message.",
@@ -1328,6 +1341,241 @@
       "past": "Pick a future date.",
       "date": "Invalid date.",
       "notFound": "Item not found."
+    }
+  },
+  "integrations": {
+    "title": "Integrations",
+    "sub": "Connect your mailbox: your email in Pratonna, and the assistant can help you answer it.",
+    "providers": {
+      "google": "Gmail",
+      "microsoft": "Outlook"
+    },
+    "descriptions": {
+      "google": "Gmail and Google Workspace: read the inbox and send.",
+      "microsoft": "Outlook and Microsoft 365: read the inbox and send."
+    },
+    "status": {
+      "connected": "Connected",
+      "available": "Available",
+      "notConfigured": "Connection not configured"
+    },
+    "accountStatus": {
+      "expired": "Reconnect needed",
+      "revoked": "Revoked",
+      "error": "Error",
+      "connected": "Connected"
+    },
+    "notConfiguredText": "Connection not configured: an administrator must first register the app with the provider.",
+    "connect": "Connect",
+    "connectAnother": "Connect another account",
+    "connected": "{provider} account connected.",
+    "disconnect": "Disconnect",
+    "disconnectConfirm": "Disconnect {email}? Pratonna will no longer access this mailbox.",
+    "disconnected": "Account disconnected.",
+    "errors": {
+      "notConfigured": "Connection not configured for this provider.",
+      "denied": "Connection cancelled.",
+      "state": "The connection expired or could not be verified. Try again.",
+      "failed": "The connection failed. Try again.",
+      "unknown": "Unknown provider."
+    }
+  },
+  "emails": {
+    "title": "Email",
+    "sub": "Your inbox, read live from Gmail or Outlook.",
+    "manage": "Manage accounts",
+    "accounts": "Mail accounts",
+    "noAccount": "No mailbox connected",
+    "noAccountText": "Connect Gmail or Outlook to read and send your email here.",
+    "connect": "Connect a mailbox",
+    "unavailable": "Inbox unavailable",
+    "unavailableText": "Reconnect this account from Integrations.",
+    "empty": "Inbox empty.",
+    "noSubject": "(no subject)",
+    "back": "Inbox",
+    "fromLine": "From: {from}",
+    "from": "From {email}",
+    "to": "To",
+    "subject": "Subject",
+    "body": "Message",
+    "new": "New message",
+    "reply": "Reply",
+    "send": "Send",
+    "confirmTitle": "Send the email",
+    "confirmText": "Send “{subject}” to {to}? It will go out from your address.",
+    "sent": "Email sent.",
+    "errors": {
+      "invalid": "Check the recipient, subject and message.",
+      "mailbox": "Mailbox not found or disconnected.",
+      "send": "Sending failed. Try again."
+    }
+  },
+  "contracts": {
+    "title": "Contracts",
+    "sub": "Your contracts: read them and sign them online.",
+    "subOffice": "Maintenance and service contracts, numbered, as PDF, signed with DocuSign.",
+    "new": "New contract",
+    "client": "Client",
+    "chooseClient": "Choose the client",
+    "titleLabel": "Title",
+    "start": "Start",
+    "end": "End",
+    "billingLabel": "Billing",
+    "billing": {
+      "one_off": "One-off",
+      "monthly": "Monthly",
+      "yearly": "Yearly"
+    },
+    "amount": "Amount excl. VAT (€)",
+    "tax": "VAT",
+    "terms": "Terms",
+    "create": "Create the draft",
+    "created": "Contract created.",
+    "period": "from {start} to {end}",
+    "from": "from {start}",
+    "ttc": "incl. VAT",
+    "status": {
+      "draft": "Draft",
+      "sent": "To sign",
+      "signed": "Signed",
+      "cancelled": "Cancelled"
+    },
+    "download": "PDF",
+    "downloadSigned": "Signed PDF",
+    "send": "Send to the client",
+    "sendConfirm": "Send contract {reference} to the client for signature?",
+    "sent": "Contract sent to the client.",
+    "cancel": "Cancel the contract",
+    "cancelConfirm": "Cancel contract {reference}? It can no longer be signed.",
+    "cancelled": "Contract cancelled.",
+    "sign": "Sign the contract",
+    "empty": "No contracts yet.",
+    "emptyOffice": "Create a maintenance or service contract for one of your clients.",
+    "errors": {
+      "invalid": "Check the contract fields.",
+      "client": "Client not found.",
+      "notFound": "Contract not found.",
+      "status": "This contract can no longer be changed."
+    }
+  },
+  "tasks": {
+    "title": "Team tasks",
+    "sub": "What the team has to do: to do, in progress, done.",
+    "filter": "Show",
+    "mine": "My tasks",
+    "everyone": "Whole team",
+    "new": "New task",
+    "titleLabel": "Title",
+    "description": "Details",
+    "assignee": "Owner",
+    "unassigned": "Unassigned",
+    "priorityLabel": "Priority",
+    "priority": {
+      "low": "Low",
+      "normal": "Normal",
+      "high": "High"
+    },
+    "due": "Due",
+    "create": "Create the task",
+    "created": "Task created.",
+    "updated": "Task updated.",
+    "status": {
+      "todo": "To do",
+      "in_progress": "In progress",
+      "done": "Done"
+    },
+    "statusOf": "Status of “{title}”",
+    "empty": {
+      "todo": "Nothing to do.",
+      "in_progress": "Nothing in progress.",
+      "done": "Nothing done yet."
+    },
+    "source": {
+      "assistant": "created by the assistant",
+      "meeting": "from a meeting"
+    },
+    "openCase": "Case",
+    "delete": "Delete the task",
+    "deleteConfirm": "Delete the task “{title}”?",
+    "deleted": "Task deleted.",
+    "errors": {
+      "invalid": "Check the task.",
+      "assignee": "Owner not found.",
+      "notFound": "Task not found."
+    }
+  },
+  "meetings": {
+    "title": "Meetings",
+    "sub": "Your notes or a recording: a summary, the decisions and the actions.",
+    "new": "New meeting summary",
+    "newHint": "Paste your notes or record the meeting: the assistant pulls out what matters.",
+    "titleLabel": "Meeting",
+    "participants": "Participants",
+    "heldAt": "Date",
+    "input": "Source",
+    "source": {
+      "notes": "Notes",
+      "audio": "Recording"
+    },
+    "notes": "Notes",
+    "notesPlaceholder": "What was said, decided, and who does what…",
+    "tooShort": "Add a few lines of notes.",
+    "record": "Record",
+    "stopRecording": "Stop recording",
+    "upload": "or upload an audio file",
+    "audioReady": "Recording ready ({size} KB).",
+    "audioInvalid": "Invalid or too large audio file (14 MB max).",
+    "summarize": "Write the summary",
+    "working": "Writing…",
+    "created": "Summary ready.",
+    "history": "Meeting summaries",
+    "empty": "No meeting summaries yet.",
+    "actionsCount": "{count, plural, =0 {no actions} one {# action} other {# actions}}",
+    "back": "All meetings",
+    "summary": "Summary",
+    "decisions": "Decisions",
+    "actions": "Actions",
+    "actionsHint": "Tick the ones to turn into tasks and choose who takes them.",
+    "owner": "Owner mentioned: {owner}",
+    "noOwner": "No owner mentioned",
+    "due": "due {date}",
+    "assigneeFor": "Owner of “{title}”",
+    "taskCreated": "Task created",
+    "noActions": "No actions found.",
+    "createTasks": "{count, plural, =0 {Create tasks} one {Create # task} other {Create # tasks}}",
+    "createTasksConfirm": "{count, plural, one {Create # task} other {Create # tasks}} for the team?",
+    "tasksCreated": "{count, plural, one {# task created.} other {# tasks created.}}",
+    "transcript": "Transcript",
+    "delete": "Delete the summary",
+    "deleteConfirm": "Delete this summary? Tasks already created are kept.",
+    "errors": {
+      "invalid": "Check the title and the date.",
+      "empty": "Add notes or a recording.",
+      "audio": "Invalid or too large audio file.",
+      "notHeard": "No speech was recognised in the recording.",
+      "failed": "The summary could not be written. Try again.",
+      "notFound": "Meeting not found."
+    }
+  },
+  "recommendations": {
+    "title": "Recommendations",
+    "description": "What deserves your attention today.",
+    "handle": "She’ll handle it",
+    "quoteFollowUp": {
+      "text": "{count, plural, one {# quote has} other {# quotes have}} been waiting for the client for over a week ({example}).",
+      "prompt": "Which quotes have waited for the client for over a week? Prepare a follow-up message for {example}."
+    },
+    "invoiceReminder": {
+      "text": "{count, plural, one {# overdue invoice has} other {# overdue invoices have}} had no reminder for 7 days ({example}).",
+      "prompt": "Which overdue invoices have had no reminder for a week? Prepare the reminder for {example}."
+    },
+    "triage": {
+      "text": "{count, plural, one {# new case has} other {# new cases have}} waited over 24 h to be triaged ({example}).",
+      "prompt": "Which new cases are waiting to be triaged? Suggest the urgency of {example}."
+    },
+    "lateTask": {
+      "text": "{count, plural, one {# of your tasks is} other {# of your tasks are}} overdue ({example}).",
+      "prompt": "Which of my tasks are overdue? Help me reschedule them."
     }
   }
 }

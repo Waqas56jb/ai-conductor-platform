@@ -1,9 +1,12 @@
 import "server-only";
 import { z } from "zod";
 import type { Role } from "@/lib/auth/roles";
-import type { Profile } from "@/lib/auth/session";
+import { requireProfile, type Profile } from "@/lib/auth/session";
 import { getCaseDetail, listCases, listTechnicians } from "@/lib/cases/queries";
+import { sendEmail } from "@/app/app/emails/actions";
 import { createReminder } from "@/app/app/reminders/actions";
+import { createTask } from "@/app/app/tasks/actions";
+import { emailAccounts, openMailbox } from "@/lib/email/accounts";
 import { MEMORY_KINDS } from "@/lib/db/types";
 import { PRIORITIES, ruleConditionSchema } from "@/lib/notifications/priority";
 import { REMINDER_KINDS } from "@/lib/reminders";
@@ -32,6 +35,17 @@ import {
 const OFFICE: readonly Role[] = ["manager", "director", "admin"];
 const STAFF: readonly Role[] = [...OFFICE, "accountant"];
 const EVERYONE: readonly Role[] = ["client", "technician", ...STAFF];
+const TEAM: readonly Role[] = ["technician", ...STAFF];
+
+/** The user's mailbox to use: the one named, else the first connected. */
+async function mailbox(profile: Profile, email?: string) {
+  const accounts = (await emailAccounts(profile.id)).filter((a) => a.status === "connected");
+  return (
+    (email ? accounts.find((a) => a.email.toLowerCase() === email.toLowerCase()) : null) ??
+    accounts[0] ??
+    null
+  );
+}
 
 /** Case id (INC-3F2A…) or per-company reference (INC-2026-0001). */
 const caseRef = z
@@ -237,6 +251,50 @@ export const TOOLS: Record<string, AssistantTool> = {
     },
   }),
 
+  list_emails: tool({
+    kind: "read",
+    description:
+      "Latest messages in the user's connected mailbox (Gmail or Outlook): sender, subject, preview, date, id.",
+    roles: TEAM,
+    schema: z.object({
+      account_email: z.email().optional().describe("Mailbox to read, if the user has several"),
+      limit: z.number().int().min(1).max(20).optional(),
+    }),
+    run: async ({ account_email, limit }, profile) => {
+      const account = await mailbox(profile, account_email);
+      if (!account)
+        return {
+          error: "No connected mailbox: the user can connect one in Settings › Integrations.",
+        };
+      const box = await openMailbox(profile.id, account.id);
+      if (!box) return { error: "Mailbox unavailable: reconnect it in Settings › Integrations." };
+      return {
+        mailbox: account.email,
+        messages: await box.provider.inbox(box.accessToken, limit ?? 10),
+      };
+    },
+  }),
+
+  list_tasks: tool({
+    kind: "read",
+    description:
+      "The team's open tasks (assigned to the user unless everyone=true), with due dates.",
+    roles: TEAM,
+    schema: z.object({ everyone: z.boolean().optional() }),
+    run: async ({ everyone }, profile) => {
+      const supabase = await createClient();
+      let query = supabase
+        .from("ai_conductor_team_tasks")
+        .select("title, status, priority, due_at, incident_id")
+        .neq("status", "done")
+        .order("due_at", { ascending: true, nullsFirst: false })
+        .limit(50);
+      if (!everyone) query = query.eq("assignee_id", profile.id);
+      const { data } = await query;
+      return data ?? [];
+    },
+  }),
+
   triage_case: action({
     kind: "write",
     description: "Propose to set the urgency of a new case (moves it to awaiting assignment).",
@@ -371,6 +429,65 @@ export const TOOLS: Record<string, AssistantTool> = {
       return error
         ? { error: "Suggestion not saved" }
         : { status: "suggested_pending_user_approval" };
+    },
+  }),
+
+  create_task: action({
+    kind: "write",
+    description:
+      "Propose a task for the team (assigned to the user unless an assignee id from the team is given).",
+    roles: TEAM,
+    schema: z.object({
+      title: z.string().trim().min(1).max(200),
+      description: z.string().max(2000).optional(),
+      due_at: z.iso
+        .datetime({ offset: true })
+        .optional()
+        .describe("ISO 8601 with offset, Europe/Paris"),
+      priority: z.enum(["low", "normal", "high"]).optional(),
+      case: caseRef.optional(),
+    }),
+    describe: (i, t) => t("createTask", { title: i.title }),
+    execute: async (i) => {
+      const found = i.case ? await resolveCase(i.case) : null;
+      if (i.case && !found) return { ok: false, error: "cases.errors.notFound" };
+      return createTask(
+        {
+          title: i.title,
+          description: i.description ?? "",
+          priority: i.priority ?? "normal",
+          dueAt: i.due_at ?? "",
+          incidentId: found?.id ?? "",
+        },
+        "assistant",
+      );
+    },
+  }),
+
+  send_email: action({
+    kind: "write",
+    description:
+      "Propose to send an email from the user's connected mailbox (new message or reply to a message id from list_emails).",
+    roles: TEAM,
+    schema: z.object({
+      to: z.email(),
+      subject: z.string().trim().min(1).max(250),
+      body: z.string().trim().min(1).max(20_000),
+      reply_to_id: z.string().max(500).optional(),
+      account_email: z.email().optional(),
+    }),
+    describe: (i, t) => t("sendEmail", { to: i.to, subject: i.subject }),
+    // Runs as the user who approved; their own mailbox only.
+    execute: async (i) => {
+      const account = await mailbox(await requireProfile(), i.account_email);
+      if (!account) return { ok: false, error: "emails.errors.mailbox" };
+      return sendEmail({
+        accountId: account.id,
+        to: i.to,
+        subject: i.subject,
+        body: i.body,
+        replyToId: i.reply_to_id ?? null,
+      });
     },
   }),
 

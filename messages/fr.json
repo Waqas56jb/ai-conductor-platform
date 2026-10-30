@@ -47,7 +47,8 @@
     "upload_too_large": "Fichier trop volumineux (10 Mo maximum).",
     "upload_bad_type": "Format non accepté.",
     "upload_failed": "L’envoi du fichier a échoué. Réessayez.",
-    "reminderOrder": "Le 2e rappel doit venir après le 1er."
+    "reminderOrder": "Le 2e rappel doit venir après le 1er.",
+    "endBeforeStart": "La fin doit suivre le début."
   },
   "auth": {
     "visualTitle": "Votre 6ème collaborateur, 100 % IA",
@@ -148,7 +149,12 @@
     "notifications": "Notifications",
     "directory": "Annuaire",
     "assistantSettings": "Réglages de l’assistante",
-    "reminders": "Rappels"
+    "reminders": "Rappels",
+    "contracts": "Contrats",
+    "teamTasks": "À faire",
+    "meetings": "Réunions",
+    "emails": "E-mails",
+    "integrations": "Intégrations"
   },
   "dashboard": {
     "kpi": {
@@ -818,7 +824,8 @@
         "cancelled": "Annulée"
       },
       "markPaidConfirm": "Le paiement sera enregistré et le dossier clôturé. Confirmer ?",
-      "remindConfirm": "Un rappel de paiement sera envoyé au client. Confirmer l’envoi ?"
+      "remindConfirm": "Un rappel de paiement sera envoyé au client. Confirmer l’envoi ?",
+      "pdf": "Télécharger la facture"
     },
     "chat": {
       "caseTitle": "Échanges avec le client",
@@ -969,7 +976,9 @@
       "incident": "dossiers",
       "assignment": "affectations",
       "reminder": "rappels",
-      "message": "messages"
+      "message": "messages",
+      "task": "tâches",
+      "contract": "contrats"
     },
     "source": {
       "email": "E-mail",
@@ -1102,7 +1111,9 @@
       "list_technicians": "techniciens",
       "list_invoices": "factures",
       "suggest_memory": "mémoire proposée, à valider dans vos réglages",
-      "suggest_priority_rule": "règle de priorité proposée, à accepter dans vos notifications"
+      "suggest_priority_rule": "règle de priorité proposée, à accepter dans vos notifications",
+      "list_emails": "e-mails",
+      "list_tasks": "tâches"
     },
     "proposal": {
       "title": "Action proposée",
@@ -1140,7 +1151,9 @@
       "message": "Envoyer sur le dossier {case} : « {text} »",
       "reminder": "Envoyer une relance pour la facture {invoice}",
       "tooManySteps": "Je n’ai pas pu terminer cette demande. Pouvez-vous la reformuler ?",
-      "createReminder": "Programmer un rappel « {title} » le {date}"
+      "createReminder": "Programmer un rappel « {title} » le {date}",
+      "createTask": "Créer la tâche « {title} »",
+      "sendEmail": "Envoyer l’e-mail « {subject} » à {to}"
     },
     "errors": {
       "empty": "Écrivez un message.",
@@ -1328,6 +1341,241 @@
       "past": "Choisissez une date à venir.",
       "date": "Date invalide.",
       "notFound": "Élément introuvable."
+    }
+  },
+  "integrations": {
+    "title": "Intégrations",
+    "sub": "Connectez votre messagerie : vos e-mails dans Pratonna, et l’assistante peut vous aider à y répondre.",
+    "providers": {
+      "google": "Gmail",
+      "microsoft": "Outlook"
+    },
+    "descriptions": {
+      "google": "Gmail et Google Workspace : lecture de la boîte de réception et envoi.",
+      "microsoft": "Outlook et Microsoft 365 : lecture de la boîte de réception et envoi."
+    },
+    "status": {
+      "connected": "Connecté",
+      "available": "Disponible",
+      "notConfigured": "Connexion non configurée"
+    },
+    "accountStatus": {
+      "expired": "Reconnexion nécessaire",
+      "revoked": "Révoqué",
+      "error": "Erreur",
+      "connected": "Connecté"
+    },
+    "notConfiguredText": "Connexion non configurée : un administrateur doit d’abord enregistrer l’application auprès du fournisseur.",
+    "connect": "Connecter",
+    "connectAnother": "Connecter un autre compte",
+    "connected": "Compte {provider} connecté.",
+    "disconnect": "Déconnecter",
+    "disconnectConfirm": "Déconnecter {email} ? Pratonna n’aura plus accès à cette boîte.",
+    "disconnected": "Compte déconnecté.",
+    "errors": {
+      "notConfigured": "Connexion non configurée pour ce fournisseur.",
+      "denied": "Connexion annulée.",
+      "state": "La connexion a expiré ou n’a pas pu être vérifiée. Réessayez.",
+      "failed": "La connexion a échoué. Réessayez.",
+      "unknown": "Fournisseur inconnu."
+    }
+  },
+  "emails": {
+    "title": "E-mails",
+    "sub": "Votre boîte de réception, lue en direct depuis Gmail ou Outlook.",
+    "manage": "Gérer les comptes",
+    "accounts": "Comptes de messagerie",
+    "noAccount": "Aucune messagerie connectée",
+    "noAccountText": "Connectez Gmail ou Outlook pour lire et envoyer vos e-mails ici.",
+    "connect": "Connecter une messagerie",
+    "unavailable": "Boîte de réception indisponible",
+    "unavailableText": "Reconnectez ce compte depuis les intégrations.",
+    "empty": "Boîte de réception vide.",
+    "noSubject": "(sans objet)",
+    "back": "Boîte de réception",
+    "fromLine": "De : {from}",
+    "from": "Depuis {email}",
+    "to": "À",
+    "subject": "Objet",
+    "body": "Message",
+    "new": "Nouveau message",
+    "reply": "Répondre",
+    "send": "Envoyer",
+    "confirmTitle": "Envoyer l’e-mail",
+    "confirmText": "Envoyer « {subject} » à {to} ? Il partira de votre adresse.",
+    "sent": "E-mail envoyé.",
+    "errors": {
+      "invalid": "Vérifiez le destinataire, l’objet et le message.",
+      "mailbox": "Messagerie introuvable ou déconnectée.",
+      "send": "L’envoi a échoué. Réessayez."
+    }
+  },
+  "contracts": {
+    "title": "Contrats",
+    "sub": "Vos contrats : consultez-les et signez-les en ligne.",
+    "subOffice": "Contrats de maintenance et de prestation, numérotés, en PDF, signés avec DocuSign.",
+    "new": "Nouveau contrat",
+    "client": "Client",
+    "chooseClient": "Choisissez le client",
+    "titleLabel": "Intitulé",
+    "start": "Début",
+    "end": "Fin",
+    "billingLabel": "Facturation",
+    "billing": {
+      "one_off": "Forfait",
+      "monthly": "Mensuelle",
+      "yearly": "Annuelle"
+    },
+    "amount": "Montant HT (€)",
+    "tax": "TVA",
+    "terms": "Conditions",
+    "create": "Créer le brouillon",
+    "created": "Contrat créé.",
+    "period": "du {start} au {end}",
+    "from": "à partir du {start}",
+    "ttc": "TTC",
+    "status": {
+      "draft": "Brouillon",
+      "sent": "À signer",
+      "signed": "Signé",
+      "cancelled": "Annulé"
+    },
+    "download": "PDF",
+    "downloadSigned": "PDF signé",
+    "send": "Envoyer au client",
+    "sendConfirm": "Envoyer le contrat {reference} au client pour signature ?",
+    "sent": "Contrat envoyé au client.",
+    "cancel": "Annuler le contrat",
+    "cancelConfirm": "Annuler le contrat {reference} ? Il ne pourra plus être signé.",
+    "cancelled": "Contrat annulé.",
+    "sign": "Signer le contrat",
+    "empty": "Aucun contrat pour le moment.",
+    "emptyOffice": "Créez un contrat de maintenance ou de prestation pour l’un de vos clients.",
+    "errors": {
+      "invalid": "Vérifiez les champs du contrat.",
+      "client": "Client introuvable.",
+      "notFound": "Contrat introuvable.",
+      "status": "Ce contrat ne peut plus être modifié."
+    }
+  },
+  "tasks": {
+    "title": "Tâches de l’équipe",
+    "sub": "Ce que l’équipe a à faire : à faire, en cours, terminé.",
+    "filter": "Afficher",
+    "mine": "Mes tâches",
+    "everyone": "Toute l’équipe",
+    "new": "Nouvelle tâche",
+    "titleLabel": "Intitulé",
+    "description": "Détails",
+    "assignee": "Responsable",
+    "unassigned": "Non attribuée",
+    "priorityLabel": "Priorité",
+    "priority": {
+      "low": "Basse",
+      "normal": "Normale",
+      "high": "Haute"
+    },
+    "due": "Échéance",
+    "create": "Créer la tâche",
+    "created": "Tâche créée.",
+    "updated": "Tâche mise à jour.",
+    "status": {
+      "todo": "À faire",
+      "in_progress": "En cours",
+      "done": "Terminé"
+    },
+    "statusOf": "Statut de « {title} »",
+    "empty": {
+      "todo": "Rien à faire.",
+      "in_progress": "Rien en cours.",
+      "done": "Rien de terminé."
+    },
+    "source": {
+      "assistant": "créée par l’assistante",
+      "meeting": "issue d’une réunion"
+    },
+    "openCase": "Dossier",
+    "delete": "Supprimer la tâche",
+    "deleteConfirm": "Supprimer la tâche « {title} » ?",
+    "deleted": "Tâche supprimée.",
+    "errors": {
+      "invalid": "Vérifiez la tâche.",
+      "assignee": "Responsable introuvable.",
+      "notFound": "Tâche introuvable."
+    }
+  },
+  "meetings": {
+    "title": "Réunions",
+    "sub": "Vos notes ou un enregistrement : un compte rendu, les décisions et les actions.",
+    "new": "Nouveau compte rendu",
+    "newHint": "Collez vos notes ou enregistrez la réunion : l’assistante en tire l’essentiel.",
+    "titleLabel": "Réunion",
+    "participants": "Participants",
+    "heldAt": "Date",
+    "input": "Source",
+    "source": {
+      "notes": "Notes",
+      "audio": "Enregistrement"
+    },
+    "notes": "Notes",
+    "notesPlaceholder": "Ce qui a été dit, décidé, et qui fait quoi…",
+    "tooShort": "Ajoutez quelques lignes de notes.",
+    "record": "Enregistrer",
+    "stopRecording": "Arrêter l’enregistrement",
+    "upload": "ou importer un fichier audio",
+    "audioReady": "Enregistrement prêt ({size} Ko).",
+    "audioInvalid": "Fichier audio invalide ou trop lourd (14 Mo max).",
+    "summarize": "Rédiger le compte rendu",
+    "working": "Rédaction en cours…",
+    "created": "Compte rendu prêt.",
+    "history": "Comptes rendus",
+    "empty": "Aucun compte rendu pour le moment.",
+    "actionsCount": "{count, plural, =0 {aucune action} one {# action} other {# actions}}",
+    "back": "Toutes les réunions",
+    "summary": "Synthèse",
+    "decisions": "Décisions",
+    "actions": "Actions",
+    "actionsHint": "Cochez celles à transformer en tâches et choisissez qui s’en charge.",
+    "owner": "Responsable cité : {owner}",
+    "noOwner": "Responsable non cité",
+    "due": "échéance {date}",
+    "assigneeFor": "Responsable de « {title} »",
+    "taskCreated": "Tâche créée",
+    "noActions": "Aucune action relevée.",
+    "createTasks": "{count, plural, =0 {Créer les tâches} one {Créer # tâche} other {Créer # tâches}}",
+    "createTasksConfirm": "{count, plural, one {Créer # tâche} other {Créer # tâches}} pour l’équipe ?",
+    "tasksCreated": "{count, plural, one {# tâche créée.} other {# tâches créées.}}",
+    "transcript": "Transcription",
+    "delete": "Supprimer le compte rendu",
+    "deleteConfirm": "Supprimer ce compte rendu ? Les tâches déjà créées sont conservées.",
+    "errors": {
+      "invalid": "Vérifiez le titre et la date.",
+      "empty": "Ajoutez des notes ou un enregistrement.",
+      "audio": "Fichier audio invalide ou trop lourd.",
+      "notHeard": "Aucune parole n’a été reconnue dans l’enregistrement.",
+      "failed": "Le compte rendu n’a pas pu être rédigé. Réessayez.",
+      "notFound": "Réunion introuvable."
+    }
+  },
+  "recommendations": {
+    "title": "Recommandations",
+    "description": "Ce qui mérite votre attention aujourd’hui.",
+    "handle": "Elle s’en occupe",
+    "quoteFollowUp": {
+      "text": "{count, plural, one {# devis attend} other {# devis attendent}} une réponse du client depuis plus d’une semaine ({example}).",
+      "prompt": "Quels devis attendent une réponse du client depuis plus d’une semaine ? Prépare un message de relance pour {example}."
+    },
+    "invoiceReminder": {
+      "text": "{count, plural, one {# facture échue n’a} other {# factures échues n’ont}} pas été relancée(s) depuis 7 jours ({example}).",
+      "prompt": "Quelles factures échues n’ont pas été relancées depuis une semaine ? Prépare la relance de {example}."
+    },
+    "triage": {
+      "text": "{count, plural, one {# nouveau dossier attend} other {# nouveaux dossiers attendent}} d’être trié(s) depuis plus de 24 h ({example}).",
+      "prompt": "Quels nouveaux dossiers attendent d’être triés ? Propose l’urgence de {example}."
+    },
+    "lateTask": {
+      "text": "{count, plural, one {# de vos tâches est} other {# de vos tâches sont}} en retard ({example}).",
+      "prompt": "Quelles sont mes tâches en retard ? Aide-moi à les replanifier."
     }
   }
 }

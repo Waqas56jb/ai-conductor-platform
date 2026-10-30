@@ -43,6 +43,14 @@ export const serverSchema = z.object({
   VAPID_SUBJECT: withDefault("mailto:contact@pratonna.com"),
   /** Bearer token Vercel Cron sends to /api/cron/*. */
   CRON_SECRET: optional(z.string().min(16)),
+  // Gmail / Outlook OAuth apps. Optional: without them, connecting a mailbox
+  // shows "Connexion non configurée".
+  GOOGLE_CLIENT_ID: optional(z.string().min(1)),
+  GOOGLE_CLIENT_SECRET: optional(z.string().min(1)),
+  MS_CLIENT_ID: optional(z.string().min(1)),
+  MS_CLIENT_SECRET: optional(z.string().min(1)),
+  /** "common" accepts work and personal Microsoft accounts. */
+  MS_TENANT_ID: withDefault("common"),
 });
 
 export type ClientEnv = z.infer<typeof clientSchema>;
@@ -103,6 +111,11 @@ const runtimeEnv: Source = {
   VAPID_PRIVATE_KEY: process.env.VAPID_PRIVATE_KEY,
   VAPID_SUBJECT: process.env.VAPID_SUBJECT,
   CRON_SECRET: process.env.CRON_SECRET,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  MS_CLIENT_ID: process.env.MS_CLIENT_ID,
+  MS_CLIENT_SECRET: process.env.MS_CLIENT_SECRET,
+  MS_TENANT_ID: process.env.MS_TENANT_ID,
 };
 
 // Set SKIP_ENV_VALIDATION=1 for builds/CI/tests that run without real secrets.

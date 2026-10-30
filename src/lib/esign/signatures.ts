@@ -4,7 +4,8 @@ import type { Profile } from "@/lib/auth/session";
 import { office, transition } from "@/lib/cases/transition";
 import { env } from "@/lib/env";
 import { notify } from "@/lib/notify";
-import { renderQuotePdf, SIGNATURE_ANCHOR } from "@/lib/pdf/quote";
+import { SIGNATURE_ANCHOR } from "@/lib/pdf/document";
+import { contractPdf, quotePdf } from "@/lib/pdf/documents";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { docusign } from "./docusign";
 import type { SignatureStatus } from "./provider";
@@ -17,57 +18,22 @@ export const esignConfigured = () => esign() !== null;
 
 const PROFILE_COLUMNS = "id, email, role, display_name, phone, photo_url, locale, company_id";
 
-/** The quote as the PDF DocuSign gets (and the client can download). */
-export async function quotePdf(
-  quoteId: string,
-): Promise<{ pdf: Buffer; reference: string } | null> {
-  const admin = createAdminClient();
-  const { data: quote } = await admin
-    .from("ai_conductor_quotations")
-    .select("*")
-    .eq("id", quoteId)
-    .maybeSingle();
-  if (!quote) return null;
-  const [{ data: company }, { data: client }, { data: incident }] = await Promise.all([
-    admin.from("ai_conductor_companies").select("*").eq("id", quote.company_id).single(),
-    quote.client_id
-      ? admin
-          .from("ai_conductor_users")
-          .select("display_name, email")
-          .eq("id", quote.client_id)
-          .single()
-      : Promise.resolve({ data: null }),
-    quote.incident_id
-      ? admin
-          .from("ai_conductor_incidents")
-          .select("building_address, city")
-          .eq("id", quote.incident_id)
-          .single()
-      : Promise.resolve({ data: null }),
-  ]);
-  if (!company) return null;
-  const pdf = await renderQuotePdf({
-    quote,
-    company,
-    client: { name: client?.display_name || client?.email || "", email: client?.email ?? "" },
-    site: [incident?.building_address, incident?.city].filter(Boolean).join(", "),
-  });
-  return { pdf, reference: quote.reference };
-}
+export type SignableDocument = {
+  type: "quotation" | "contract";
+  id: string;
+  incident_id: string | null;
+};
 
-/** Sends the quote to DocuSign for the client to sign; returns the request id. */
-export async function sendQuoteForSignature(
-  signer: Profile,
-  quote: { id: string; reference: string; incident_id: string | null },
-): Promise<string> {
+/** Sends a quote or a contract to DocuSign for the signer; returns the request id. */
+export async function sendForSignature(signer: Profile, doc: SignableDocument): Promise<string> {
   const provider = esign();
   if (!provider) throw new Error("e-signature not configured");
-  const doc = await quotePdf(quote.id);
-  if (!doc) throw new Error("quote not found");
+  const file = doc.type === "quotation" ? await quotePdf(doc.id) : await contractPdf(doc.id);
+  if (!file) throw new Error(`${doc.type} not found`);
   const { envelopeId } = await provider.createEnvelope({
-    pdf: doc.pdf,
-    documentName: `Devis ${doc.reference}.pdf`,
-    subject: `Devis ${doc.reference} à signer`,
+    pdf: file.pdf,
+    documentName: `${file.kind} ${file.reference}.pdf`,
+    subject: `${file.kind} ${file.reference} à signer`,
     signer: {
       email: signer.email,
       name: signer.display_name || signer.email,
@@ -80,9 +46,9 @@ export async function sendQuoteForSignature(
     .from("ai_conductor_signature_requests")
     .insert({
       company_id: signer.company_id,
-      document_type: "quotation",
-      document_id: quote.id,
-      incident_id: quote.incident_id,
+      document_type: doc.type,
+      document_id: doc.id,
+      incident_id: doc.incident_id,
       envelope_id: envelopeId,
       signer_id: signer.id,
       signer_email: signer.email,
@@ -99,11 +65,32 @@ export async function sendQuoteForSignature(
     { type: "signature_request", id: data.id },
     {
       envelope_id: envelopeId,
-      document_type: "quotation",
-      document_id: quote.id,
+      document_type: doc.type,
+      document_id: doc.id,
     },
   );
   return data.id;
+}
+
+/** Copies the signed document (with its certificate) to the private signatures bucket. */
+async function storeSignedPdf(
+  req: { id: string; company_id: string; document_id: string },
+  envelopeId: string,
+) {
+  const provider = esign();
+  if (!provider) return;
+  const admin = createAdminClient();
+  const pdf = await provider.signedPdf(envelopeId);
+  const path = `${req.company_id}/${req.document_id}/${envelopeId}.pdf`;
+  const { error } = await admin.storage
+    .from(SIGNATURE_BUCKET)
+    .upload(path, pdf, { contentType: "application/pdf", upsert: true });
+  if (error) console.error("[esign] signed PDF not stored", error.message);
+  else
+    await admin
+      .from("ai_conductor_signature_requests")
+      .update({ signed_pdf_url: path })
+      .eq("id", req.id);
 }
 
 /**
@@ -161,6 +148,35 @@ export async function applyEnvelopeStatus(
     },
   );
 
+  if (status === "completed") await storeSignedPdf(req, envelopeId);
+
+  if (req.document_type === "contract") {
+    const { data: contract } = await admin
+      .from("ai_conductor_contracts")
+      .select("id, reference, title, status")
+      .eq("id", req.document_id)
+      .single();
+    if (!contract) return;
+    if (status === "completed" && contract.status === "sent")
+      await admin
+        .from("ai_conductor_contracts")
+        .update({ status: "signed", signed_at: at })
+        .eq("id", contract.id)
+        .eq("status", "sent");
+    if (status === "completed" || status === "declined")
+      await notify({
+        companyId: req.company_id,
+        userIds: await office(req.company_id),
+        type: "contract",
+        title:
+          status === "completed"
+            ? `Contrat ${contract.reference} signé par le client`
+            : `Signature du contrat ${contract.reference} refusée`,
+        body: contract.title,
+      });
+    return;
+  }
+
   if (req.document_type !== "quotation") return;
   const { data: quote } = await admin
     .from("ai_conductor_quotations")
@@ -170,20 +186,6 @@ export async function applyEnvelopeStatus(
   if (!quote) return;
 
   if (status === "completed") {
-    const provider = esign();
-    if (provider) {
-      const pdf = await provider.signedPdf(envelopeId);
-      const path = `${req.company_id}/${quote.id}/${envelopeId}.pdf`;
-      const { error } = await admin.storage
-        .from(SIGNATURE_BUCKET)
-        .upload(path, pdf, { contentType: "application/pdf", upsert: true });
-      if (!error)
-        await admin
-          .from("ai_conductor_signature_requests")
-          .update({ signed_pdf_url: path })
-          .eq("id", req.id);
-      else console.error("[esign] signed PDF not stored", error.message);
-    }
     // The signature is the client's acceptance: same transition as in the panel.
     if (signer && quote.incident_id) {
       const { data: incident } = await admin

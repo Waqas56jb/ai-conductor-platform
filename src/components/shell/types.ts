@@ -1,3 +1,4 @@
+import type { Role } from "@/lib/auth/roles";
 import type { NavIcon } from "@/lib/navigation";
 
 /** Serializable shapes passed from the server layout to the client shell. */
@@ -8,6 +9,7 @@ export type ShellUser = {
   email: string;
   roleLabel: string;
   companyName: string;
+  role: Role;
 };
 
 export type ShellNotification = {

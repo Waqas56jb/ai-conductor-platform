@@ -34,6 +34,16 @@ export async function screenshot(page: Page, testInfo: TestInfo, name: string) {
 }
 
 export const test = base.extend<Fixtures>({
+  // Every navigation waits for streamed content to be revealed (see settled()).
+  page: async ({ page }, provide) => {
+    const goto = page.goto.bind(page);
+    page.goto = async (...args: Parameters<Page["goto"]>) => {
+      const response = await goto(...args);
+      await settled(page);
+      return response;
+    };
+    await provide(page);
+  },
   consoleGuard: [
     async ({ page }, provide) => {
       const errors: string[] = [];

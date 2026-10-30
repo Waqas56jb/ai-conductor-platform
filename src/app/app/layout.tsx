@@ -53,6 +53,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         email: profile.email,
         roleLabel: tRoles(profile.role),
         companyName: company?.name ?? "",
+        role: profile.role,
       }}
       notifications={(notifications ?? []).map((n) => ({
         id: n.id,

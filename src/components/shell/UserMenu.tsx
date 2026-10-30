@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { LogOut, Sparkles, UserRound } from "lucide-react";
+import { LogOut, Plug, Sparkles, UserRound } from "lucide-react";
 import { Button, Modal } from "@/components/ui";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import type { ShellUser } from "./types";
@@ -73,6 +73,17 @@ export function UserMenu({ user }: { user: ShellUser }) {
             <Sparkles aria-hidden="true" />
             {tn("assistantSettings")}
           </Link>
+          {user.role !== "client" ? (
+            <Link
+              href="/app/settings/integrations"
+              role="menuitem"
+              className={styles.menuItem}
+              onClick={close}
+            >
+              <Plug aria-hidden="true" />
+              {tn("integrations")}
+            </Link>
+          ) : null}
           <button
             type="button"
             role="menuitem"

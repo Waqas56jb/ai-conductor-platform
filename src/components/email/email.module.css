@@ -1,0 +1,185 @@
+.providers {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 900px) {
+  .providers {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+.notice {
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.92rem;
+}
+
+.success {
+  border: 1px solid color-mix(in srgb, var(--green) 45%, transparent);
+  background: color-mix(in srgb, var(--green) 10%, transparent);
+}
+
+.error {
+  border: 1px solid color-mix(in srgb, var(--red) 45%, transparent);
+  background: color-mix(in srgb, var(--red) 10%, transparent);
+}
+
+.accounts {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.accounts li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-sm);
+  background: var(--glass);
+}
+
+.accounts li > svg {
+  width: 18px;
+  height: 18px;
+  color: var(--cyan);
+}
+
+.accounts li > span {
+  display: flex;
+  flex: 1 1 180px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.unconfigured {
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+}
+
+.unconfigured p {
+  color: var(--text-faint);
+  font-size: 0.86rem;
+}
+
+/* ---------- inbox ---------- */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.inbox {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.inbox li + li {
+  border-top: 1px solid var(--line);
+}
+
+.inbox a {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.15rem var(--space-3);
+  padding: 0.8rem 1rem;
+}
+
+.inbox a:hover {
+  background: var(--glass);
+}
+
+.inbox .unread strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.sender,
+.subjectLine,
+.snippet {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sender {
+  color: var(--text-soft);
+  font-weight: 500;
+}
+
+.snippet {
+  grid-column: 1 / -1;
+  color: var(--text-faint);
+  font-size: 0.86rem;
+}
+
+.date {
+  color: var(--text-faint);
+  font-size: 0.8rem;
+}
+
+.message {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+
+.meta {
+  display: grid;
+  gap: 0.2rem;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+/* ---------- composer ---------- */
+
+.composer {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.from {
+  color: var(--text-faint);
+  font-size: 0.86rem;
+}
+
+.bodyField {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.bodyField label {
+  color: var(--text-soft);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.bodyField textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 0.7rem 0.9rem;
+  border-radius: 12px;
+  border: 1px solid var(--line-strong);
+  background: rgba(6, 11, 30, 0.55);
+  color: var(--text);
+  font: inherit;
+  resize: vertical;
+}
+
+.bodyField textarea:focus {
+  outline: none;
+  border-color: var(--cyan);
+}

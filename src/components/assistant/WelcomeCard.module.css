@@ -140,3 +140,39 @@
 .handle:hover svg {
   transform: translateX(3px);
 }
+
+/* ---------- recommendations ---------- */
+
+.recos {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.recos li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-3);
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--glass);
+}
+
+.recos li > svg {
+  width: 18px;
+  height: 18px;
+  color: var(--amber);
+}
+
+.recos li > span {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+.recos .handle {
+  grid-column: auto;
+}

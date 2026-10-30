@@ -13,12 +13,14 @@ import {
   Wallet,
 } from "lucide-react";
 import { getFormatter, getTranslations } from "next-intl/server";
+import { RecommendationsCard } from "@/components/assistant/RecommendationsCard";
 import { WelcomeCard, type Priority } from "@/components/assistant/WelcomeCard";
 import { CaseTable } from "@/components/cases/CaseTable";
 import { LiveRefresh } from "@/components/cases/LiveRefresh";
 import { Card, EmptyState, KpiTile, buttonClass } from "@/components/ui";
 import { requireProfile } from "@/lib/auth/session";
 import { listCases } from "@/lib/cases/queries";
+import { recommend } from "@/lib/recommendations";
 import { createClient } from "@/lib/supabase/server";
 import { FINAL_STATUSES, INCIDENT_STATUSES } from "@/lib/workflows/incident";
 
@@ -56,10 +58,12 @@ export default async function DashboardPage() {
     { data: interventions },
     { count: pendingProposals },
     { data: messages },
+    { data: quotes },
+    { data: tasks },
   ] = await Promise.all([
     supabase.from("ai_conductor_companies").select("name").eq("id", profile.company_id).single(),
     listCases(),
-    supabase.from("ai_conductor_invoices").select("amount, status, due_at"),
+    supabase.from("ai_conductor_invoices").select("amount, status, due_at, reference, reminders"),
     supabase
       .from("ai_conductor_interventions")
       .select("id")
@@ -78,6 +82,17 @@ export default async function DashboardPage() {
       .gte("created_at", new Date(now.getTime() - UNANSWERED_DAYS * 86_400_000).toISOString())
       .order("created_at", { ascending: false })
       .limit(500),
+    supabase
+      .from("ai_conductor_quotations")
+      .select("reference, status, updated_at")
+      .eq("status", "sent_to_client"),
+    profile.role === "client"
+      ? Promise.resolve({ data: [] })
+      : supabase
+          .from("ai_conductor_team_tasks")
+          .select("title, status, due_at, assignee_id")
+          .eq("assignee_id", profile.id)
+          .neq("status", "done"),
   ]);
 
   const count = (statuses: readonly string[]) =>
@@ -172,6 +187,15 @@ export default async function DashboardPage() {
   for (const m of messages ?? [])
     if (!latest.has(m.incident_id)) latest.set(m.incident_id, m.from_id);
   const unanswered = [...latest.values()].filter((from) => from !== profile.id).length;
+  const recommendations = recommend({
+    now,
+    role: profile.role,
+    meId: profile.id,
+    quotes: quotes ?? [],
+    invoices: invoices ?? [],
+    cases,
+    tasks: tasks ?? [],
+  });
   const priorities: Priority[] = [
     { key: "overdue", count: overdue },
     { key: "approvals", count: toDecide[profile.role] + (pendingProposals ?? 0) },
@@ -200,6 +224,8 @@ export default async function DashboardPage() {
           ) : undefined
         }
       />
+
+      <RecommendationsCard items={recommendations} />
 
       <div className="grid-kpi">
         {kpis.map((k) => (

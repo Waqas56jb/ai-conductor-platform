@@ -2,45 +2,51 @@ import "server-only";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { Document, Image, Page, StyleSheet, Text, View, renderToBuffer } from "@react-pdf/renderer";
-import type { CompanyRow, QuotationRow } from "@/lib/db/types";
+import type { CompanyRow, QuoteLine } from "@/lib/db/types";
 
 /** Printed invisibly in the signature box: DocuSign anchors the signature on it. */
 export const SIGNATURE_ANCHOR = "\\s1\\";
 
-export type QuotePdfInput = {
-  quote: Pick<
-    QuotationRow,
-    | "reference"
-    | "title"
-    | "summary"
-    | "line_items"
-    | "tax_rate"
-    | "subtotal_ht"
-    | "tax_amount"
-    | "total_ttc"
-    | "validity_days"
-    | "created_at"
-  >;
+export type DocumentKind = "Devis" | "Facture" | "Contrat";
+
+/** Everything a devis, a facture or a contrat prints. */
+export type DocumentPdfInput = {
+  kind: DocumentKind;
+  reference: string;
+  issuedAt: string;
+  /** Under the title: validity, due date or contract period. */
+  subtitle: string;
+  title: string;
+  summary?: string | null;
+  lines: readonly QuoteLine[];
+  taxRate: number;
+  subtotal: number;
+  tax: number;
+  total: number;
+  /** Contract terms, printed after the totals. */
+  terms?: string;
   company: Pick<
     CompanyRow,
     "name" | "siret" | "vat_number" | "address" | "postal_code" | "city" | "email" | "phone"
   >;
   client: { name: string; email: string };
   site: string;
+  /** Signature box with the DocuSign anchor (quotes and contracts). */
+  signature: boolean;
 };
 
 // The built-in Helvetica covers French (WinAnsi), but not the narrow
 // no-break spaces Intl puts in French numbers: use plain spaces.
-const eur = (n: number) =>
+export const eur = (n: number) =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" })
     .format(n)
     .replace(/[  ]/g, " ");
-const date = (iso: string) =>
+export const longDate = (iso: string) =>
   new Date(iso).toLocaleDateString("fr-FR", { dateStyle: "long", timeZone: "Europe/Paris" });
 
 const BLUE = "#1d4ed8";
 const s = StyleSheet.create({
-  page: { padding: 40, fontSize: 10, fontFamily: "Helvetica", color: "#111827" },
+  page: { padding: 40, paddingBottom: 56, fontSize: 10, fontFamily: "Helvetica", color: "#111827" },
   head: { flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" },
   logo: { width: 150, height: 30, objectFit: "contain" },
   muted: { color: "#6b7280" },
@@ -57,6 +63,7 @@ const s = StyleSheet.create({
   totals: { marginTop: 10, marginLeft: "auto", width: 220 },
   totalRow: { flexDirection: "row", justifyContent: "space-between", paddingVertical: 3 },
   grand: { borderTopWidth: 1, borderColor: "#111827", marginTop: 4, paddingTop: 6, fontSize: 12 },
+  terms: { marginTop: 20, lineHeight: 1.45 },
   sign: {
     marginTop: 28,
     marginLeft: "auto",
@@ -74,13 +81,9 @@ const s = StyleSheet.create({
 let logo: Promise<Buffer> | null = null;
 const loadLogo = () => (logo ??= readFile(join(process.cwd(), "public/brand/logo-color.png")));
 
-/** The quote as a PDF, ready to send for signature or to download. */
-export async function renderQuotePdf({
-  quote,
-  company,
-  client,
-  site,
-}: QuotePdfInput): Promise<Buffer> {
+/** A company document (devis, facture, contrat) as a PDF. */
+export async function renderDocumentPdf(d: DocumentPdfInput): Promise<Buffer> {
+  const { company } = d;
   const companyLines = [
     [company.address, [company.postal_code, company.city].filter(Boolean).join(" ")]
       .filter(Boolean)
@@ -91,7 +94,7 @@ export async function renderQuotePdf({
   ].filter(Boolean);
 
   const doc = (
-    <Document title={`Devis ${quote.reference}`} author={company.name} creator="Pratonna">
+    <Document title={`${d.kind} ${d.reference}`} author={company.name} creator="Pratonna">
       <Page size="A4" style={s.page}>
         <View style={s.head}>
           {/* eslint-disable-next-line jsx-a11y/alt-text -- react-pdf <Image>, not an HTML <img> */}
@@ -106,25 +109,27 @@ export async function renderQuotePdf({
           </View>
         </View>
 
-        <Text style={s.title}>Devis {quote.reference}</Text>
+        <Text style={s.title}>
+          {d.kind} {d.reference}
+        </Text>
         <Text style={s.muted}>
-          Émis le {date(quote.created_at)} · valable {quote.validity_days} jours
+          Émis le {longDate(d.issuedAt)} · {d.subtitle}
         </Text>
 
         <View style={s.parties}>
           <View style={s.party}>
             <Text style={s.label}>Client</Text>
-            <Text style={s.bold}>{client.name}</Text>
-            <Text>{client.email}</Text>
+            <Text style={s.bold}>{d.client.name}</Text>
+            <Text>{d.client.email}</Text>
           </View>
           <View style={s.party}>
             <Text style={s.label}>Objet</Text>
-            <Text style={s.bold}>{quote.title}</Text>
-            {site ? <Text>{site}</Text> : null}
+            <Text style={s.bold}>{d.title}</Text>
+            {d.site ? <Text>{d.site}</Text> : null}
           </View>
         </View>
 
-        {quote.summary ? <Text style={{ marginTop: 14 }}>{quote.summary}</Text> : null}
+        {d.summary ? <Text style={{ marginTop: 14 }}>{d.summary}</Text> : null}
 
         <View style={s.table}>
           <View style={s.row}>
@@ -133,7 +138,7 @@ export async function renderQuotePdf({
             <Text style={[s.cNum, s.th]}>PU HT</Text>
             <Text style={[s.cNum, s.th]}>Total HT</Text>
           </View>
-          {quote.line_items.map((l, i) => (
+          {d.lines.map((l, i) => (
             <View key={i} style={s.row} wrap={false}>
               <Text style={s.cLabel}>{l.label}</Text>
               <Text style={s.cNum}>{l.quantity}</Text>
@@ -146,25 +151,35 @@ export async function renderQuotePdf({
         <View style={s.totals}>
           <View style={s.totalRow}>
             <Text>Total HT</Text>
-            <Text>{eur(Number(quote.subtotal_ht))}</Text>
+            <Text>{eur(d.subtotal)}</Text>
           </View>
           <View style={s.totalRow}>
-            <Text>TVA {quote.tax_rate} %</Text>
-            <Text>{eur(Number(quote.tax_amount))}</Text>
+            <Text>TVA {d.taxRate} %</Text>
+            <Text>{eur(d.tax)}</Text>
           </View>
           <View style={[s.totalRow, s.grand]}>
             <Text style={s.bold}>Total TTC</Text>
-            <Text style={s.bold}>{eur(Number(quote.total_ttc))}</Text>
+            <Text style={s.bold}>{eur(d.total)}</Text>
           </View>
         </View>
 
-        <View style={s.sign} wrap={false}>
-          <Text style={s.label}>Bon pour accord — signature du client</Text>
-          <Text style={s.anchor}>{SIGNATURE_ANCHOR}</Text>
-        </View>
+        {d.terms ? (
+          <View style={s.terms}>
+            <Text style={s.label}>Conditions</Text>
+            <Text>{d.terms}</Text>
+          </View>
+        ) : null}
+
+        {d.signature ? (
+          <View style={s.sign} wrap={false}>
+            <Text style={s.label}>Bon pour accord — signature du client</Text>
+            <Text style={s.anchor}>{SIGNATURE_ANCHOR}</Text>
+          </View>
+        ) : null}
 
         <Text style={s.footer} fixed>
-          {company.name} — devis {quote.reference}. Signature électronique via DocuSign.
+          {company.name} — {d.kind.toLowerCase()} {d.reference}
+          {d.signature ? ". Signature électronique via DocuSign." : "."}
         </Text>
       </Page>
     </Document>

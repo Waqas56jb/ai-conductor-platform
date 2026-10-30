@@ -22,6 +22,8 @@ const nextConfig: NextConfig = {
     "/api/quotes/[id]/pdf": ["./public/brand/logo-color.png"],
     "/app/quotes": ["./public/brand/logo-color.png"],
     "/app/cases/[id]": ["./public/brand/logo-color.png"],
+    "/api/documents/[kind]/[id]": ["./public/brand/logo-color.png"],
+    "/app/contracts": ["./public/brand/logo-color.png"],
   },
 };
 

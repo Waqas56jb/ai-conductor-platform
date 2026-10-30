@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { requireProfile } from "@/lib/auth/session";
 import { env } from "@/lib/env";
-import { applyEnvelopeStatus, esign, sendQuoteForSignature } from "@/lib/esign/signatures";
+import { applyEnvelopeStatus, esign, sendForSignature } from "@/lib/esign/signatures";
 import { createClient } from "@/lib/supabase/server";
 
 type SigningResult = { ok: true; url: string; requestId: string } | { ok: false; error: string };
@@ -46,7 +46,13 @@ export async function startQuoteSigning(quoteId: string): Promise<SigningResult>
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
-    const requestId = open?.id ?? (await sendQuoteForSignature(profile, quote));
+    const requestId =
+      open?.id ??
+      (await sendForSignature(profile, {
+        type: "quotation",
+        id: quote.id,
+        incident_id: quote.incident_id,
+      }));
     const envelopeId =
       open?.envelope_id ??
       (

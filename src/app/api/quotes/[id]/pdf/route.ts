@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getProfile } from "@/lib/auth/session";
-import { quotePdf, SIGNATURE_BUCKET } from "@/lib/esign/signatures";
+import { SIGNATURE_BUCKET } from "@/lib/esign/signatures";
+import { quotePdf } from "@/lib/pdf/documents";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 

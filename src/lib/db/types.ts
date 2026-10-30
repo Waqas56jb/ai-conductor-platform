@@ -390,6 +390,73 @@ export type PushSubscriptionRow = Timestamps & {
   user_agent: string;
 };
 
+export type IntegrationRow = Timestamps & {
+  id: string;
+  company_id: string;
+  user_id: string;
+  provider: "google" | "microsoft" | "whatsapp" | "yousign" | "pennylane" | "qonto" | "stripe";
+  account_email: string;
+  status: "connected" | "expired" | "revoked" | "error";
+  scopes: string[];
+  /** AES-GCM (lib/crypto); never sent to the browser. */
+  access_token_enc: string | null;
+  refresh_token_enc: string | null;
+  expires_at: string | null;
+  metadata: Record<string, unknown>;
+};
+
+export type ContractRow = Timestamps & {
+  id: string;
+  company_id: string;
+  reference: string;
+  client_id: string;
+  incident_id: string | null;
+  title: string;
+  terms: string;
+  start_date: string;
+  end_date: string | null;
+  billing: "one_off" | "monthly" | "yearly";
+  amount_ht: number;
+  tax_rate: number;
+  total_ttc: number;
+  status: "draft" | "sent" | "signed" | "cancelled";
+  signed_at: string | null;
+  created_by: string | null;
+};
+
+export type TeamTaskRow = Timestamps & {
+  id: string;
+  company_id: string;
+  title: string;
+  description: string;
+  status: "todo" | "in_progress" | "done";
+  priority: "low" | "normal" | "high";
+  due_at: string | null;
+  assignee_id: string | null;
+  incident_id: string | null;
+  meeting_id: string | null;
+  source: "manual" | "assistant" | "meeting";
+  completed_at: string | null;
+  created_by: string | null;
+};
+
+export type MeetingAction = { title: string; owner: string | null; due: string | null };
+
+export type MeetingRow = Timestamps & {
+  id: string;
+  company_id: string;
+  title: string;
+  held_at: string;
+  participants: string;
+  source: "notes" | "audio";
+  transcript: string;
+  summary: string;
+  decisions: { text: string }[];
+  actions: MeetingAction[];
+  incident_id: string | null;
+  created_by: string | null;
+};
+
 type Table<Row, Insert, Update = Partial<Insert>> = {
   Row: Row;
   Insert: Insert;
@@ -515,6 +582,33 @@ export type Database = {
         Partial<PushSubscriptionRow> &
           Pick<PushSubscriptionRow, "company_id" | "user_id" | "endpoint" | "p256dh" | "auth">
       >;
+      ai_conductor_integrations: Table<
+        IntegrationRow,
+        Partial<IntegrationRow> & Pick<IntegrationRow, "company_id" | "user_id" | "provider">
+      >;
+      ai_conductor_contracts: Table<
+        ContractRow,
+        Partial<ContractRow> &
+          Pick<
+            ContractRow,
+            | "id"
+            | "company_id"
+            | "reference"
+            | "client_id"
+            | "title"
+            | "start_date"
+            | "amount_ht"
+            | "total_ttc"
+          >
+      >;
+      ai_conductor_team_tasks: Table<
+        TeamTaskRow,
+        Partial<TeamTaskRow> & Pick<TeamTaskRow, "company_id" | "title">
+      >;
+      ai_conductor_meetings: Table<
+        MeetingRow,
+        Partial<MeetingRow> & Pick<MeetingRow, "company_id" | "title" | "source" | "transcript">
+      >;
       ai_conductor_company_themes: Table<
         CompanyThemeRow,
         Partial<CompanyThemeRow> & Pick<CompanyThemeRow, "company_id">
@@ -536,7 +630,7 @@ export type Database = {
     Views: Record<never, never>;
     Functions: {
       ai_conductor_next_number: {
-        Args: { company: string; counter_kind: "devis" | "facture" | "incident" };
+        Args: { company: string; counter_kind: "devis" | "facture" | "incident" | "contrat" };
         Returns: number;
       };
     };

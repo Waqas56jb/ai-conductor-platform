@@ -2,14 +2,14 @@
 
 import { useState, useTransition } from "react";
 import { useTranslations } from "next-intl";
-import { BellRing, CheckCheck, Upload } from "lucide-react";
+import { BellRing, CheckCheck, Download, Upload } from "lucide-react";
 import {
   markInvoicePaid,
   sendInvoiceReminder,
   uploadReceipt,
   type ActionResult,
 } from "@/app/app/cases/actions";
-import { Button, Modal, useToast } from "@/components/ui";
+import { Button, Modal, buttonClass, useToast } from "@/components/ui";
 import { resizeImage } from "@/lib/images";
 import styles from "./CaseActions.module.css";
 
@@ -42,6 +42,15 @@ export function InvoiceActions({
 
   return (
     <div className={styles.stack}>
+      <a
+        href={`/api/documents/invoice/${invoiceId}`}
+        target="_blank"
+        rel="noopener"
+        className={buttonClass({ variant: "ghost", size: "sm" })}
+      >
+        <Download aria-hidden="true" />
+        {t("pdf")}
+      </a>
       {canUpload ? (
         <div className={styles.inline}>
           <label className={styles.fileLabel}>

@@ -10,6 +10,8 @@ export type VoiceMode = "realtime" | "fallback";
 const REALTIME_URL = "https://api.openai.com/v1/realtime/calls";
 /** Past this, a WebRTC connection that has not opened falls back to recording. */
 const CONNECT_TIMEOUT_MS = 15_000;
+/** Longest wait for the transcript of what the user said before storing what follows. */
+const TRANSCRIPT_WAIT_MS = 5_000;
 
 type Options = {
   conversationId: string | null;
@@ -158,6 +160,12 @@ export function useVoice({ conversationId, onConversation, onTurn, sendText, onE
       const send = (event: object) =>
         channel.readyState === "open" && channel.send(JSON.stringify(event));
 
+      // Stored in speaking order: the user's transcript often arrives after the
+      // tool call or the answer it triggered, so those wait for it (briefly).
+      let userTurn: Promise<void> = Promise.resolve();
+      let releaseUserTurn: () => void = () => {};
+      const afterUser = <T>(task: () => Promise<T>) => userTurn.then(task);
+
       channel.onmessage = (message) => {
         let event: RealtimeEvent;
         try {
@@ -169,16 +177,30 @@ export function useVoice({ conversationId, onConversation, onTurn, sendText, onE
           case "input_audio_buffer.speech_started":
             setState("listening");
             break;
+          case "input_audio_buffer.committed": {
+            releaseUserTurn();
+            let release = () => {};
+            userTurn = new Promise<void>((resolve) => (release = resolve));
+            releaseUserTurn = release;
+            setTimeout(release, TRANSCRIPT_WAIT_MS);
+            break;
+          }
+          case "conversation.item.input_audio_transcription.failed":
+            releaseUserTurn();
+            break;
           case "conversation.item.input_audio_transcription.delta":
             setHeard((h) => h + (event.delta ?? ""));
             break;
-          case "conversation.item.input_audio_transcription.completed":
+          case "conversation.item.input_audio_transcription.completed": {
             setHeard("");
+            const release = releaseUserTurn;
             if (event.transcript?.trim())
-              postTurn({ conversationId: id, kind: "user", text: event.transcript.trim() }).then(
-                () => onTurn(id),
-              );
+              postTurn({ conversationId: id, kind: "user", text: event.transcript.trim() })
+                .then(() => onTurn(id))
+                .finally(release);
+            else release();
             break;
+          }
           case "response.created":
             setState("thinking");
             break;
@@ -188,25 +210,27 @@ export function useVoice({ conversationId, onConversation, onTurn, sendText, onE
             break;
           case "response.output_audio_transcript.done":
             setSaying("");
-            if (event.transcript?.trim())
-              postTurn({
-                conversationId: id,
-                kind: "assistant",
-                text: event.transcript.trim(),
-              }).then(() => onTurn(id));
+            if (event.transcript?.trim()) {
+              const text = event.transcript.trim();
+              afterUser(() => postTurn({ conversationId: id, kind: "assistant", text })).then(() =>
+                onTurn(id),
+              );
+            }
             break;
           case "response.output_item.done": {
             const item = event.item;
             if (item?.type !== "function_call" || !item.call_id || !item.name) break;
             // Runs on our server, as the user; a write comes back as a pending proposal.
             l.pendingCalls.push(
-              postTurn({
-                conversationId: id,
-                kind: "tool",
-                callId: item.call_id,
-                name: item.name,
-                arguments: item.arguments ?? "{}",
-              }).then(({ output }) => {
+              afterUser(() =>
+                postTurn({
+                  conversationId: id,
+                  kind: "tool",
+                  callId: item.call_id!,
+                  name: item.name!,
+                  arguments: item.arguments ?? "{}",
+                }),
+              ).then(({ output }) => {
                 send({
                   type: "conversation.item.create",
                   item: {
