@@ -75,14 +75,12 @@ test("features: honest status chips, no testimonials, a pilot programme", async 
   await expect(features.getByRole("heading", { level: 2 })).toHaveText(
     "Ce que Pratonna fait pour vous",
   );
-  await expect(features.locator(".lp-chip--available")).toHaveCount(5);
-  await expect(features.locator(".lp-chip--soon")).toHaveCount(4);
-  for (const soon of [
-    "Assistante vocale",
-    "E-mails Gmail & Outlook",
-    "Comptabilité",
-    "Studio vidéo",
-  ])
+  await expect(features.locator(".lp-chip--available")).toHaveCount(6);
+  await expect(features.locator(".lp-chip--soon")).toHaveCount(3);
+  await expect(
+    features.locator("article", { hasText: "Assistante vocale" }).locator(".lp-chip"),
+  ).toHaveText("Disponible");
+  for (const soon of ["E-mails Gmail & Outlook", "Comptabilité", "Studio vidéo"])
     await expect(features.locator("article", { hasText: soon }).locator(".lp-chip")).toHaveText(
       "Bientôt",
     );

@@ -201,7 +201,11 @@ export async function runAssistant({
   await save("assistant", { text: stop });
 }
 
-async function runTool(
+/**
+ * Runs one tool call for the user: reads run now (RLS), writes become a
+ * pending proposal. Shared by the text assistant and the voice agent.
+ */
+export async function runTool(
   call: { name: string; arguments: string },
   ctx: {
     profile: Profile;

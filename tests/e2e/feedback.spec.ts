@@ -7,6 +7,7 @@ import {
   loginAs,
   test,
   type Page,
+  settled,
 } from "./support/fixtures";
 
 // Feedback round 1 — D (DocuSign), E (smart inbox, reminders, PWA) and
@@ -208,6 +209,7 @@ test.describe("E — smart inbox", () => {
       source: "assistant",
     });
     await page.reload();
+    await settled(page);
     await page.getByTestId("rule-suggestion").getByRole("button", { name: "Refuser" }).click();
     await expect(page.getByTestId("rule-suggestion")).toHaveCount(0);
     const { count } = await admin
@@ -278,6 +280,7 @@ test.describe("E — reminders", () => {
 
     // Cancelling asks first.
     await page.reload();
+    await settled(page);
     await page
       .getByRole("button", { name: "Annuler le rappel : Appeler le client pour le devis" })
       .click();

@@ -155,4 +155,28 @@ describe("assistantSystemPrompt", () => {
     expect(prompt).not.toContain("Secret non validé");
     expect(prompt.trim().endsWith("- [règle] Commence par l’urgent.")).toBe(true);
   });
+
+  it("speaks briefly and without Markdown on the voice channel, always with vous", () => {
+    const chat = build();
+    const voice = assistantSystemPrompt({
+      profile,
+      persona: DEFAULT_ASSISTANT,
+      companyName: "Syndic Martin",
+      memories: [],
+      channel: "voice",
+    });
+    expect(chat).not.toContain("Conversation à voix haute");
+    expect(voice).toContain("Conversation à voix haute");
+    expect(voice).toContain("vouvoies toujours");
+    // Same rules otherwise: the approval gate is not relaxed for voice.
+    expect(voice).toMatch(/attend sa validation/);
+  });
+});
+
+describe("voice provider", () => {
+  it("maps every voice setting except off to an OpenAI voice", async () => {
+    const { VOICE_NAMES } = await import("@/lib/voice/provider");
+    expect(Object.keys(VOICE_NAMES).sort()).toEqual(["calm", "energetic", "neutral"]);
+    for (const v of Object.values(VOICE_NAMES)) expect(v).toMatch(/^[a-z]+$/);
+  });
 });

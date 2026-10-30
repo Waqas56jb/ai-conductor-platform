@@ -1151,8 +1151,7 @@
       "expired": "This proposal has expired."
     },
     "settingsLink": "Personalise my assistant",
-    "mic": "Talk to the assistant",
-    "micSoon": "Coming soon: voice is on its way",
+    "mic": "Talk to {name}",
     "entry": {
       "label": "Assistant",
       "aria": "Open the assistant {name}"
@@ -1162,6 +1161,22 @@
       "fullPage": "Open full screen",
       "settings": "Assistant settings",
       "close": "Close the assistant"
+    },
+    "voice": {
+      "state": {
+        "connecting": "Connecting…",
+        "listening": "Listening…",
+        "thinking": "{name} is thinking…",
+        "speaking": "{name} is answering…",
+        "recording": "Speak, then send."
+      },
+      "stop": "Stop voice",
+      "sendRecording": "Send",
+      "noMic": "Microphone unavailable: allow it in your browser.",
+      "failed": "Voice could not start. Try again.",
+      "notHeard": "I didn’t hear anything. Try again.",
+      "badAudio": "Invalid recording.",
+      "off": "Voice is turned off in your settings."
     }
   },
   "assistantSettings": {
@@ -1183,7 +1198,7 @@
       "energetic": "Energetic",
       "neutral": "Neutral",
       "off": "Off",
-      "hint": "The voice will be used by the voice assistant, coming soon."
+      "hint": "Her voice when you talk to her (mic button). “Off”: you speak, she answers in writing."
     },
     "avatar": {
       "title": "Avatar",

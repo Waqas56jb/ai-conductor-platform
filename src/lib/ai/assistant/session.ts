@@ -38,6 +38,7 @@ export async function openConversation(
   profile: Profile,
   conversationId: string | null,
   firstText: string,
+  channel: "chat" | "voice" = "chat",
 ): Promise<string | null> {
   const admin = createAdminClient();
   if (conversationId) {
@@ -56,11 +57,41 @@ export async function openConversation(
       company_id: profile.company_id,
       user_id: profile.id,
       title: firstText.slice(0, 80),
-      channel: "chat",
+      channel,
     })
     .select("id")
     .single();
   return data?.id ?? null;
+}
+
+/** Voice sessions per user in RATE_WINDOW_MS (each holds a realtime connection). */
+const VOICE_SESSION_LIMIT = 10;
+
+export async function voiceRateLimited(userId: string): Promise<boolean> {
+  const { count } = await createAdminClient()
+    .from("ai_conductor_ai_conversations")
+    .select("id", { count: "exact", head: true })
+    .eq("user_id", userId)
+    .eq("channel", "voice")
+    .gte("updated_at", new Date(Date.now() - RATE_WINDOW_MS).toISOString());
+  return (count ?? 0) >= VOICE_SESSION_LIMIT || rateLimited(userId);
+}
+
+/** What every assistant turn needs: persona, approved memories, company name. */
+export async function assistantContext(profile: Profile) {
+  const admin = createAdminClient();
+  const [persona, { data: memories }, { data: company }] = await Promise.all([
+    getAssistantSettings(),
+    admin
+      .from("ai_conductor_assistant_memories")
+      .select("kind, content, approved")
+      .eq("user_id", profile.id)
+      .eq("approved", true)
+      .order("created_at")
+      .limit(50),
+    admin.from("ai_conductor_companies").select("name").eq("id", profile.company_id).single(),
+  ]);
+  return { persona, memories: memories ?? [], companyName: company?.name ?? "" };
 }
 
 /** The user's assistant settings (defaults until they change something). Through RLS. */

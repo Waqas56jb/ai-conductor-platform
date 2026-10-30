@@ -51,6 +51,15 @@ export const test = base.extend<Fixtures>({
 export { expect };
 export type { Page };
 
+/**
+ * After a reload or navigation: React reveals streamed content in batches, so
+ * for a moment the server copy can sit in a hidden `<div id="S:…">`. Wait
+ * until it has been swapped in, so locators see one page.
+ */
+export async function settled(page: Page) {
+  await page.waitForFunction(() => !document.querySelector('div[hidden][id^="S:"]'));
+}
+
 export async function expectNoHorizontalScroll(page: Page) {
   const { scrollWidth, clientWidth } = await page.evaluate(() => ({
     scrollWidth: document.documentElement.scrollWidth,
@@ -65,6 +74,7 @@ export async function loginAs(page: Page, email: string) {
   await page.getByLabel("Mot de passe", { exact: true }).fill(E2E_PASSWORD);
   await page.getByRole("button", { name: "Se connecter" }).click();
   await page.waitForURL("**/app");
+  await settled(page);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 }
 

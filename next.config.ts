@@ -13,6 +13,10 @@ const nextConfig: NextConfig = {
   experimental: { serverActions: { bodySizeLimit: "15mb" } },
   // Quote PDFs are rendered on the server (DocuSign envelopes, downloads).
   serverExternalPackages: ["@react-pdf/renderer"],
+  // Browsers ask for /favicon.ico on their own; the app icon is /icon.png.
+  async rewrites() {
+    return [{ source: "/favicon.ico", destination: "/icon.png" }];
+  },
   // The PDF reads the logo from disk: ship it with the functions that render it.
   outputFileTracingIncludes: {
     "/api/quotes/[id]/pdf": ["./public/brand/logo-color.png"],

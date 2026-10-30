@@ -1151,8 +1151,7 @@
       "expired": "Cette proposition a expiré."
     },
     "settingsLink": "Personnaliser mon assistante",
-    "mic": "Parler à l’assistante",
-    "micSoon": "Bientôt : la voix arrive prochainement",
+    "mic": "Parler à {name}",
     "entry": {
       "label": "Assistante",
       "aria": "Ouvrir l’assistante {name}"
@@ -1162,6 +1161,22 @@
       "fullPage": "Ouvrir en plein écran",
       "settings": "Réglages de l’assistante",
       "close": "Fermer l’assistante"
+    },
+    "voice": {
+      "state": {
+        "connecting": "Connexion…",
+        "listening": "Je vous écoute…",
+        "thinking": "{name} réfléchit…",
+        "speaking": "{name} vous répond…",
+        "recording": "Parlez, puis envoyez."
+      },
+      "stop": "Arrêter la voix",
+      "sendRecording": "Envoyer",
+      "noMic": "Micro inaccessible : autorisez-le dans votre navigateur.",
+      "failed": "La voix n’a pas pu démarrer. Réessayez.",
+      "notHeard": "Je n’ai rien entendu. Réessayez.",
+      "badAudio": "Enregistrement invalide.",
+      "off": "La voix est désactivée dans vos réglages."
     }
   },
   "assistantSettings": {
@@ -1183,7 +1198,7 @@
       "energetic": "Énergique",
       "neutral": "Neutre",
       "off": "Désactivée",
-      "hint": "La voix servira à l’assistante vocale, bientôt disponible."
+      "hint": "Sa voix quand vous lui parlez (bouton micro). « Désactivée » : vous parlez, elle répond par écrit."
     },
     "avatar": {
       "title": "Avatar",

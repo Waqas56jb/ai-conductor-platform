@@ -1,5 +1,5 @@
 import { adminClient, E2E_PASSWORD, e2eEmail, findAuthUserId, readState } from "./support/admin";
-import { expect, expectNoHorizontalScroll, test } from "./support/fixtures";
+import { expect, expectNoHorizontalScroll, test, settled } from "./support/fixtures";
 
 test.describe("auth pages", () => {
   for (const [path, name, heading] of [
@@ -31,6 +31,7 @@ test.describe("auth pages", () => {
     // Fresh form: React's post-submit form reset could otherwise land after the
     // fields below are typed and clear them.
     await page.reload();
+    await settled(page);
     await page.getByLabel("E-mail").fill(readState().users.client.email);
     await page.getByLabel("Mot de passe", { exact: true }).fill("wrong-password-1");
     await page.getByRole("button", { name: "Se connecter" }).click();

@@ -3,7 +3,7 @@
 import { Fragment, useEffect, useId, useRef, useState, useTransition, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { useFormatter, useTranslations } from "next-intl";
-import { Check, Mic, Search, Send, X } from "lucide-react";
+import { Check, Mic, MicOff, Search, Send, X } from "lucide-react";
 import { decideAiAction } from "@/app/app/assistant/actions";
 import { Badge, Button, useToast, type BadgeTone } from "@/components/ui";
 import type { ChatItem } from "@/lib/assistant/chat";
@@ -11,6 +11,7 @@ import type { AiActionStatus } from "@/lib/db/types";
 import type { AssistantEvent } from "@/lib/ai/assistant/run";
 import { AssistantAvatar } from "./AssistantAvatar";
 import { useAssistant } from "./AssistantProvider";
+import { useVoice } from "./useVoice";
 import styles from "./AssistantChat.module.css";
 
 type Props = {
@@ -133,7 +134,7 @@ export function AssistantChat({
   const router = useRouter();
   const { settings } = useAssistant();
   const inputId = useId();
-  const micHintId = useId();
+  const voiceStatusId = useId();
   const [conversationId, setConversationId] = useState(initialId);
   const [items, setItems] = useState<ChatItem[]>(initialItems ?? []);
   const [text, setText] = useState(prefill);
@@ -169,6 +170,19 @@ export function AssistantChat({
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
   }, [items.length, sent, live?.text, live?.reads.length, live?.proposals.length]);
 
+  // The latest conversation id, for callbacks that outlive a render (voice).
+  const idRef = useRef(conversationId);
+  idRef.current = conversationId;
+
+  function adopt(id: string) {
+    if (id === idRef.current) return;
+    idRef.current = id;
+    setConversationId(id);
+    onConversation?.(id);
+    // The full page keeps the conversation in its URL.
+    if (variant === "page") window.history.replaceState(null, "", `/app/assistant?c=${id}`);
+  }
+
   async function refresh(id: string | null) {
     if (id) {
       const loaded = await loadItems(id);
@@ -177,14 +191,16 @@ export function AssistantChat({
     router.refresh();
   }
 
-  async function send(body: string) {
+  /** Sends a message and streams the reply; resolves with the reply's text. */
+  async function send(body: string): Promise<string> {
     const message = body.trim();
-    if (!message || busy) return;
+    if (!message || busy) return "";
+    let answer = "";
     setSent(message);
     setText("");
     setBusy(true);
     setLive({ text: "", reads: [], proposals: [] });
-    let id = conversationId;
+    let id = idRef.current;
     try {
       const res = await fetch("/api/assistant", {
         method: "POST",
@@ -195,7 +211,7 @@ export function AssistantChat({
         const { error } = (await res.json().catch(() => ({}))) as { error?: string };
         toast(tAll(error ?? "common.error"), "error");
         setText(message);
-        return;
+        return "";
       }
       const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
       let buffer = "";
@@ -211,11 +227,9 @@ export function AssistantChat({
           const event = JSON.parse(line) as AssistantEvent;
           if (event.type === "conversation") {
             id = event.id;
-            setConversationId(id);
-            onConversation?.(id);
-            // The full page keeps the conversation in its URL.
-            if (variant === "page") window.history.replaceState(null, "", `/app/assistant?c=${id}`);
+            adopt(id);
           } else if (event.type === "delta") {
+            answer += event.text;
             setLive((l) => l && { ...l, text: l.text + event.text });
           } else if (event.type === "tool") {
             setLive((l) => l && { ...l, reads: [...l.reads, event.name] });
@@ -234,7 +248,23 @@ export function AssistantChat({
       setSent(null);
       setBusy(false);
     }
+    return answer;
   }
+
+  const voice = useVoice({
+    conversationId,
+    onConversation: adopt,
+    onTurn: (id) => {
+      loadItems(id).then((loaded) => loaded && setItems(loaded));
+    },
+    sendText: send,
+    onError: (key) => toast(tAll(key), "error"),
+  });
+  const voiceOn = voice.state !== "idle";
+  const stopVoice = () => {
+    voice.stop();
+    router.refresh();
+  };
 
   const time = (at: string) => format.dateTime(new Date(at), { timeStyle: "short" });
   const toolLabel = (tool: string) => (t.has(`tools.${tool}`) ? t(`tools.${tool}`) : tool);
@@ -270,7 +300,7 @@ export function AssistantChat({
           if (item.kind === "proposal") {
             return (
               <li key={item.id} className={styles.theirs}>
-                <ProposalCard action={item.action} onDecided={() => refresh(conversationId)} />
+                <ProposalCard action={item.action} onDecided={() => refresh(idRef.current)} />
               </li>
             );
           }
@@ -299,7 +329,7 @@ export function AssistantChat({
         ))}
         {live?.proposals.map((action) => (
           <li key={action.id} className={styles.theirs}>
-            <ProposalCard action={action} onDecided={() => refresh(conversationId)} />
+            <ProposalCard action={action} onDecided={() => refresh(idRef.current)} />
           </li>
         ))}
         {live?.text ? (
@@ -318,7 +348,45 @@ export function AssistantChat({
             {t("thinking", { name })}
           </li>
         ) : null}
+        {voice.heard ? (
+          <li className={styles.mine}>
+            <div className={`${styles.bubble} ${styles.streaming}`}>{voice.heard}</div>
+          </li>
+        ) : null}
+        {voice.saying ? (
+          <li className={styles.theirs}>
+            <div className={`${styles.bubble} ${styles.streaming}`}>{voice.saying}</div>
+          </li>
+        ) : null}
       </ol>
+      {voiceOn ? (
+        <div
+          className={styles.voiceBar}
+          role="status"
+          id={voiceStatusId}
+          data-testid="voice-status"
+          data-state={voice.state}
+          data-mode={voice.mode ?? ""}
+        >
+          <span className={`${styles.wave} ${styles[voice.state] ?? ""}`} aria-hidden="true">
+            <span />
+            <span />
+            <span />
+            <span />
+          </span>
+          <span className={styles.voiceText}>{t(`voice.state.${voice.state}`, { name })}</span>
+          {voice.state === "recording" ? (
+            <Button size="sm" onClick={voice.sendRecording}>
+              <Send aria-hidden="true" />
+              {t("voice.sendRecording")}
+            </Button>
+          ) : null}
+          <Button size="sm" variant="ghost" onClick={stopVoice}>
+            <MicOff aria-hidden="true" />
+            {t("voice.stop")}
+          </Button>
+        </div>
+      ) : null}
       <form
         className={styles.composer}
         onSubmit={(e) => {
@@ -343,21 +411,16 @@ export function AssistantChat({
             }
           }}
         />
-        {/* Voice arrives with the realtime agent; until then the mic says so. */}
-        <span className={styles.micWrap}>
-          <Button
-            variant="secondary"
-            disabled
-            aria-label={t("mic")}
-            aria-describedby={micHintId}
-            data-testid="assistant-mic"
-          >
-            <Mic aria-hidden="true" />
-          </Button>
-          <span role="tooltip" id={micHintId} className={styles.tooltip}>
-            {t("micSoon")}
-          </span>
-        </span>
+        <Button
+          variant={voiceOn ? "primary" : "secondary"}
+          aria-label={voiceOn ? t("voice.stop") : t("mic", { name })}
+          aria-pressed={voiceOn}
+          aria-describedby={voiceOn ? voiceStatusId : undefined}
+          data-testid="assistant-mic"
+          onClick={() => (voiceOn ? stopVoice() : voice.start())}
+        >
+          {voiceOn ? <MicOff aria-hidden="true" /> : <Mic aria-hidden="true" />}
+        </Button>
         <Button type="submit" loading={busy} disabled={!text.trim()} aria-label={t("send")}>
           <Send aria-hidden="true" />
         </Button>

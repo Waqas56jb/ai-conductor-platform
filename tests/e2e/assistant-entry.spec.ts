@@ -28,10 +28,10 @@ test.describe("assistant entry point", () => {
       await expect(panel(page)).toBeVisible();
       await expect(panel(page).getByRole("heading", { name: "Maya" })).toBeVisible();
       await expect(panel(page).getByLabel("Écrivez votre message…")).toBeFocused();
-      // Voice is not there yet: the mic says so instead of pretending.
+      // The mic starts a voice conversation (voice.spec covers it).
       const mic = panel(page).getByTestId("assistant-mic");
-      await expect(mic).toBeDisabled();
-      await expect(mic).toHaveAccessibleDescription("Bientôt : la voix arrive prochainement");
+      await expect(mic).toBeEnabled();
+      await expect(mic).toHaveAccessibleName("Parler à Maya");
       await expectNoHorizontalScroll(page);
       await page.keyboard.press("Escape");
       await expect(panel(page)).toBeHidden();

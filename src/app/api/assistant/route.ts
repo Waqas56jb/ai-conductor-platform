@@ -2,8 +2,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { runAssistant, type AssistantEvent } from "@/lib/ai/assistant/run";
 import {
+  assistantContext,
   conversationItems,
-  getAssistantSettings,
   openConversation,
   rateLimited,
 } from "@/lib/ai/assistant/session";
@@ -41,17 +41,7 @@ export async function POST(request: NextRequest) {
   if (!conversationId) return fail("assistant.errors.notFound", 404);
 
   const admin = createAdminClient();
-  const [persona, { data: memories }, { data: company }] = await Promise.all([
-    getAssistantSettings(),
-    admin
-      .from("ai_conductor_assistant_memories")
-      .select("kind, content, approved")
-      .eq("user_id", profile.id)
-      .eq("approved", true)
-      .order("created_at")
-      .limit(50),
-    admin.from("ai_conductor_companies").select("name").eq("id", profile.company_id).single(),
-  ]);
+  const { persona, memories, companyName } = await assistantContext(profile);
 
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
@@ -64,8 +54,8 @@ export async function POST(request: NextRequest) {
           profile,
           conversationId,
           persona,
-          memories: memories ?? [],
-          companyName: company?.name ?? "",
+          memories,
+          companyName,
           text: body.data.text,
           emit,
         });

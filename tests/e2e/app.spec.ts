@@ -7,6 +7,7 @@ import {
   login,
   test,
   type Page,
+  settled,
 } from "./support/fixtures";
 
 /** Expected sidebar per role (order = NAV_ITEMS). */
@@ -197,6 +198,7 @@ test.describe("navigation", () => {
       await expect(page.getByRole("button", { name: "Déplier le menu" })).toBeVisible();
       await shot("sidebar-collapsed");
       await page.reload();
+      await settled(page);
       await expect(page.getByRole("button", { name: "Déplier le menu" })).toBeVisible();
       await page.getByRole("button", { name: "Déplier le menu" }).click();
       await expect(page.getByRole("button", { name: "Réduire le menu" })).toBeVisible();
@@ -216,6 +218,7 @@ test.describe("navigation", () => {
     );
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await page.reload();
+    await settled(page);
     await expect(page.getByText("Active jobs")).toBeVisible();
     if (isNarrow(page)) await page.getByRole("button", { name: "User menu" }).click();
     await page
@@ -272,6 +275,7 @@ test.describe("notifications", () => {
     await panel.getByRole("button", { name: "Tout marquer comme lu" }).click();
     await expect(page.getByTestId("unread-count")).toHaveCount(0);
     await page.reload();
+    await settled(page);
     await expect(page.getByTestId("unread-count")).toHaveCount(0);
   });
 });
@@ -298,6 +302,7 @@ test.describe("profile", () => {
       page.getByRole("status").filter({ hasText: "Modifications enregistrées." }),
     ).toBeVisible();
     await page.reload();
+    await settled(page);
     await expect(page.getByLabel("Nom affiché")).toHaveValue("Clara Compta");
     await page.getByLabel("Nom affiché").fill("Clara Comptable");
     await page.getByRole("button", { name: "Enregistrer" }).click();
@@ -338,6 +343,7 @@ test.describe("company", () => {
       page.getByRole("status").filter({ hasText: "Modifications enregistrées." }),
     ).toBeVisible();
     await page.reload();
+    await settled(page);
     await expect(page.getByLabel(/^SIRET/)).toHaveValue("12345678900012");
     await expect(page.getByLabel("Forme juridique")).toHaveValue("SAS");
     await shot("company");

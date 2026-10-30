@@ -8,6 +8,7 @@ import {
   screenshot,
   test,
   type Page,
+  settled,
 } from "./support/fixtures";
 
 const PHOTO = join(__dirname, "..", "..", "legacy", "client", "public", "final-poster.jpg");
@@ -136,6 +137,7 @@ test("client → manager → technician (AI quote) → approval → signature �
 
   // The client never sees a quote under internal review.
   await client.reload();
+  await settled(client);
   await expect(client.getByTestId("quote-total")).toHaveCount(0);
 
   // 5. Manager approves (live update of his open page).
@@ -196,6 +198,7 @@ test("client → manager → technician (AI quote) → approval → signature �
   await manager.getByRole("button", { name: "Planifier" }).click();
   await status(manager, "Intervention planifiée");
   await tech.reload();
+  await settled(tech);
   await tech.getByRole("button", { name: "Démarrer l’intervention" }).click();
   await status(tech, "En cours");
   await tech.getByRole("button", { name: "Terminer et facturer" }).click();
@@ -208,6 +211,7 @@ test("client → manager → technician (AI quote) → approval → signature �
   // Team chat is never shown to the client.
   await expect(tech.getByRole("heading", { name: "Discussion d’équipe" })).toBeVisible();
   await client.reload();
+  await settled(client);
   await expect(client.getByRole("heading", { name: "Discussion d’équipe" })).toHaveCount(0);
 
   // 8. Client uploads proof of payment; accountant confirms → case closed.
@@ -329,6 +333,7 @@ test("director threshold: settings route a quote to the director, managers canno
     await status(tech2, "Devis — validation dirigeant");
 
     await manager.reload();
+    await settled(manager);
     await expect(manager.getByRole("button", { name: "Valider et envoyer au client" })).toHaveCount(
       0,
     );
