@@ -6,7 +6,10 @@ import { expect, expectNoHorizontalScroll, loginAs, test, type Page } from "./su
 // served by `vite preview` (built with VITE_APP_URL pointing at the app under
 // test) or LANDING_URL; the app by the usual E2E server or E2E_BASE_URL.
 const APP = process.env.E2E_BASE_URL ?? `http://localhost:${process.env.E2E_PORT ?? 3000}`;
-test.use({ baseURL: process.env.LANDING_URL ?? "http://localhost:4173" });
+const LANDING = process.env.LANDING_URL ?? "http://localhost:4173";
+/** The site's origin, the only one the booking API answers. */
+const SITE = { Origin: new URL(LANDING).origin };
+test.use({ baseURL: LANDING });
 
 // Test traffic is tagged and deleted: it never shows in the client's figures.
 const TAG = "e2e";
@@ -156,7 +159,7 @@ test("booking a free demo: pick a slot, get it confirmed by the team", async ({ 
   const slots = (await (await request.get(`${APP}/api/demo/slots`)).json()).slots as string[];
   expect(slots).not.toContain(new Date(row!.slot_start).toISOString());
   const again = await request.post(`${APP}/api/demo/requests`, {
-    headers: { Origin: "http://localhost:4173" },
+    headers: SITE,
     data: { name: "Autre", email: e2eEmail("booking-again"), slot: new Date(row!.slot_start).toISOString(), consent: true, source: TAG },
   });
   expect(again.status()).toBe(409);
@@ -183,11 +186,10 @@ test("the booking API only answers the site, and only for real slots", async ({ 
   const body = { name: "Test", email: e2eEmail("booking-api"), slot: "2026-01-01T10:00:00.000Z", consent: true, source: TAG };
   const foreign = await request.post(`${APP}/api/demo/requests`, { headers: { Origin: "https://evil.example" }, data: body });
   expect(foreign.status()).toBe(403);
-  const site = { Origin: "http://localhost:4173" };
-  expect((await request.post(`${APP}/api/demo/requests`, { headers: site, data: body })).status()).toBe(409);
-  expect((await request.post(`${APP}/api/demo/requests`, { headers: site, data: { ...body, consent: false } })).status()).toBe(400);
+  expect((await request.post(`${APP}/api/demo/requests`, { headers: SITE, data: body })).status()).toBe(409);
+  expect((await request.post(`${APP}/api/demo/requests`, { headers: SITE, data: { ...body, consent: false } })).status()).toBe(400);
   expect(
-    (await request.post(`${APP}/api/demo/events`, { headers: site, data: { name: "demo_confirmed", source: TAG } })).status(),
+    (await request.post(`${APP}/api/demo/events`, { headers: SITE, data: { name: "demo_confirmed", source: TAG } })).status(),
   ).toBe(400);
 });
 
