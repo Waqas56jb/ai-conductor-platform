@@ -51,6 +51,8 @@ Applied history is stored in `ai_conductor_schema_migrations`.
 | `0014_contracts_hide_drafts`           | Clients only see contracts once sent                                                                                                                                                       |
 | `0015_phase6_accounting`               | Payments readable (staff, or the invoice's client), source / author; receipt refusal note; quote `sent_at` / `client_declined_at`; service orders (OS counter); append-only approval steps |
 | `0016_demo_booking`                   | Free demo requests from the marketing site (one per slot), anonymous site events (no cookie / IP); server-only |
+| `0017_restore_function_grants`        | Incident fix: EXECUTE on the RLS helper functions back to `authenticated` (revoked outside the runner) |
+| `0018_restore_table_grants`           | Incident fix: the SELECT / UPDATE grants of 0004–0015 re-issued (revoked outside the runner); the runner now fails if a policy table or helper is unreachable |
 
 ## Connection
 

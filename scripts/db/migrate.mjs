@@ -48,6 +48,52 @@ begin
   end loop;
 end $$;`;
 
+// Every RLS policy calls these: if signed-in users lose EXECUTE on them (it
+// happened once, from outside this runner), nobody can read anything.
+const POLICY_FUNCTIONS = [
+  "ai_conductor_profile_id()",
+  "ai_conductor_company_id()",
+  "ai_conductor_role()",
+  "ai_conductor_is_office()",
+  "ai_conductor_is_staff()",
+  "ai_conductor_can_see_incident(text)",
+];
+
+async function checkPolicyFunctions(client) {
+  const { rows } = await client.query(
+    `select f, has_function_privilege('authenticated', 'public.' || f, 'execute') as ok
+       from unnest($1::text[]) as f`,
+    [POLICY_FUNCTIONS],
+  );
+  const missing = rows.filter((r) => !r.ok).map((r) => r.f);
+  if (missing.length)
+    throw new Error(
+      `authenticated cannot execute ${missing.join(", ")}: every RLS policy will fail. ` +
+        "Restore the grants with a new migration (see 0017).",
+    );
+}
+
+// A table with a read policy for signed-in users must also be readable by
+// them: policies without the matching grant silently return "permission denied".
+async function checkReadableTables(client) {
+  const { rows } = await client.query(`
+    select c.relname
+      from pg_class c
+      join pg_namespace n on n.oid = c.relnamespace
+     where n.nspname = 'public' and c.relkind = 'r' and c.relname like 'ai_conductor\_%'
+       and exists (
+         select 1 from pg_policies p
+          where p.schemaname = 'public' and p.tablename = c.relname
+            and p.permissive = 'PERMISSIVE' and p.cmd in ('SELECT', 'ALL')
+            and 'authenticated' = any (p.roles))
+       and not has_any_column_privilege('authenticated', c.oid, 'select')`);
+  if (rows.length)
+    throw new Error(
+      `authenticated has a read policy but no SELECT grant on ${rows.map((r) => r.relname).join(", ")}. ` +
+        "Restore the grants with a new migration (see 0018).",
+    );
+}
+
 function sslConfig() {
   const caPath = process.env.DATABASE_CA_CERT;
   if (caPath) return { ca: readFileSync(caPath, "utf8"), rejectUnauthorized: true };
@@ -154,6 +200,8 @@ async function main() {
     }
 
     await client.query(LOCKDOWN_SQL);
+    await checkPolicyFunctions(client);
+    await checkReadableTables(client);
     console.log(
       "✔ Lockdown verified: RLS on everywhere, anon fully revoked, authenticated only where a policy allows.",
     );
