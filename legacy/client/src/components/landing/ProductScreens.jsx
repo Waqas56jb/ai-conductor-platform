@@ -1,5 +1,7 @@
 import { useLanguage } from '../../context/LanguageContext'
 import CarouselControls from './CarouselControls'
+import { demoHref } from '../../demoHref'
+import DemoCta from './DemoCta'
 import Icon from './icons'
 import { Reveal } from './Reveal'
 import SectionHead from './SectionHead'
@@ -54,10 +56,10 @@ export default function ProductScreens() {
         </Reveal>
 
         <Reveal className="lp-screens__cta">
-          <a href="#demo" className="ai-btn ai-btn--primary">
+          <DemoCta placement="screens" href={demoHref()}>
             {s.cta}
             <Icon name="arrow" />
-          </a>
+          </DemoCta>
         </Reveal>
       </div>
     </section>

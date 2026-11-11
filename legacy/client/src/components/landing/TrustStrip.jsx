@@ -21,7 +21,7 @@ export default function TrustStrip() {
   const s = t.landing.trust
 
   return (
-    <section id="secteurs" className="lp-trust" aria-labelledby="lp-trust-title">
+    <div className="lp-trust">
       <div className="lp-container">
         <Reveal as="p" className="lp-trust__title" id="lp-trust-title">
           {s.title}
@@ -35,6 +35,6 @@ export default function TrustStrip() {
           ))}
         </ul>
       </div>
-    </section>
+    </div>
   )
 }

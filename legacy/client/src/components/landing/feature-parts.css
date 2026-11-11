@@ -1,0 +1,85 @@
+.lp-parts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+}
+
+.lp-part {
+  padding: clamp(1.4rem, 3vw, 2rem);
+}
+
+.lp-part h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 0 1.2rem;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 600;
+}
+
+.lp-part__num {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.2rem;
+  height: 2.2rem;
+  border-radius: 50%;
+  background: var(--lp-gradient);
+  font-size: 1.05rem;
+}
+
+.lp-part ul {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lp-part li {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: start;
+  gap: 0.65rem;
+  color: var(--ai-text);
+  line-height: 1.45;
+}
+
+.lp-part li.is-soon {
+  color: var(--ai-text-soft);
+}
+
+.lp-part li > .lp-icon {
+  width: 18px;
+  height: 18px;
+  margin-top: 0.15rem;
+  color: var(--ai-cyan);
+}
+
+.lp-part li.is-soon > .lp-icon {
+  color: var(--ai-text-faint);
+}
+
+.lp-part .lp-chip {
+  margin-top: 0.05rem;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .lp-parts {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  /* The chip moves under the text on the narrowest phones. */
+  .lp-part li {
+    grid-template-columns: auto 1fr;
+  }
+
+  .lp-part .lp-chip {
+    grid-column: 2;
+    justify-self: start;
+  }
+}

@@ -1,5 +1,6 @@
 import { appLink } from '../../appUrl'
 import { useLanguage } from '../../context/LanguageContext'
+import DemoCta from './DemoCta'
 import Icon from './icons'
 import { Reveal } from './Reveal'
 import './final-cta.css'
@@ -18,10 +19,10 @@ export default function FinalCta() {
           </h2>
           <p className="lp-final__sub">{s.sub}</p>
           <div className="lp-final__ctas">
-            <a href="#demo" className="ai-btn ai-btn--primary">
+            <DemoCta placement="final">
               {s.demo}
               <Icon name="arrow" />
-            </a>
+            </DemoCta>
             <a href={appLink('/signup')} className="ai-btn ai-btn--ghost">
               {s.signup}
             </a>

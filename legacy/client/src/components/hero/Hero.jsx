@@ -1,6 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useLanguage } from '../../context/LanguageContext'
+import DemoCta from '../landing/DemoCta'
+import { DEMO_POSTER, DEMO_VIDEO, DEMO_VIDEO_MOBILE } from '../landing/DemoVideo'
 import Icon from '../landing/icons'
+import { track } from '../../track'
 import './hero.css'
 
 // Background: 720p on phones, 1080p elsewhere. The lightbox uses the version with sound.
@@ -127,7 +130,7 @@ export default function Hero() {
     // A silent background (the mobile file) has nothing to unmute: play the
     // full presentation with sound instead.
     if (video.muted && SILENT_SOURCES.some((src) => video.currentSrc.endsWith(src))) {
-      openLightbox()
+      openLightbox(VIDEO_AUDIO_SRC, POSTER_SRC)
       return
     }
     if (video.muted) {
@@ -143,10 +146,13 @@ export default function Hero() {
     bgRef.current?.play().catch(() => {})
   }
 
-  function openLightbox() {
+  /** Plays a video with sound in the lightbox: the 1-minute product demo or the brand film. */
+  function openLightbox(src, poster) {
     const dialog = dialogRef.current
     const video = lightboxVideoRef.current
     if (!dialog || !video) return
+    video.poster = poster
+    if (!video.currentSrc.endsWith(src)) video.src = src
     // The page video keeps looping, but silently, behind the lightbox.
     if (bgRef.current) bgRef.current.muted = true
     document.body.style.overflow = 'hidden'
@@ -154,6 +160,11 @@ export default function Hero() {
     video.currentTime = 0
     video.muted = false
     video.play().catch(() => {})
+  }
+
+  function watchDemo() {
+    track('video_play', 'hero')
+    openLightbox(window.matchMedia('(max-width: 900px)').matches ? DEMO_VIDEO_MOBILE : DEMO_VIDEO, DEMO_POSTER)
   }
 
   function onLightboxClose() {
@@ -246,11 +257,11 @@ export default function Hero() {
           </p>
 
           <div className="ai-ctas ai-in" style={{ '--i': 4 }}>
-            <a href="#demo" className="ai-btn ai-btn--primary ai-btn--glow">
+            <DemoCta placement="hero" className="ai-btn ai-btn--primary ai-btn--glow">
               {h.ctaDemo}
               <Icon name="arrow" />
-            </a>
-            <button type="button" className="ai-btn ai-btn--ghost" onClick={openLightbox}>
+            </DemoCta>
+            <button type="button" className="ai-btn ai-btn--ghost" onClick={watchDemo}>
               <span className="ai-play-dot" aria-hidden="true">
                 <svg viewBox="0 0 24 24">
                   <path d="M8 5.5v13l11-6.5z" />
@@ -330,7 +341,7 @@ export default function Hero() {
           >
             <Icon name="x" />
           </button>
-          <video ref={lightboxVideoRef} src={VIDEO_AUDIO_SRC} poster={POSTER_SRC} controls playsInline preload="none" />
+          <video ref={lightboxVideoRef} controls playsInline preload="none" />
         </div>
       </dialog>
     </section>

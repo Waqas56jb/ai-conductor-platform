@@ -17,7 +17,16 @@ async function scrollTo(page: Page, selector: string) {
 const scrollLeft = (page: Page, selector: string) =>
   page.locator(selector).evaluate((el) => Math.round(el.scrollLeft));
 
+/** The other trades sit behind the "Autres activités" tab; real estate shows first. */
+async function showOtherTrades(page: Page, label = "Autres activités") {
+  await page.getByRole("tab", { name: label }).click();
+}
+
 test.beforeEach(async ({ page }) => {
+  // Visits from tests are never counted in the site's statistics.
+  await page.addInitScript(() =>
+    Object.defineProperty(Navigator.prototype, "globalPrivacyControl", { get: () => true }),
+  );
   // French first, whatever an earlier visit chose.
   await page.addInitScript(() => {
     if (!sessionStorage.getItem("lang-reset")) {
@@ -85,6 +94,8 @@ test("hero: the assistant sits right of the headline, greets, then hands over to
 test("for every entrepreneur, with the interface right after the trades", async ({ page, shot }) => {
   await expect(page.locator(".ai-eyebrow")).toContainText("Le bras droit de tous les entrepreneurs");
   const trust = page.locator("#secteurs");
+  await expect(page.getByRole("tab", { name: "Immobilier" })).toHaveAttribute("aria-selected", "true");
+  await showOtherTrades(page);
   await expect(trust.locator(".lp-trust__title")).toHaveText(
     "Conçu pour tous les entrepreneurs, quel que soit votre métier",
   );
@@ -141,6 +152,7 @@ test("features: honest status chips, no testimonials, a pilot programme", async 
 });
 
 test("industries carousel: arrows, dots and drag", async ({ page, shot }) => {
+  await showOtherTrades(page);
   await scrollTo(page, "#solutions");
   const section = page.locator("#solutions");
   const slides = section.locator(".lp-carousel__track > li");
@@ -197,7 +209,7 @@ test("product screens: real screenshots load in the carousel", async ({ page, sh
       )
       .toBe(1440);
   }
-  await expect(section.getByRole("link", { name: "Demander une démo" })).toBeVisible();
+  await expect(section.getByRole("link", { name: "Réserver une démo gratuite" })).toBeVisible();
   await expectNoHorizontalScroll(page);
   await shot("landing-screens");
 });
@@ -222,6 +234,8 @@ test("FR/EN switches every new string", async ({ page, shot }) => {
     "Available",
   );
   await expect(page.locator("#integrations h2")).toHaveText("What works today.");
+  await expect(page.locator("#lp-re-title")).toHaveText("Co-ownership and lettings, finally up to date.");
+  await showOtherTrades(page, "Other businesses");
   await expect(page.locator("#solutions h3").nth(1)).toHaveText("Content creators");
   await expect(page.locator(".ai-eyebrow")).toContainText("The right hand of every entrepreneur");
   await expect(page.getByRole("button", { name: "Next sector" })).toHaveCount(1);

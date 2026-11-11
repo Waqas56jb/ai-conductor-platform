@@ -1,14 +1,15 @@
 import { useEffect } from 'react'
+import { useLanguage } from '../context/LanguageContext'
+import { useMeta } from '../seo'
 import '../components/landing/landing.css'
 import Header from '../components/landing/Header'
 import Hero from '../components/hero/Hero'
-import TrustStrip from '../components/landing/TrustStrip'
+import SectorSwitch from '../components/landing/SectorSwitch'
 import ProblemSolution from '../components/landing/ProblemSolution'
 import HowItWorks from '../components/landing/HowItWorks'
 import Features from '../components/landing/Features'
 import Integrations from '../components/landing/Integrations'
 import UseCases from '../components/landing/UseCases'
-import Industries from '../components/landing/Industries'
 import ProductScreens from '../components/landing/ProductScreens'
 import Security from '../components/landing/Security'
 import Pricing from '../components/landing/Pricing'
@@ -19,6 +20,9 @@ import FinalCta from '../components/landing/FinalCta'
 import Footer from '../components/landing/Footer'
 
 export default function Landing() {
+  const { t } = useLanguage()
+  useMeta({ ...t.landing.meta, path: '/' })
+
   useEffect(() => {
     document.body.classList.add('lp-body')
     // Arriving with a hash (e.g. /#tarifs): the target only exists after render,
@@ -38,14 +42,13 @@ export default function Landing() {
       <Header />
       <main>
         <Hero />
-        <TrustStrip />
+        <SectorSwitch />
         <ProductScreens />
         <ProblemSolution />
         <HowItWorks />
         <Features />
         <Integrations />
         <UseCases />
-        <Industries />
         <Security />
         <Pricing />
         <Pilot />

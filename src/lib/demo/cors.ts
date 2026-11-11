@@ -6,7 +6,8 @@ const SITE_ORIGINS = [
   "https://www.pratonna.com",
   "https://pratonna-landing.vercel.app",
   process.env.NEXT_PUBLIC_SITE_URL,
-  ...(process.env.NODE_ENV === "production" ? [] : ["http://localhost:4173", "http://localhost:5173"]),
+  // Local landing (vite preview / dev) against a local app; never on Vercel.
+  ...(process.env.VERCEL ? [] : ["http://localhost:4173", "http://localhost:5173"]),
 ].filter(Boolean) as string[];
 
 export const allowedOrigin = (origin: string | null) =>

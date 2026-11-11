@@ -1,0 +1,27 @@
+.lp-video {
+  width: min(960px, 100%);
+  margin: 0 auto;
+}
+
+.lp-video__frame {
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid var(--lp-card-line);
+  background: var(--ai-navy-900);
+  box-shadow: 0 40px 100px -45px rgba(47, 107, 255, 0.9);
+  aspect-ratio: 16 / 9;
+}
+
+.lp-video video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lp-video figcaption {
+  margin-top: 0.8rem;
+  color: var(--ai-text-faint);
+  font-size: 0.88rem;
+  text-align: center;
+}

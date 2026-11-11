@@ -7,6 +7,10 @@ const landingFr = {
     solutions: 'Solutions',
     pricing: 'Tarifs',
     demo: 'Démonstration',
+    realEstate: 'Immobilier',
+    trades: 'BTP & artisans',
+    freeDemo: 'Démo gratuite',
+    freeDemoLong: 'Réserver une démo gratuite',
     contact: 'Contact',
     login: 'Connexion',
     signup: 'Inscription',
@@ -17,6 +21,148 @@ const landingFr = {
     switchLang: 'Changer de langue',
   },
   status: { available: 'Disponible', soon: 'Bientôt' },
+  meta: {
+    title: 'Pratonna — Moins d’administratif, plus de temps pour l’essentiel',
+    description:
+      'Pratonna trie vos demandes, prépare vos devis, relance vos impayés et suit vos dossiers. Pour l’immobilier, le BTP et toutes les PME. Démo et test pilote gratuits.',
+  },
+  sectorSwitch: {
+    label: 'Votre activité',
+    realEstate: 'Immobilier',
+    others: 'Autres activités',
+    reEyebrow: 'Immobilier',
+    reTitle: 'Copropriété et gestion locative, enfin à jour.',
+    reSub: 'Syndics, gestionnaires et agences indépendantes : Pratonna prend en charge l’administratif, vous gardez la décision.',
+    reCta: 'Tout voir pour l’immobilier',
+    othersCta: 'BTP, artisans et équipes terrain',
+  },
+  video: {
+    eyebrow: 'La démo en 1 minute',
+    title: 'Voyez Pratonna au travail.',
+    sub: 'De vraies captures de l’application : la copropriété, puis la gestion locative.',
+    label: 'Démonstration de Pratonna en 1 minute',
+    caption: 'Vidéo commentée et sous-titrée · 1 minute',
+  },
+  realEstate: {
+    parts: [
+      {
+        title: 'Gestion de copropriété',
+        items: [
+          {
+            text: 'Fuite signalée : l’urgence est repérée et vous missionnez l’intervenant sous contrat en un clic',
+            status: 'available',
+          },
+          {
+            text: 'Ordres de service générés avec la comptabilité intégrée : fonds vérifiés, visa comptable, signature en ligne',
+            status: 'available',
+          },
+          { text: 'Compte rendu d’AG rédigé à partir de vos notes ou d’un enregistrement', status: 'available' },
+          { text: 'PV d’assemblée générale au format officiel', status: 'soon' },
+          { text: 'État daté et pré-état daté édités en quelques clics', status: 'soon' },
+        ],
+      },
+      {
+        title: 'Gestion locative',
+        items: [
+          { text: 'Relances des impayés préparées, envoyées après votre accord', status: 'available' },
+          { text: 'Paiements des propriétaires suivis facture par facture, avec rappels', status: 'available' },
+          { text: 'Appels de charges', status: 'soon' },
+          { text: 'Baux et documents de location', status: 'soon' },
+          { text: 'États des lieux d’entrée et de sortie', status: 'soon' },
+        ],
+      },
+    ],
+  },
+  pages: {
+    immobilier: {
+      meta: {
+        title: 'Pratonna pour l’immobilier — syndics, gestion locative, agences',
+        description:
+          'Copropriété et gestion locative : fuites, ordres de service, comptes rendus d’AG, relances d’impayés et paiements suivis. Démo et test pilote gratuits, sans engagement.',
+      },
+      video: true,
+      sector: 'Agence immobilière',
+      eyebrow: 'Agences indépendantes · Syndics · Gestionnaires',
+      title: 'L’immobilier, sans la paperasse.',
+      sub: 'Pratonna prépare vos documents, relance à votre place et suit chaque dossier de copropriété ou de location. Vous validez, Pratonna s’en occupe.',
+      partsEyebrow: 'Fonctionnalités',
+      partsTitle: 'Ce que Pratonna fait pour vous.',
+      partsSub: 'Ce qui fonctionne aujourd’hui, et ce qui arrive bientôt : nous le disons clairement.',
+      benefitsTitle: 'Pour les agences indépendantes.',
+      benefits: [
+        {
+          icon: 'clock',
+          title: 'Du temps rendu',
+          text: 'Moins de saisie, de copier-coller et de relances à la main : vos journées vont à vos clients.',
+        },
+        {
+          icon: 'bell',
+          title: 'Aucune relance oubliée',
+          text: 'Impayés, rappels, actions votées en AG : chaque échéance est suivie et vous êtes prévenu.',
+        },
+        {
+          icon: 'users',
+          title: 'Des clients mieux informés',
+          text: 'Copropriétaires et propriétaires suivent leurs demandes, devis et factures dans leur espace.',
+        },
+      ],
+    },
+    btp: {
+      meta: {
+        title: 'Pratonna pour le BTP — rénovation, artisans, équipes terrain',
+        description:
+          'Demandes classées par urgence, constats et photos depuis le chantier, devis signés en ligne, interventions planifiées et factures relancées. Démo et test pilote gratuits.',
+      },
+      video: false,
+      sector: 'Entreprise BTP',
+      eyebrow: 'Entreprises de rénovation · Artisans · Équipes terrain',
+      title: 'Vos chantiers suivis, de la demande à la facture.',
+      sub: 'Pratonna trie les demandes, prépare vos devis, planifie vos équipes et relance vos factures. Vous gardez la main sur chaque décision.',
+      partsEyebrow: 'Fonctionnalités',
+      partsTitle: 'Ce que Pratonna fait pour vous.',
+      partsSub: 'Ce qui fonctionne aujourd’hui, et ce qui arrive bientôt : nous le disons clairement.',
+      parts: [
+        {
+          title: 'Au bureau',
+          items: [
+            { text: 'Demandes clients classées par urgence', status: 'available' },
+            { text: 'Devis chiffrés, validés puis signés en ligne', status: 'available' },
+            { text: 'Ordres de service et suivi des paiements', status: 'available' },
+            { text: 'Factures et relances sans ressaisie', status: 'available' },
+            { text: 'Synchronisation Gmail et Outlook', status: 'soon' },
+          ],
+        },
+        {
+          title: 'Sur le terrain',
+          items: [
+            { text: 'Interventions du jour sur le téléphone', status: 'available' },
+            { text: 'Constat et photos envoyés depuis le chantier', status: 'available' },
+            { text: 'Équipes affectées selon leur disponibilité et leur position', status: 'available' },
+            { text: 'Comptes rendus de réunion de chantier', status: 'available' },
+            { text: 'Agendas Google et Outlook synchronisés', status: 'soon' },
+          ],
+        },
+      ],
+      benefitsTitle: 'Pour les entreprises du bâtiment.',
+      benefits: [
+        {
+          icon: 'clock',
+          title: 'Moins de temps au bureau',
+          text: 'Devis, factures et relances sont préparés pour vous : vous validez en un clic.',
+        },
+        {
+          icon: 'check',
+          title: 'Des chantiers plus clairs',
+          text: 'Chaque intervention a son statut, ses photos et son historique, du premier appel à la facture.',
+        },
+        {
+          icon: 'bell',
+          title: 'Aucun suivi oublié',
+          text: 'Relances clients et rappels internes partent au bon moment, après votre accord.',
+        },
+      ],
+    },
+  },
   trust: {
     title: 'Conçu pour tous les entrepreneurs, quel que soit votre métier',
     items: [
@@ -292,7 +438,7 @@ const landingFr = {
     prev: 'Capture précédente',
     next: 'Capture suivante',
     goTo: 'Afficher la capture',
-    cta: 'Demander une démo',
+    cta: 'Réserver une démo gratuite',
     items: [
       { src: '/screens/manager-dashboard.webp', title: 'Tableau de bord du gestionnaire', text: 'Priorités du jour, dossiers à affecter et devis à valider.' },
       { src: '/screens/case-detail.webp', title: 'Détail d’un dossier', text: 'Chronologie, photos, devis et échanges au même endroit.' },
@@ -376,18 +522,19 @@ const landingFr = {
         ],
       },
     ],
-    note: 'Prix hors taxes. Essai gratuit, sans carte bancaire.',
+    note: 'Prix hors taxes. Démo et test pilote gratuits, sans engagement ni carte bancaire.',
   },
   pilot: {
     eyebrow: 'Programme pilote',
     title: 'Rejoignez les premières entreprises.',
     sub: 'Nous construisons Pratonna avec un petit groupe de PME. Pas de faux témoignages : les vôtres viendront.',
     points: [
+      'Test pilote 100 % gratuit et sans engagement',
       'Mise en place accompagnée, offerte',
       'Accès direct à l’équipe produit',
       'Vos retours intégrés en priorité',
     ],
-    cta: 'Rejoindre le programme pilote',
+    cta: 'Réserver ma démo gratuite',
   },
   faq: {
     eyebrow: 'FAQ',
@@ -420,18 +567,27 @@ const landingFr = {
     ],
   },
   demo: {
-    eyebrow: 'Démonstration',
-    title: 'Voyez Pratonna en action.',
-    sub: '30 minutes avec notre équipe pour découvrir comment Pratonna s’adapte à votre activité.',
+    eyebrow: 'Démo gratuite',
+    title: 'Réservez votre démo gratuite.',
+    free: 'Démo et test pilote 100 % gratuits, sans engagement',
+    sub: '30 minutes en visio avec notre équipe, sur vos propres dossiers. Choisissez votre créneau : la confirmation arrive par e-mail.',
     points: [
       'Une démonstration sur vos propres cas',
-      'Des réponses à toutes vos questions',
-      'Sans engagement',
+      'Un test pilote gratuit ensuite, si vous le souhaitez',
+      'Aucune carte bancaire, aucun engagement',
     ],
     direct: 'Ou écrivez-nous directement :',
-    formTitle: 'Demander une démo',
+    formTitle: 'Choisissez votre créneau',
+    slotTitle: 'Jour et heure',
+    timezone: '(heure de Paris, 30 min)',
+    dayLabel: 'Jour',
+    timeLabel: 'Heure',
+    slotLoading: 'Chargement des créneaux…',
+    slotError: 'Les créneaux ne s’affichent pas pour le moment. Écrivez-nous :',
+    noSlots: 'Aucun créneau libre dans les deux prochaines semaines : écrivez-nous, nous trouverons un moment.',
     name: 'Nom complet',
     email: 'E-mail professionnel',
+    phone: 'Téléphone',
     company: 'Entreprise',
     sector: 'Secteur',
     sectorPlaceholder: 'Choisissez votre secteur',
@@ -451,20 +607,35 @@ const landingFr = {
     message: 'Message',
     messagePlaceholder: 'Parlez-nous de votre activité et de vos besoins…',
     optional: 'facultatif',
-    submit: 'Envoyer ma demande',
-    privacy: 'Vos informations servent uniquement à répondre à votre demande.',
+    consent: 'J’accepte que Pratonna utilise ces informations pour organiser la démo et me recontacter à ce sujet.',
+    privacyLink: 'Confidentialité',
+    submit: 'Réserver ma démo gratuite',
+    sending: 'Réservation…',
+    privacy: 'Gratuit et sans engagement. Vos informations servent uniquement à organiser la démo.',
     mailSubject: 'Demande de démo Pratonna',
-    toastTitle: 'Merci !',
-    toastText: 'Votre messagerie s’ouvre avec votre demande pré-remplie : il ne reste qu’à l’envoyer.',
-    close: 'Fermer',
+    done: {
+      title: 'C’est réservé !',
+      text: 'Votre démo gratuite est prévue le {slot} (heure de Paris).',
+      next: 'Un e-mail de confirmation vous attend, puis l’invitation avec le lien de la visio.',
+      nextNoEmail: 'Notre équipe vous confirme le rendez-vous très vite, avec le lien de la visio.',
+    },
+    errors: {
+      slot: 'Choisissez un jour et une heure.',
+      taken: 'Ce créneau vient d’être réservé : choisissez-en un autre.',
+      tooMany: 'Vous avez déjà envoyé plusieurs demandes aujourd’hui : nous revenons vers vous très vite.',
+      generic: 'L’envoi n’a pas abouti. Réessayez, ou écrivez-nous à contact@pratonna.com.',
+    },
   },
   finalCta: {
     title: 'Reprenez la main sur votre journée.',
-    sub: 'Confiez l’administratif à Pratonna et gardez votre temps pour votre métier.',
-    demo: 'Demander une démo',
+    sub: 'Confiez l’administratif à Pratonna et gardez votre temps pour votre métier. Démo et test pilote gratuits.',
+    demo: 'Réserver une démo gratuite',
     signup: 'Créer un compte',
   },
   footer: {
+    ctaTitle: 'Voyez Pratonna sur vos propres dossiers.',
+    free: 'Démo et test pilote gratuits, sans engagement.',
+    cta: 'Réserver une démo gratuite',
     tagline: 'La collaboratrice de tous les entrepreneurs, quel que soit leur métier.',
     columns: [
       {
@@ -479,16 +650,16 @@ const landingFr = {
       {
         title: 'Solutions',
         links: [
+          { label: 'Immobilier & syndic', href: '/immobilier' },
+          { label: 'BTP & artisans', href: '/btp' },
           { label: 'Commerce', href: '/#solutions' },
           { label: 'Créateurs de contenu', href: '/#solutions' },
-          { label: 'Immobilier & syndic', href: '/#solutions' },
-          { label: 'BTP & artisans', href: '/#solutions' },
         ],
       },
       {
         title: 'Entreprise',
         links: [
-          { label: 'Démonstration', href: '/#demo' },
+          { label: 'Démo gratuite', href: '/#demo' },
           { label: 'Contact', href: '/#contact' },
           { label: 'Connexion', href: '/login' },
           { label: 'Inscription', href: '/signup' },
@@ -516,6 +687,16 @@ const landingFr = {
       cgu: 'Conditions générales d’utilisation',
       privacy: 'Politique de confidentialité',
     },
+    privacy: [
+      {
+        title: 'Demande de démo',
+        text: 'Quand vous réservez une démo, nous recevons votre nom, votre e-mail, votre entreprise, votre secteur et, si vous les indiquez, votre téléphone et votre message. Ils servent uniquement à organiser la démo et à vous recontacter à ce sujet, sur la base de votre consentement. Ils ne sont jamais revendus. Vous pouvez demander leur consultation, leur rectification ou leur suppression à tout moment.',
+      },
+      {
+        title: 'Mesure d’audience',
+        text: 'Pour savoir si le site est utile, nous comptons les visites, les clics sur « Démo gratuite », les lectures de la vidéo et les demandes de démo, sans cookie, sans adresse IP et sans identifiant : nous ne pouvons pas vous reconnaître. Si votre navigateur demande à ne pas être suivi (Do Not Track ou Global Privacy Control), rien n’est compté.',
+      },
+    ],
   },
 }
 
@@ -525,6 +706,10 @@ const landingEn = {
     solutions: 'Solutions',
     pricing: 'Pricing',
     demo: 'Demo',
+    realEstate: 'Real estate',
+    trades: 'Construction & trades',
+    freeDemo: 'Free demo',
+    freeDemoLong: 'Book a free demo',
     contact: 'Contact',
     login: 'Log in',
     signup: 'Sign up',
@@ -535,6 +720,148 @@ const landingEn = {
     switchLang: 'Switch language',
   },
   status: { available: 'Available', soon: 'Coming soon' },
+  meta: {
+    title: 'Pratonna — Less admin, more time for what matters',
+    description:
+      'Pratonna sorts your requests, prepares your quotes, chases unpaid invoices and keeps your cases on track. For real estate, construction and every SME. Free demo and pilot.',
+  },
+  sectorSwitch: {
+    label: 'Your business',
+    realEstate: 'Real estate',
+    others: 'Other businesses',
+    reEyebrow: 'Real estate',
+    reTitle: 'Co-ownership and lettings, finally up to date.',
+    reSub: 'Co-ownership managers, property managers and independent agencies: Pratonna takes on the admin, you keep the decisions.',
+    reCta: 'See everything for real estate',
+    othersCta: 'Construction, trades and field teams',
+  },
+  video: {
+    eyebrow: 'The 1-minute demo',
+    title: 'See Pratonna at work.',
+    sub: 'Real screens of the app: co-ownership first, then lettings management.',
+    label: 'One-minute Pratonna demo',
+    caption: 'Narrated in French, with on-screen subtitles · 1 minute',
+  },
+  realEstate: {
+    parts: [
+      {
+        title: 'Co-ownership management',
+        items: [
+          {
+            text: 'A leak is reported: the urgency is flagged and you send the contracted provider in one click',
+            status: 'available',
+          },
+          {
+            text: 'Service orders backed by built-in accounting: funds checked, accountant review, online signature',
+            status: 'available',
+          },
+          { text: 'General assembly minutes drafted from your notes or a recording', status: 'available' },
+          { text: 'Official general assembly report (PV d’AG)', status: 'soon' },
+          { text: 'État daté and pré-état daté in a few clicks', status: 'soon' },
+        ],
+      },
+      {
+        title: 'Lettings management',
+        items: [
+          { text: 'Unpaid invoice reminders prepared, sent once you approve', status: 'available' },
+          { text: 'Owners’ payments tracked invoice by invoice, with reminders', status: 'available' },
+          { text: 'Service-charge calls', status: 'soon' },
+          { text: 'Leases and rental documents', status: 'soon' },
+          { text: 'Move-in and move-out inventories', status: 'soon' },
+        ],
+      },
+    ],
+  },
+  pages: {
+    immobilier: {
+      meta: {
+        title: 'Pratonna for real estate — co-ownership, lettings, agencies',
+        description:
+          'Co-ownership and lettings: leaks, service orders, assembly minutes, unpaid invoice reminders and tracked payments. Free, no-commitment demo and pilot.',
+      },
+      video: true,
+      sector: 'Real estate agency',
+      eyebrow: 'Independent agencies · Co-ownership · Property managers',
+      title: 'Real estate, without the paperwork.',
+      sub: 'Pratonna prepares your documents, chases payments for you and tracks every co-ownership or lettings case. You approve, Pratonna takes care of it.',
+      partsEyebrow: 'Features',
+      partsTitle: 'What Pratonna does for you.',
+      partsSub: 'What works today, and what is coming soon: we say it plainly.',
+      benefitsTitle: 'For independent agencies.',
+      benefits: [
+        {
+          icon: 'clock',
+          title: 'Time given back',
+          text: 'Less typing, copy-pasting and manual follow-ups: your days go to your clients.',
+        },
+        {
+          icon: 'bell',
+          title: 'No missed follow-up',
+          text: 'Unpaid invoices, reminders, actions voted in assembly: every deadline is tracked and you are told.',
+        },
+        {
+          icon: 'users',
+          title: 'Better-informed clients',
+          text: 'Co-owners and landlords follow their requests, quotes and invoices in their own space.',
+        },
+      ],
+    },
+    btp: {
+      meta: {
+        title: 'Pratonna for construction — renovation firms, trades, field teams',
+        description:
+          'Requests ranked by urgency, site reports with photos, quotes signed online, scheduled jobs and invoice reminders. Free demo and pilot.',
+      },
+      video: false,
+      sector: 'Construction company',
+      eyebrow: 'Renovation firms · Tradespeople · Field teams',
+      title: 'Your jobs tracked, from request to invoice.',
+      sub: 'Pratonna sorts requests, prepares your quotes, schedules your crews and chases your invoices. You stay in control of every decision.',
+      partsEyebrow: 'Features',
+      partsTitle: 'What Pratonna does for you.',
+      partsSub: 'What works today, and what is coming soon: we say it plainly.',
+      parts: [
+        {
+          title: 'At the office',
+          items: [
+            { text: 'Client requests ranked by urgency', status: 'available' },
+            { text: 'Quotes priced, approved, then signed online', status: 'available' },
+            { text: 'Service orders and payment tracking', status: 'available' },
+            { text: 'Invoices and reminders without re-typing', status: 'available' },
+            { text: 'Gmail and Outlook sync', status: 'soon' },
+          ],
+        },
+        {
+          title: 'In the field',
+          items: [
+            { text: 'Today’s jobs on your phone', status: 'available' },
+            { text: 'Site report and photos sent from the job', status: 'available' },
+            { text: 'Crews assigned by availability and location', status: 'available' },
+            { text: 'Site meeting minutes', status: 'available' },
+            { text: 'Google and Outlook calendars in sync', status: 'soon' },
+          ],
+        },
+      ],
+      benefitsTitle: 'For building firms.',
+      benefits: [
+        {
+          icon: 'clock',
+          title: 'Less time at the office',
+          text: 'Quotes, invoices and reminders are prepared for you: approve them in one click.',
+        },
+        {
+          icon: 'check',
+          title: 'Clearer jobs',
+          text: 'Every job has its status, photos and history, from the first call to the invoice.',
+        },
+        {
+          icon: 'bell',
+          title: 'No missed follow-up',
+          text: 'Client reminders and internal follow-ups go out at the right time, after your approval.',
+        },
+      ],
+    },
+  },
   trust: {
     title: 'Built for every entrepreneur, whatever your trade',
     items: [
@@ -806,7 +1133,7 @@ const landingEn = {
     prev: 'Previous screenshot',
     next: 'Next screenshot',
     goTo: 'Show screenshot',
-    cta: 'Book a demo',
+    cta: 'Book a free demo',
     items: [
       { src: '/screens/manager-dashboard.webp', title: 'Manager dashboard', text: 'Today’s priorities, cases to assign and quotes to approve.' },
       { src: '/screens/case-detail.webp', title: 'Case detail', text: 'Timeline, photos, quote and messages in one place.' },
@@ -884,14 +1211,19 @@ const landingEn = {
         ],
       },
     ],
-    note: 'Prices exclude VAT. Free trial, no credit card required.',
+    note: 'Prices exclude VAT. Free demo and pilot, no commitment and no credit card.',
   },
   pilot: {
     eyebrow: 'Pilot programme',
     title: 'Join the first companies.',
     sub: 'We are building Pratonna with a small group of SMEs. No made-up testimonials: yours will come.',
-    points: ['Guided setup, free of charge', 'Direct access to the product team', 'Your feedback built in first'],
-    cta: 'Join the pilot programme',
+    points: [
+      'Pilot 100% free, no commitment',
+      'Guided setup, free of charge',
+      'Direct access to the product team',
+      'Your feedback built in first',
+    ],
+    cta: 'Book my free demo',
   },
   faq: {
     eyebrow: 'FAQ',
@@ -924,14 +1256,23 @@ const landingEn = {
     ],
   },
   demo: {
-    eyebrow: 'Demo',
-    title: 'See Pratonna in action.',
-    sub: '30 minutes with our team to see how Pratonna fits your business.',
-    points: ['A demo on your own use cases', 'Answers to all your questions', 'No commitment'],
+    eyebrow: 'Free demo',
+    title: 'Book your free demo.',
+    free: 'Demo and pilot 100% free, no commitment',
+    sub: '30 minutes by video call with our team, on your own cases. Pick a slot: the confirmation arrives by email.',
+    points: ['A demo on your own use cases', 'A free pilot afterwards, if you wish', 'No credit card, no commitment'],
     direct: 'Or email us directly:',
-    formTitle: 'Book a demo',
+    formTitle: 'Pick your slot',
+    slotTitle: 'Day and time',
+    timezone: '(Paris time, 30 min)',
+    dayLabel: 'Day',
+    timeLabel: 'Time',
+    slotLoading: 'Loading the slots…',
+    slotError: 'The slots cannot be shown right now. Email us:',
+    noSlots: 'No free slot in the next two weeks: email us and we will find a time.',
     name: 'Full name',
     email: 'Work email',
+    phone: 'Phone',
     company: 'Company',
     sector: 'Sector',
     sectorPlaceholder: 'Choose your sector',
@@ -951,20 +1292,35 @@ const landingEn = {
     message: 'Message',
     messagePlaceholder: 'Tell us about your business and what you need…',
     optional: 'optional',
-    submit: 'Send my request',
-    privacy: 'Your details are only used to answer your request.',
+    consent: 'I agree that Pratonna uses these details to organise the demo and contact me about it.',
+    privacyLink: 'Privacy',
+    submit: 'Book my free demo',
+    sending: 'Booking…',
+    privacy: 'Free, no commitment. Your details are only used to organise the demo.',
     mailSubject: 'Pratonna demo request',
-    toastTitle: 'Thank you!',
-    toastText: 'Your email app is opening with your request pre-filled: just hit send.',
-    close: 'Close',
+    done: {
+      title: 'You’re booked!',
+      text: 'Your free demo is on {slot} (Paris time).',
+      next: 'A confirmation email is on its way, then the invitation with the video link.',
+      nextNoEmail: 'Our team will confirm the meeting shortly, with the video link.',
+    },
+    errors: {
+      slot: 'Pick a day and a time.',
+      taken: 'This slot was just booked: please pick another one.',
+      tooMany: 'You have already sent several requests today: we will get back to you shortly.',
+      generic: 'Sending failed. Try again, or email us at contact@pratonna.com.',
+    },
   },
   finalCta: {
     title: 'Take back control of your day.',
-    sub: 'Hand the admin to Pratonna and keep your time for your real work.',
-    demo: 'Book a demo',
+    sub: 'Hand the admin to Pratonna and keep your time for your real work. Free demo and pilot.',
+    demo: 'Book a free demo',
     signup: 'Create an account',
   },
   footer: {
+    ctaTitle: 'See Pratonna on your own cases.',
+    free: 'Free demo and pilot, no commitment.',
+    cta: 'Book a free demo',
     tagline: 'The teammate for every entrepreneur, whatever the trade.',
     columns: [
       {
@@ -979,16 +1335,16 @@ const landingEn = {
       {
         title: 'Solutions',
         links: [
+          { label: 'Real estate & property', href: '/immobilier' },
+          { label: 'Construction & trades', href: '/btp' },
           { label: 'Retail', href: '/#solutions' },
           { label: 'Content creators', href: '/#solutions' },
-          { label: 'Real estate & property', href: '/#solutions' },
-          { label: 'Construction & trades', href: '/#solutions' },
         ],
       },
       {
         title: 'Company',
         links: [
-          { label: 'Demo', href: '/#demo' },
+          { label: 'Free demo', href: '/#demo' },
           { label: 'Contact', href: '/#contact' },
           { label: 'Log in', href: '/login' },
           { label: 'Sign up', href: '/signup' },
@@ -1016,6 +1372,16 @@ const landingEn = {
       cgu: 'Terms of use',
       privacy: 'Privacy policy',
     },
+    privacy: [
+      {
+        title: 'Demo requests',
+        text: 'When you book a demo, we receive your name, email, company, sector and, if you give them, your phone number and message. They are only used to organise the demo and contact you about it, based on your consent. They are never sold. You can ask to see, correct or delete them at any time.',
+      },
+      {
+        title: 'Audience measurement',
+        text: 'To know whether the site is useful, we count visits, clicks on “Free demo”, video plays and demo requests, with no cookie, no IP address and no identifier: we cannot recognise you. If your browser asks not to be tracked (Do Not Track or Global Privacy Control), nothing is counted.',
+      },
+    ],
   },
 }
 
@@ -1028,9 +1394,9 @@ export const translations = {
       titleLine2: 'More time for what matters.',
       typed: ['Your emails, sorted.', 'Your quotes, ready.', 'Your reminders, sent.', 'Your cases, up to date.'],
       lead: 'Pratonna reads your emails, prepares your quotes, follows up with your clients and keeps your cases on track — you approve, she takes care of it.',
-      ctaDemo: 'Book a demo',
-      ctaWatch: 'Watch the overview',
-      micro: ['Free trial', 'No credit card', 'Secure hosting'],
+      ctaDemo: 'Book a free demo',
+      ctaWatch: 'Watch the 1-min demo',
+      micro: ['Free demo and pilot', 'No commitment', 'Secure hosting'],
       // Same order as PERSONAS in Hero.jsx: the woman, then the man.
       avatar: {
         personas: [
@@ -1072,9 +1438,9 @@ export const translations = {
       titleLine2: 'Plus de temps pour l’essentiel.',
       typed: ['Vos e-mails, triés.', 'Vos devis, prêts.', 'Vos relances, envoyées.', 'Vos dossiers, à jour.'],
       lead: 'Pratonna lit vos e-mails, prépare vos devis, relance vos clients et suit vos dossiers — vous validez, elle s’en occupe.',
-      ctaDemo: 'Demander une démo',
-      ctaWatch: 'Voir la présentation',
-      micro: ['Essai gratuit', 'Sans carte bancaire', 'Hébergement sécurisé'],
+      ctaDemo: 'Réserver une démo gratuite',
+      ctaWatch: 'Voir la démo (1 min)',
+      micro: ['Démo et test pilote gratuits', 'Sans engagement', 'Hébergement sécurisé'],
       // Same order as PERSONAS in Hero.jsx: the woman, then the man.
       avatar: {
         personas: [

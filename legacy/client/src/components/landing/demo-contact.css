@@ -142,65 +142,173 @@
   text-align: center;
 }
 
-/* ---------- Toast ---------- */
+/* ---------- Free badge, slots, consent, result ---------- */
 
-.lp-toast {
-  position: fixed;
-  left: 50%;
-  bottom: 1.5rem;
-  z-index: 60;
+.lp-free {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 1rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  background: rgba(52, 211, 153, 0.1);
+  color: #a7f3d0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.lp-free .lp-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.lp-slots {
+  display: grid;
+  gap: 0.7rem;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.lp-slots legend {
+  margin-bottom: 0.7rem;
+  padding: 0;
+  color: var(--ai-text-soft);
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.lp-slots legend small,
+.lp-slots__note {
+  color: var(--ai-text-faint);
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+.lp-slots__note {
+  margin: 0;
+}
+
+.lp-slots__note a {
+  color: var(--ai-cyan);
+}
+
+.lp-slots__days {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+  scrollbar-width: thin;
+}
+
+.lp-slots__times {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 0.5rem;
+}
+
+.lp-slots button {
+  flex: none;
+  min-height: 44px;
+  padding: 0.55rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(6, 11, 30, 0.6);
+  color: var(--ai-text);
+  font: inherit;
+  font-size: 0.92rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.lp-slots button:hover {
+  border-color: rgba(73, 216, 255, 0.5);
+}
+
+.lp-slots button:focus-visible {
+  outline: 2px solid var(--ai-cyan);
+  outline-offset: 2px;
+}
+
+.lp-slots button.is-active {
+  border-color: var(--ai-cyan);
+  background: rgba(47, 107, 255, 0.35);
+  font-weight: 600;
+}
+
+.lp-consent {
   display: flex;
   align-items: flex-start;
-  gap: 0.8rem;
-  width: min(440px, calc(100% - 2rem));
-  padding: 1rem 1rem 1rem 1.1rem;
-  border-radius: 16px;
-  border: 1px solid rgba(110, 231, 183, 0.35);
-  background: rgba(10, 18, 44, 0.94);
-  backdrop-filter: blur(14px);
-  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.8);
-  transform: translate(-50%, 140%);
-  opacity: 0;
-  pointer-events: none;
-  transition:
-    transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1),
-    opacity 0.3s ease;
-}
-
-.lp-toast.is-visible {
-  transform: translate(-50%, 0);
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.lp-toast__icon {
-  color: #6ee7b7;
-}
-
-.lp-toast strong {
-  display: block;
-  margin-bottom: 0.2rem;
-}
-
-.lp-toast p {
-  margin: 0;
+  gap: 0.6rem;
   color: var(--ai-text-soft);
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: 0.85rem;
+  line-height: 1.45;
 }
 
-.lp-toast__close {
-  margin-left: auto;
-  padding: 0.25rem;
-  border: 0;
-  background: transparent;
-  color: var(--ai-text-faint);
-  cursor: pointer;
-}
-
-.lp-toast__close .lp-icon {
+.lp-consent input {
+  flex: none;
   width: 18px;
   height: 18px;
+  margin-top: 0.1rem;
+  accent-color: var(--ai-blue);
+}
+
+.lp-consent a {
+  color: var(--ai-cyan);
+}
+
+.lp-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.lp-form__error {
+  margin: 0;
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  background: rgba(248, 113, 113, 0.1);
+  color: #fecaca;
+  font-size: 0.9rem;
+}
+
+.lp-form button[disabled] {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.lp-booked {
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  padding: 1rem 0;
+  text-align: center;
+}
+
+.lp-booked__icon .lp-icon {
+  width: 52px;
+  height: 52px;
+  color: #34d399;
+}
+
+.lp-booked h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.lp-booked p {
+  margin: 0;
+  color: var(--ai-text-soft);
 }
 
 @media (max-width: 900px) {

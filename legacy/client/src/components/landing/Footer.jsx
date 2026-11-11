@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../../context/LanguageContext'
+import { demoHref } from '../../demoHref'
+import DemoCta from './DemoCta'
 import Icon from './icons'
 import './footer.css'
 
@@ -15,6 +17,22 @@ function FooterLink({ href, children }) {
   return href.startsWith('/#') ? <a href={href}>{children}</a> : <Link to={href}>{children}</Link>
 }
 
+// The footer's own call to action, above the link columns.
+function FooterCta({ s }) {
+  return (
+    <div className="lp-footer__cta">
+      <div>
+        <p className="lp-footer__cta-title">{s.ctaTitle}</p>
+        <p>{s.free}</p>
+      </div>
+      <DemoCta placement="footer" href={demoHref()}>
+        {s.cta}
+        <Icon name="arrow" />
+      </DemoCta>
+    </div>
+  )
+}
+
 export default function Footer() {
   const { t, lang, toggleLang } = useLanguage()
   const s = t.landing.footer
@@ -23,6 +41,7 @@ export default function Footer() {
   return (
     <footer className="lp-footer">
       <div className="lp-container">
+        <FooterCta s={s} />
         <div className="lp-footer__top">
           <div className="lp-footer__brand">
             <Link to="/" className="lp-header__brand" aria-label={t.landing.nav.home}>

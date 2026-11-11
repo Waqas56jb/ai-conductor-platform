@@ -1,0 +1,76 @@
+.lp-sector-hero {
+  padding: clamp(8rem, 16vw, 11rem) 0 clamp(2.5rem, 6vw, 4rem);
+  text-align: center;
+  background:
+    radial-gradient(700px 420px at 20% 0%, rgba(47, 107, 255, 0.28), transparent 70%),
+    radial-gradient(700px 420px at 85% 20%, rgba(139, 92, 246, 0.22), transparent 70%);
+}
+
+.lp-sector-hero__title {
+  max-width: 16ch;
+  margin: 0.6rem auto 1.1rem;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  font-weight: 600;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+
+.lp-sector-hero .lp-sub {
+  max-width: 44rem;
+  margin-inline: auto;
+}
+
+.lp-sector-hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.lp-sector-hero__free {
+  margin-top: 1.4rem;
+}
+
+.lp-sector-video {
+  padding-top: clamp(2rem, 5vw, 3rem);
+}
+
+.lp-benefits__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lp-benefits__list li {
+  padding: 1.6rem 1.5rem;
+}
+
+.lp-benefits__list h3 {
+  margin: 1rem 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.lp-benefits__list p {
+  margin: 0;
+  color: var(--ai-text-soft);
+  line-height: 1.55;
+}
+
+@media (max-width: 900px) {
+  .lp-benefits__list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .lp-sector-hero__ctas .ai-btn {
+    width: 100%;
+  }
+}

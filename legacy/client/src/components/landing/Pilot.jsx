@@ -1,4 +1,5 @@
 import { useLanguage } from '../../context/LanguageContext'
+import DemoCta from './DemoCta'
 import Icon from './icons'
 import { Reveal } from './Reveal'
 import './pilot.css'
@@ -28,10 +29,10 @@ export default function Pilot() {
               ))}
             </ul>
           </div>
-          <a href="#demo" className="ai-btn ai-btn--primary lp-pilot__cta">
+          <DemoCta placement="pilot" className="ai-btn ai-btn--primary lp-pilot__cta">
             {s.cta}
             <Icon name="arrow" />
-          </a>
+          </DemoCta>
         </Reveal>
       </div>
     </section>

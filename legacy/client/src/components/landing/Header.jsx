@@ -2,17 +2,31 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../../context/LanguageContext'
 import { appLink } from '../../appUrl'
+import { demoHref } from '../../demoHref'
+import DemoCta from './DemoCta'
 import Icon from './icons'
 import './header.css'
 
-// Links are absolute ("/#…") so they also work from the legal pages.
+// Anchors are absolute ("/#…") so they also work from the other pages.
 const LINKS = [
+  ['/immobilier', 'realEstate'],
+  ['/btp', 'trades'],
   ['/#fonctionnalites', 'features'],
-  ['/#solutions', 'solutions'],
   ['/#tarifs', 'pricing'],
-  ['/#demo', 'demo'],
   ['/#contact', 'contact'],
 ]
+
+function NavLink({ href, children, ...props }) {
+  return href.startsWith('/#') ? (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  ) : (
+    <Link to={href} {...props}>
+      {children}
+    </Link>
+  )
+}
 
 function LangToggle({ lang, onToggle, label }) {
   return (
@@ -65,7 +79,7 @@ export default function Header() {
   // Close the drawer first, then scroll once the page is unlocked.
   function onDrawerLink(e, href) {
     const hash = href.slice(1)
-    if (window.location.pathname !== '/') return setOpen(false)
+    if (!href.startsWith('/#') || window.location.pathname !== '/') return setOpen(false)
     e.preventDefault()
     setOpen(false)
     requestAnimationFrame(() => {
@@ -89,7 +103,7 @@ export default function Header() {
             <ul>
               {LINKS.map(([href, key]) => (
                 <li key={key}>
-                  <a href={href}>{n[key]}</a>
+                  <NavLink href={href}>{n[key]}</NavLink>
                 </li>
               ))}
             </ul>
@@ -100,9 +114,9 @@ export default function Header() {
             <a href={appLink('/login')} className="ai-btn ai-btn--ghost ai-btn--sm lp-header__login">
               {n.login}
             </a>
-            <a href={appLink('/signup')} className="ai-btn ai-btn--primary ai-btn--sm">
-              {n.signup}
-            </a>
+            <DemoCta placement="header" href={demoHref()} className="ai-btn ai-btn--primary ai-btn--sm lp-header__demo">
+              {n.freeDemo}
+            </DemoCta>
             <button
               ref={burgerRef}
               type="button"
@@ -139,10 +153,10 @@ export default function Header() {
           <ul className="lp-drawer__links">
             {LINKS.map(([href, key], i) => (
               <li key={key}>
-                <a href={href} ref={i === 0 ? firstLinkRef : undefined} onClick={(e) => onDrawerLink(e, href)}>
+                <NavLink href={href} ref={i === 0 ? firstLinkRef : undefined} onClick={(e) => onDrawerLink(e, href)}>
                   {n[key]}
                   <Icon name="arrow" />
-                </a>
+                </NavLink>
               </li>
             ))}
           </ul>
@@ -151,9 +165,24 @@ export default function Header() {
             <a href={appLink('/login')} className="ai-btn ai-btn--ghost ai-btn--block">
               {n.login}
             </a>
-            <a href={appLink('/signup')} className="ai-btn ai-btn--primary ai-btn--block">
+            <a href={appLink('/signup')} className="ai-btn ai-btn--ghost ai-btn--block">
               {n.signup}
             </a>
+            <DemoCta
+              placement="menu"
+              href={demoHref()}
+              className="ai-btn ai-btn--primary ai-btn--block"
+              onClick={(e) => {
+                const form = document.getElementById('demo')
+                if (!form) return setOpen(false)
+                // Same as the drawer links: unlock the page first, then scroll.
+                e.preventDefault()
+                setOpen(false)
+                requestAnimationFrame(() => form.scrollIntoView())
+              }}
+            >
+              {n.freeDemoLong}
+            </DemoCta>
           </div>
         </div>
       </div>
