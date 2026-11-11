@@ -1,0 +1,57 @@
+.page {
+  display: grid;
+  place-items: start center;
+  min-height: 100dvh;
+  padding: 2rem 1rem;
+}
+
+.page > * {
+  width: min(560px, 100%);
+}
+
+.head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.head h1 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.slot {
+  margin: 0.5rem 0 1.25rem;
+  font-weight: 600;
+}
+
+.details {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0 0 1.25rem;
+}
+
+.details dt {
+  color: var(--text-soft);
+  font-size: 0.82rem;
+}
+
+.details dd {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.note {
+  margin: 1.25rem 0 0;
+  color: var(--text-soft);
+  font-size: 0.85rem;
+}

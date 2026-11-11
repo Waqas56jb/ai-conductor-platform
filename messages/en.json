@@ -1790,5 +1790,36 @@
       "payments": "Payments (CSV)",
       "fecNote": "The FEC follows article A47 A-1 of the LPF: sales and bank journals, accounts 411, 706, 44571 and 512, settled invoices lettered. Have your accountant validate it before filing."
     }
+  },
+  "demos": {
+    "title": "Demos & site",
+    "sub": "Free demo requests and the site's visitor journey over the last {days} days.",
+    "kpi": {
+      "visits": "Visits",
+      "clicks": "“Free demo” clicks",
+      "submitted": "Requests sent",
+      "confirmed": "Confirmed meetings",
+      "rate": "{rate} of clicks"
+    },
+    "columns": {
+      "slot": "Slot",
+      "who": "Prospect",
+      "sector": "Sector",
+      "source": "Source",
+      "status": "Status",
+      "open": "Manage"
+    },
+    "status": {
+      "requested": "To confirm",
+      "confirmed": "Confirmed",
+      "cancelled": "Cancelled"
+    },
+    "manage": "Confirm / cancel",
+    "direct": "Direct",
+    "requests": "Demo requests",
+    "sources": "By source",
+    "empty": "No demo requests yet.",
+    "noTraffic": "No visits recorded yet.",
+    "privacy": "Anonymous measurement: no cookie, no IP address, no identifier. Visitors who opt out (Do Not Track, GPC) are not counted."
   }
 }

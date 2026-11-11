@@ -51,6 +51,14 @@ export const serverSchema = z.object({
   MS_CLIENT_SECRET: optional(z.string().min(1)),
   /** "common" accepts work and personal Microsoft accounts. */
   MS_TENANT_ID: withDefault("common"),
+  // Transactional email (Resend) for the free demo booking. Without the key,
+  // requests are still saved and shown to the team in the app.
+  RESEND_API_KEY: optional(z.string().min(1)),
+  EMAIL_FROM: withDefault("Pratonna <demo@pratonna.com>"),
+  /** Team inbox told about every new demo request. */
+  DEMO_INBOX: withDefault("contact@pratonna.com").pipe(z.email()),
+  /** Comma-separated sign-in emails of the Pratonna team (demo requests, site stats). */
+  PLATFORM_ADMIN_EMAILS: optional(z.string().min(3)),
   // Accounting connectors (Pennylane, Qonto): declared, not implemented yet.
   PENNYLANE_API_KEY: optional(z.string().min(1)),
   QONTO_ORGANIZATION_SLUG: optional(z.string().min(1)),
@@ -123,6 +131,10 @@ const runtimeEnv: Source = {
   PENNYLANE_API_KEY: process.env.PENNYLANE_API_KEY,
   QONTO_ORGANIZATION_SLUG: process.env.QONTO_ORGANIZATION_SLUG,
   QONTO_SECRET_KEY: process.env.QONTO_SECRET_KEY,
+  RESEND_API_KEY: process.env.RESEND_API_KEY,
+  EMAIL_FROM: process.env.EMAIL_FROM,
+  DEMO_INBOX: process.env.DEMO_INBOX,
+  PLATFORM_ADMIN_EMAILS: process.env.PLATFORM_ADMIN_EMAILS,
 };
 
 // Set SKIP_ENV_VALIDATION=1 for builds/CI/tests that run without real secrets.

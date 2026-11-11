@@ -50,6 +50,7 @@ Applied history is stored in `ai_conductor_schema_migrations`.
 | `0013_phase5_documents_tasks_meetings` | Contracts (CTR counter), team tasks, meeting summaries; email accounts stay in integrations (server-only, encrypted tokens)                                                                |
 | `0014_contracts_hide_drafts`           | Clients only see contracts once sent                                                                                                                                                       |
 | `0015_phase6_accounting`               | Payments readable (staff, or the invoice's client), source / author; receipt refusal note; quote `sent_at` / `client_declined_at`; service orders (OS counter); append-only approval steps |
+| `0016_demo_booking`                   | Free demo requests from the marketing site (one per slot), anonymous site events (no cookie / IP); server-only |
 
 ## Connection
 

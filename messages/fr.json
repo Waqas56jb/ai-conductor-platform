@@ -1790,5 +1790,36 @@
       "payments": "Paiements (CSV)",
       "fecNote": "Le FEC suit l’article A47 A-1 du LPF : journaux Ventes et Banque, comptes 411, 706, 44571 et 512, lettrage des factures soldées. Faites-le valider par votre expert-comptable avant tout dépôt."
     }
+  },
+  "demos": {
+    "title": "Démos & site",
+    "sub": "Demandes de démo gratuite et parcours des visiteurs du site, sur les {days} derniers jours.",
+    "kpi": {
+      "visits": "Visites",
+      "clicks": "Clics « Démo gratuite »",
+      "submitted": "Demandes envoyées",
+      "confirmed": "Rendez-vous confirmés",
+      "rate": "{rate} des clics"
+    },
+    "columns": {
+      "slot": "Créneau",
+      "who": "Prospect",
+      "sector": "Secteur",
+      "source": "Provenance",
+      "status": "Statut",
+      "open": "Gérer"
+    },
+    "status": {
+      "requested": "À confirmer",
+      "confirmed": "Confirmée",
+      "cancelled": "Annulée"
+    },
+    "manage": "Confirmer / annuler",
+    "direct": "Direct",
+    "requests": "Demandes de démo",
+    "sources": "Par provenance",
+    "empty": "Aucune demande de démo pour le moment.",
+    "noTraffic": "Aucune visite enregistrée pour le moment.",
+    "privacy": "Mesure anonyme : ni cookie, ni adresse IP, ni identifiant. Les visiteurs qui refusent le suivi (Do Not Track, GPC) ne sont pas comptés."
   }
 }

@@ -525,6 +525,39 @@ export type ApprovalStepRow = {
   created_at: string;
 };
 
+export type DemoRequestRow = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  company: string | null;
+  sector: string | null;
+  message: string | null;
+  slot_start: string;
+  status: "requested" | "confirmed" | "cancelled";
+  token: string;
+  locale: "fr" | "en";
+  source: string | null;
+  medium: string | null;
+  campaign: string | null;
+  consent_at: string;
+  created_at: string;
+  confirmed_at: string | null;
+  cancelled_at: string | null;
+};
+
+export type SiteEventRow = {
+  id: number;
+  name: "page_view" | "demo_click" | "video_play" | "demo_submit" | "demo_confirmed";
+  page: string | null;
+  placement: string | null;
+  source: string | null;
+  medium: string | null;
+  campaign: string | null;
+  device: "mobile" | "tablet" | "desktop" | null;
+  created_at: string;
+};
+
 type Table<Row, Insert, Update = Partial<Insert>> = {
   Row: Row;
   Insert: Insert;
@@ -702,6 +735,15 @@ export type Database = {
             | "decision"
             | "actor_role"
           >
+      >;
+      ai_conductor_demo_requests: Table<
+        DemoRequestRow,
+        Partial<DemoRequestRow> &
+          Pick<DemoRequestRow, "name" | "email" | "slot_start" | "token" | "consent_at">
+      >;
+      ai_conductor_site_events: Table<
+        SiteEventRow,
+        Partial<Omit<SiteEventRow, "id">> & Pick<SiteEventRow, "name">
       >;
       ai_conductor_team_tasks: Table<
         TeamTaskRow,
